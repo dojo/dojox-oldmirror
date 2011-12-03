@@ -67,14 +67,22 @@ var AndOrReadStore = declare("dojox.data.AndOrReadStore", null, {
 		this._loadInProgress = false; //Got to track the initial load to prevent duelling loads of the dataset.
 		this._queuedFetches = [];
 
-		if(keywordParameters.urlPreventCache !== undefined){
-			this.urlPreventCache = keywordParameters.urlPreventCache?true:false;
-		}
-		if(keywordParameters.hierarchical !== undefined){
-			this.hierarchical = keywordParameters.hierarchical?true:false;
-		}
-		if(keywordParameters.clearOnClose){
-			this.clearOnClose = true;
+		if(keywordParameters){
+			if(keywordParameters.urlPreventCache !== undefined){
+				this.urlPreventCache = keywordParameters.urlPreventCache?true:false;
+			}
+			if(keywordParameters.hierarchical !== undefined){
+				this.hierarchical = keywordParameters.hierarchical?true:false;
+			}
+			if(keywordParameters.clearOnClose){
+				this.clearOnClose = true;
+			}
+			if(keywordParameters.hasOwnProperty("failOk")){
+				this.failOk = keywordParameters.failOk?true:false;
+			}
+			if(keywordParameters.hasOwnProperty("headers")){
+				this.headers = keywordParameters.headers;
+			}
 		}
 	},
 	
@@ -106,6 +114,26 @@ var AndOrReadStore = declare("dojox.data.AndOrReadStore", null, {
 	//specific reference format, are left straight JS data objects.
 	hierarchical: true,
 
+	//Parameter to allow specifying if preventCache should be passed to the xhrGet call or not when loading data from a url.
+	//Note this does not mean the store calls the server on each fetch, only that the data load has preventCache set as an option.
+	//Added for tracker: #6072
+	urlPreventCache: false,
+
+	//Parameter for specifying that it is OK for the xhrGet call to fail silently.
+	failOk: false,
+
+	//Parameter to indicate to process data from the url as hierarchical
+	//(data items can contain other data items in js form).  Default is true
+	//for backwards compatibility.  False means only root items are processed
+	//as items, all child objects outside of type-mapped objects and those in
+	//specific reference format, are left straight JS data objects.
+	hierarchical: true,
+	
+	// headers: [public] Object
+	//		Any additional headers to pass to the fetch.
+	//		Defaults now to application/json for accepts.
+	headers: { "Accept": "application/json" },
+	
 	_assertIsItem: function(/* item */ item){
 		//	summary:
 		//		This function tests whether the item passed in is indeed an item in the store.
@@ -207,9 +235,11 @@ var AndOrReadStore = declare("dojox.data.AndOrReadStore", null, {
 				if(possibleValue.toString().match(regexp)){
 					return true; // Boolean
 				}
-			} else if(value === possibleValue){
+			}else if(typeof value === "function"){
+				return value(possibleValue);
+			}else if(value === possibleValue){
 				return true; // Boolean
-			} else {
+			}else{
 				return false;
 			}
 		});
@@ -485,7 +515,9 @@ var AndOrReadStore = declare("dojox.data.AndOrReadStore", null, {
 					var getArgs = {
 							url: self._jsonFileUrl,
 							handleAs: "json-comment-optional",
-							preventCache: this.urlPreventCache
+							preventCache: this.urlPreventCache,
+							headers: this.headers,
+							failOk: this.failOk
 						};
 					var getHandler = xhr.get(getArgs);
 					getHandler.addCallback(function(data){
