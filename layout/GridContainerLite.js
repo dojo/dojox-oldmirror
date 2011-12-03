@@ -13,7 +13,7 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/event",
 	"dojo/keys", // keys
-	"dojo/topic", // topic.publish()
+	"dojo/_base/connect",
 	"dijit/registry",
 	"dijit/focus",
 	"dijit/_base/focus", // dijit.getFocus()
@@ -23,7 +23,7 @@ define([
 	"dojo/_base/NodeList",
 	"dojox/mdnd/AreaManager", "dojox/mdnd/DropIndicator",
 	"dojox/mdnd/dropMode/OverDropMode","dojox/mdnd/AutoScroll"
-],function(dojo, template, declare, query, has, domClass, domStyle, geom, domConstruct, domAttr, array, lang, events, keys, topic, registry, focus, baseFocus, _WidgetBase, _TemplatedMixin, _LayoutWidget, NodeList){
+],function(dojo, template, declare, query, has, domClass, domStyle, geom, domConstruct, domAttr, array, lang, events, keys, connect, registry, focus, baseFocus, _WidgetBase, _TemplatedMixin, _LayoutWidget, NodeList){
 
 	var gcl = declare(
 		"dojox.layout.GridContainerLite",
@@ -121,7 +121,7 @@ define([
 			// need to resize dragged child when it's dropped.
 			this.subscribe("/dojox/mdnd/drop", "resizeChildAfterDrop");
 			this.subscribe("/dojox/mdnd/drag/start", "resizeChildAfterDragStart");
-
+			
 			this._dragManager = dojox.mdnd.areaManager();
 			// console.info("autorefresh ::: ", this.autoRefresh);
 			this._dragManager.autoRefresh = this.autoRefresh;
@@ -694,7 +694,7 @@ define([
 									focus.focus(focusNode);
 								}
 								else{
-									topic.publish("/dojox/layout/gridContainer/moveRestriction", [this]);
+									connect.publish("/dojox/layout/gridContainer/moveRestriction", [this]);
 								}
 							}
 							else{
@@ -761,7 +761,7 @@ define([
 									focus.focus(r);
 								}
 								else{
-									topic.publish("/dojox/layout/gridContainer/moveRestriction", [this]);
+									connect.publish("/dojox/layout/gridContainer/moveRestriction", [this]);
 								}
 							}
 							else{
