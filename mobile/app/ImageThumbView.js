@@ -260,7 +260,7 @@ dojo.declare("dojox.mobile.app.ImageThumbView", dijit._WidgetBase, {
 				if(this.cache[i]._url == url){
 					thumbDiv = this.cache.splice(i, 1)[0];
 					found = true;
-					break
+					break;
 				}
 			}
 

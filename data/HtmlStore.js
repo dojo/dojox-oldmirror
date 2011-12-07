@@ -355,7 +355,7 @@ var HtmlStore = declare("dojox.data.HtmlStore", null, {
 							}
 						}
 						return null; //null
-					}
+					};
 
 					var d = document.createElement("div");
 					d.innerHTML = data;
@@ -520,7 +520,7 @@ var HtmlStore = declare("dojox.data.HtmlStore", null, {
 							}
 						}
 						return null; //null
-					}
+					};
 					var d = document.createElement("div");
 					d.innerHTML = data;
 					self._rootNode = findNode(d, self.dataId);

@@ -97,8 +97,8 @@ var pluginsHTML5 = declare("dojox.form.uploader.plugins.HTML5", [], {
 		if(!msg){
 			this.onError(this.errMsg);
 		}else{
-			console.log("msg:", msg)
-			console.log("xhr:", xhr)
+			console.log("msg:", msg);
+			console.log("xhr:", xhr);
 
 			xhr.sendAsBinary(msg);
 		}

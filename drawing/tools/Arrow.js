@@ -44,7 +44,7 @@ dojox.drawing.tools.Arrow = dojox.drawing.util.oo.declare(
 			return {
 				x:pt.x,
 				y:pt.y
-			}
+			};
 		},
 		
 		onUp: function(/*EventObject*/obj){

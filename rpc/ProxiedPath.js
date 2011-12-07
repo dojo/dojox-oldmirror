@@ -1,7 +1,7 @@
 define("dojox/rpc/ProxiedPath", ["dojo", "dojox", "dojox/rpc/Service"], function(dojo, dojox) {
 
 dojox.rpc.envelopeRegistry.register(
-	"PROXIED-PATH",function(str){return str == "PROXIED-PATH"},{
+	"PROXIED-PATH",function(str){return str == "PROXIED-PATH";},{
 		serialize:function(smd, method, data){
 			var i;
 			var target = dojox.rpc.getTarget(smd, method);

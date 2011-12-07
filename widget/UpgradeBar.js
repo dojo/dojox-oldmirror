@@ -115,7 +115,7 @@ dojo.declare("dojox.widget.UpgradeBar", [dijit._Widget, dijit._Templated], {
 			message:{ node:"messageNode", type:"innerHTML" }
 		});
 		if(!this.noRemindButton){
-			dojo.destroy(this.dontRemindButtonNode)
+			dojo.destroy(this.dontRemindButtonNode);
 		}
 		if(dojo.isIE==6){
 			// IE6 is challenged when it comes to 100% width.
@@ -128,7 +128,7 @@ dojo.declare("dojox.widget.UpgradeBar", [dijit._Widget, dijit._Templated], {
 			var setWidth = function(){
 				var v = dojo.window.getBox();
 				dojo.style(self.domNode, "width", v.w+"px");
-			}
+			};
 			this.connect(window, "resize", function(){
 				setWidth();
 			});

@@ -10,7 +10,7 @@ define(["dojo/_base/lang","dojo/_base/array", "dojo/_base/declare", "dojo/_base/
 			// host: Object?: object which implements the functionality of the move,
 			//	 and defines proper events (onMoveStart and onMoveStop)
 			this.shape = shape;
-			this.lastX = e.clientX
+			this.lastX = e.clientX;
 			this.lastY = e.clientY;
 			var h = this.host = host, d = document,
 				firstEvent = connect.connect(d, "onmousemove", this, "onFirstMove");

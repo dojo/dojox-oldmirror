@@ -92,8 +92,8 @@ define(["dojo/_base/kernel","dojo/_base/declare","dojo/_base/html","dojo/_base/c
 			if(area){
 				var position = dojo.position(area, true),
 					coords = {};
-				coords.x = position.x
-				coords.y = position.y
+				coords.x = position.x;
+				coords.y = position.y;
 				coords.x1 = position.x + position.w;
 				coords.y1 = position.y + position.h;
 				return coords;	// 	Object

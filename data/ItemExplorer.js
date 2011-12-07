@@ -15,7 +15,7 @@ dojo.require("dijit.form.FilteringSelect");
 			value = store.getValue(item, prop);
 		}
 		return value;
-	}
+	};
 
 dojo.declare("dojox.data.ItemExplorer", dijit.Tree, {
 	useSelect: false,
@@ -157,7 +157,7 @@ dojo.declare("dojox.data.ItemExplorer", dijit.Tree, {
 				}else{
 					dojo.forEach(contextMenu.getChildren(), function(widget){
 						widget.attr("disabled", (widget.label != "Edit") && (widget.label != "Delete"));
-					})
+					});
 					// this won't focus the node but gives us a way to reference the node
 					this.lastFocused = node;
 				}
@@ -243,7 +243,7 @@ dojo.declare("dojox.data.ItemExplorer", dijit.Tree, {
 		var labelProp = dojo.doc.createElement('label');
 		dojo.attr(labelProp, "for", "property");
 		dojo.style(labelProp, "fontWeight", "bold");
-		dojo.attr(labelProp, "innerHTML", "Property:")
+		dojo.attr(labelProp, "innerHTML", "Property:");
 		pane.appendChild(labelProp);
 
 		// property name field
@@ -267,7 +267,7 @@ dojo.declare("dojox.data.ItemExplorer", dijit.Tree, {
 		// label for value
 		var labelVal = dojo.doc.createElement('label');
 		dojo.attr(labelVal, "for", "value");
-		dojo.attr(labelVal, "innerHTML", "Value (JSON):")
+		dojo.attr(labelVal, "innerHTML", "Value (JSON):");
 		pane.appendChild(labelVal);
 
 		 // container for value fields
@@ -290,7 +290,7 @@ dojo.declare("dojox.data.ItemExplorer", dijit.Tree, {
 		// label for reference
 		var labelRef = dojo.doc.createElement('label');
 		dojo.attr(labelRef, "for", "_reference");
-		dojo.attr(labelRef, "innerHTML", "Reference (ID):")
+		dojo.attr(labelRef, "innerHTML", "Reference (ID):");
 		pane.appendChild(labelRef);
 		pane.appendChild(dojo.doc.createElement("br"));
 
@@ -467,7 +467,7 @@ dojo.declare("dojox.data.ItemExplorer", dijit.Tree, {
 					if(typeof val == 'function'){
 						val.toString = function(){
 							return jsonVal;
-						}
+						};
 					}
 					setValue();
 					break;

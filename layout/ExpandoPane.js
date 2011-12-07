@@ -140,7 +140,7 @@ return declare("dojox.layout.ExpandoPane", [ContentPane, TemplatedMixin, Contain
 	_afterResize: function(e){
 		var tmp = this._currentSize;						// the old size
 		this._currentSize = domGeom.getMarginBox(this.domNode);	// the new size
-		var n = this._currentSize[(this._isHorizontal ? "h" : "w")]
+		var n = this._currentSize[(this._isHorizontal ? "h" : "w")];
 		if(n > this._titleHeight){
 			if(!this._showing){
 				this._showing = !this._showing;

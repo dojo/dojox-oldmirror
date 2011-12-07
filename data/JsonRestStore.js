@@ -131,7 +131,7 @@ var JsonRestStore = declare("dojox.data.JsonRestStore", ServiceStore,
 			this._constructor = function(data){
 				constructor.call(this, data);
 				self.onNew(this);
-			}
+			};
 			this._constructor.prototype = constructor.prototype;
 			this._index = rpcRest._index;
 		},

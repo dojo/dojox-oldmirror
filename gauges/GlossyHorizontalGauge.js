@@ -2,7 +2,7 @@ define(["dojo/_base/declare","dojo/_base/connect","dojo/_base/lang","dojo/_base/
   function(declare, connect, lang, Color, gfx, BarGauge, BarCircleIndicator, GlossyHorizontalGaugeMarker) {
 
 
-var NumberUtils
+var NumberUtils;
 
 /*=====
 	BarGauge = dojox.gauges.BarGauge;

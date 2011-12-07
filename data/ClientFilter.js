@@ -11,7 +11,7 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/_base/array", "dojo/_base
 					remove:remove && item
 				});
 			ClientFilter.onUpdate();
-		}
+		};
 	};
 	var ClientFilter = declare("dojox.data.ClientFilter", null, {
 			cacheByDefault: false,

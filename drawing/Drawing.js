@@ -142,7 +142,7 @@ dojo.provide("dojox.drawing.Drawing");
 			// If Dijit is available in the page, register with it
 			if(dijit && dijit.registry){
 				dijit.registry.add(this);
-				console.log("using dijit")
+				console.log("using dijit");
 			}else{
 				// else fake dijit.byId
 				// FIXME: This seems pretty hacky.
@@ -325,7 +325,7 @@ dojo.provide("dojox.drawing.Drawing");
 				return false;
 			}
 			if(options && !options.data && !options.points){
-				options = {data:options}
+				options = {data:options};
 			}
 			if(!this.stencilTypes[type]){
 				if(type != "tooltip"){
@@ -362,7 +362,7 @@ dojo.provide("dojox.drawing.Drawing");
 				return false;
 			}
 			if(options && !options.data && !options.points){
-				options = {data:options}
+				options = {data:options};
 			}
 			var s = this.stencils.register( new this.stencilTypes[type](this.getShapeProps(options)));
 			// need this or not?

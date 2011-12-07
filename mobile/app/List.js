@@ -504,7 +504,7 @@ dojo.require("dijit._WidgetBase");
 				this.domNode.appendChild(this._renderRange(0, this.items.length));
 			}
 			if(dojo.hasClass(this.domNode.parentNode, "mblRoundRect")){
-				dojo.addClass(this.domNode.parentNode, "mblRoundRectList")
+				dojo.addClass(this.domNode.parentNode, "mblRoundRectList");
 			}
 
 			var divs = dojo.query("> .row", this.domNode);

@@ -88,7 +88,7 @@ define("dojox/rpc/Rest", ["dojo", "dojox"], function(dojo, dojox) {
 				id = id ? "?" + id: "";
 			}
 			if(args && args.sort && !args.queryStr){
-				id += (id ? "&" : "?") + "sort("
+				id += (id ? "&" : "?") + "sort(";
 				for(var i = 0; i<args.sort.length; i++){
 					var sort = args.sort[i];
 					id += (i > 0 ? "," : "") + (sort.descending ? '-' : '+') + encodeURIComponent(sort.attribute);

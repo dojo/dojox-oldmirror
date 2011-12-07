@@ -71,7 +71,7 @@ define(["dojo", "dojox", "dijit/_Widget", "dojo/fx/easing"], function(dojo, dojo
 		constructor: function(props, node){
 			this.properties = props.properties || {
 				fontSize: 2.75
-			}
+			};
 		},
 
 		postCreate: function(){

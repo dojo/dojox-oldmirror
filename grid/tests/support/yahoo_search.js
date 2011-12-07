@@ -65,7 +65,7 @@ dojo.declare("dojox.grid._data.yahooSearch", null,
 		inRowIndex = (inRowIndex == undefined ? 0 : inRowIndex);
 		var params = {
 			start: inRowIndex + 1
-		}
+		};
 		this.send(true, params, turbo.bindArgs(this, this.processRows));
 	},
 	// server callbacks
@@ -97,7 +97,7 @@ modelChange = function() {
 	var n = turbo.$('rowCount');
 	if (n)
 		n.innerHTML = turbo.printf('about %s row(s)', model.count);
-}
+};
 
 
 // some data formatters
@@ -115,7 +115,7 @@ formatImage = function(inData, inRowIndex) {
 		src: inData[1].Url,
 		width: inData[1].Width,
 		height: inData[1].Height
-	}
+	};
 	return turbo.supplant('<a href="{href}" target="_blank"><img border=0 src="{src}" width="{width}" height="{height}"></a>', o);
 };
 
@@ -130,5 +130,5 @@ formatDimensions = function(inData, inRowIndex) {
 	if (!inData[0] || !inData[1])
 		return '&nbsp;';
 	return inData[0] + ' x ' + inData[1];
-}
+};
 })();

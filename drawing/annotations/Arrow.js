@@ -48,7 +48,7 @@ dojox.drawing.annotations.Arrow = dojox.drawing.util.oo.declare(
 				},
 				x:x2,
 				y:y2
-			}
+			};
 			var angle = this.util.angle(obj);
 			
 			var lineLength = this.util.length(obj);

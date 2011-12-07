@@ -1,4 +1,4 @@
-dojo.provide("dojox.wire.demos.WidgetRepeater")
+dojo.provide("dojox.wire.demos.WidgetRepeater");
 		
 dojo.require("dojo.parser");
 dojo.require("dijit._Widget");

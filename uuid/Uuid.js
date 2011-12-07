@@ -164,7 +164,7 @@ dojox.uuid.Uuid.prototype.getTimestamp = function(/*String?*/ returnType){
 	//		hexString = uuid.getTimestamp("hex"); // "1da86cdb4308fb0"
 	// exceptions:
 	//		Throws an Error if this is not a version 1 UUID.
-	if(!returnType){returnType = null};
+	if(!returnType){returnType = null;};
 	switch(returnType){
 		case "string":
 		case String:

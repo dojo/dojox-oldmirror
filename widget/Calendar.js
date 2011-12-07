@@ -227,7 +227,7 @@ dojo.declare("dojox.widget._CalendarBase", [dijit._Widget, dijit._Templated, dij
 	_onDateSelected: function(date, formattedValue, force){
 		this.displayMonth = date;
 
-		this.set("value", date)
+		this.set("value", date);
 		//Only change the selected value if it was chosen from the
 		//first child.
 		if(!this._transitionVert(-1)){
@@ -305,7 +305,7 @@ dojo.declare("dojox.widget._CalendarBase", [dijit._Widget, dijit._Templated, dij
 
 		anim1.play();
 		anim2.play();
-		curWidget.onBeforeUnDisplay()
+		curWidget.onBeforeUnDisplay();
 		nextWidget.onBeforeDisplay();
 
 		this._updateTitleStyle();
@@ -516,7 +516,7 @@ dojo.declare("dojox.widget._CalendarDayView", [dojox.widget._CalendarView, dijit
 		var c = "dijitCalendar";
 		var d = dojo.hasClass(p, c + "PreviousMonth") ? -1 :
 							(dojo.hasClass(p, c + "NextMonth") ? 1 : 0);
-		if(d){date = dojo.date.add(date, "month", d)}
+		if(d){date = dojo.date.add(date, "month", d);}
 		date.setDate(e.target._date);
 
 		// If the day is disabled, ignore it

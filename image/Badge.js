@@ -214,15 +214,15 @@ define(["dojo", "dijit", "dojox/main", "dijit/_Widget", "dijit/_TemplatedMixin",
 			var bc = this.baseClass;
 			dojo.removeClass(info.n, bc + "Top");
 			var ns = this._nl.filter(function(n){
-				return !dojo.hasClass(n, bc + "Seen")
+				return !dojo.hasClass(n, bc + "Seen");
 			});
 			var c = ns[Math.floor(Math.random() * ns.length)];
-			setTimeout(dojo.hitch(this,"_enbiggen", { target: c }), this.delay / 2)
+			setTimeout(dojo.hitch(this,"_enbiggen", { target: c }), this.delay / 2);
 
 		}
 
 	});
 
 	return dojox.image.Badge;
-})
+});
 

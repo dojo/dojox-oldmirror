@@ -178,7 +178,7 @@ dojo.require("dojox.widget.Rotator");
 					j = Math.floor(Math.random() * _t.panes.length + 1);
 				}while(j == i);
 			}else{
-				j = i + (_t.reverse ? -1 : 1)
+				j = i + (_t.reverse ? -1 : 1);
 			}
 
 			// rotate!

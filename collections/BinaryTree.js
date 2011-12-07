@@ -21,17 +21,17 @@ var dxc = dojox.collections;
 					c.right=this.right.clone();
 				}
 				return c;
-			}
+			};
 			this.compare=function(n){
 				if(this.value>n.value){ return 1; }
 				if(this.value<n.value){ return -1; }
 				return 0;
-			}
+			};
 			this.compareData=function(d){
 				if(this.value>d){ return 1; }
 				if(this.value<d){ return -1; }
 				return 0;
-			}
+			};
 		}
 
 		function inorderTraversalBuildup(current, a){
@@ -202,7 +202,7 @@ var dxc = dojox.collections;
 		if(data){
 			this.add(data);
 		}
-	}
+	};
 	dxc.BinaryTree.TraversalMethods={
 		Preorder: 1, Inorder: 2, Postorder: 3
 	};

@@ -126,7 +126,7 @@ define(["./_base"], function(dxd) {
 				return toBase64(wa);	//	string
 			}
 		}
-	}
+	};
 
 	//	make this private, for later use with a generic HMAC calculator.
 	dxd.SHA1._hmac=function(/* string */data, /* string */key, /* dojox.encoding.digests.outputTypes? */outputType){

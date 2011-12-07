@@ -23,7 +23,7 @@ define(["dojo/_base/kernel", "dojo/_base/lang", "./Annotation", "./Anchor"], fun
 	var p=ta.PreexistingAnnotation.prototype;
 	p.constructor=ta.PreexistingAnnotation;
 
-	p.type=function(){ return 'Preexisting' };
+	p.type=function(){ return 'Preexisting'; };
 	p.getType=function(){ return ta.PreexistingAnnotation; };
 
 	p._pos=function(){

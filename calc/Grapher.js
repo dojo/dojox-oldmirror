@@ -233,7 +233,7 @@ define([
 			td.appendChild(d);
 
 			d = domConstruct.create('div');
-			domStyle.set(d, { position: "absolute", left: "0px", top: "0px" })
+			domStyle.set(d, { position: "absolute", left: "0px", top: "0px" });
 			this.chartsParent.appendChild(d);
 			this.array[tr.rowIndex][this.chartNodeIndex] = d;
 			domClass.add(d, "dojoxCalcChart");
@@ -497,7 +497,7 @@ define([
 
 						points2[s].push(p);
 						// setup the next series
-						points2[++s] = []
+						points2[++s] = [];
 					}
 					var startK = k;
 					while(k < points.length && (points[k][y] > maxY || points[k][y] < minY)){

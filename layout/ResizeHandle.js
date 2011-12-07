@@ -121,7 +121,7 @@ var ResizeHandle = declare("dojox.layout.ResizeHandle",[Widget, TemplatedMixin],
 		}
 		
 		if(this.constrainMax){
-			this.maxSize = { w: this.maxWidth, h: this.maxHeight }
+			this.maxSize = { w: this.maxWidth, h: this.maxHeight };
 		}
 		
 		// should we modify the css for the cursor hover to n-resize nw-resize and w-resize?

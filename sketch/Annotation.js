@@ -120,7 +120,7 @@ define([
 	p.onPropertyChange=function(name,oldvalue){};
 	p.onCreate=function(){
 		this.figure.history.add(dojox.sketch.CommandTypes.Create,this);
-	}
+	};
 	p.onDblClick=function(e){
 		var l=prompt('Set new text:',this.property('label'));
 		if(l!==false){
@@ -129,7 +129,7 @@ define([
 			this.draw();
 			this.endEdit();
 		}
-	}
+	};
 	p.initialize=function(){ };
 	p.destroy=function(){ };
 	p.draw=function(){ };

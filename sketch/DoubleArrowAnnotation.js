@@ -121,7 +121,7 @@ define(["dojo/_base/kernel", "dojo/_base/lang", "./Annotation", "./Anchor"], fun
 		this.shape.getEventSource().setAttribute("id", this.id);
 		//if(this.transform.dx||this.transform.dy){ this.shape.setTransform(this.transform); }
 
-		this.pathShape=this.shape.createPath("M"+this.start.x+" "+this.start.y+"Q"+this.control.x+" "+this.control.y+" "+this.end.x+" "+this.end.y + " l0,0")
+		this.pathShape=this.shape.createPath("M"+this.start.x+" "+this.start.y+"Q"+this.control.x+" "+this.control.y+" "+this.end.x+" "+this.end.y + " l0,0");
 			//.setStroke(this.property('stroke'));
 		
 		this.startArrowGroup=this.shape.createGroup().setTransform({ dx:this.start.x, dy:this.start.y });
@@ -165,7 +165,7 @@ define(["dojo/_base/kernel", "dojo/_base/lang", "./Annotation", "./Anchor"], fun
 		var endRot=dojox.gfx.matrix.rotateAt(rot, this.end.x, this.end.y);
 
 		this.shape.setTransform(this.transform);
-		this.pathShape.setShape("M"+this.start.x+" "+this.start.y+" Q"+this.control.x+" "+this.control.y+" "+this.end.x+" "+this.end.y + " l0,0")
+		this.pathShape.setShape("M"+this.start.x+" "+this.start.y+" Q"+this.control.x+" "+this.control.y+" "+this.end.x+" "+this.end.y + " l0,0");
 			//.setStroke(this.property('stroke'));
 		this.startArrowGroup.setTransform({ dx:this.start.x, dy:this.start.y }).applyTransform(startRot);
 		this.startArrow.setFill(this.property('fill'));

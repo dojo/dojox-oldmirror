@@ -14,7 +14,7 @@ dojo.require("dojox.drawing.stencil.Text");
 		// console.log("Removing conedit");
 		conEdit = dojo.byId("conEdit");
 		if(!conEdit){
-			console.error("A contenteditable div is missing from the main document. See 'dojox.drawing.tools.TextBlock'")
+			console.error("A contenteditable div is missing from the main document. See 'dojox.drawing.tools.TextBlock'");
 		}else{
 			conEdit.parentNode.removeChild(conEdit);
 		}
@@ -83,7 +83,7 @@ dojo.require("dojox.drawing.stencil.Text");
 					}
 					setTimeout(dojo.hitch(this, function(){
 						this.editMode = false;
-					}),100)
+					}),100);
 					
 				}else{
 					// Why make it if it won't render...
@@ -248,7 +248,7 @@ StencilData: {
 					exec = function(){
 						if(self._dropMode){ return; }
 						dojo.forEach([kc1,kc2,kc3,kc4], function(c){
-							dojo.disconnect(c)
+							dojo.disconnect(c);
 						});
 						self._textConnected = false;
 						self.keys.editMode(false);
@@ -337,7 +337,7 @@ StencilData: {
 						conEdit.blur();
 						setTimeout(function(){
 							conEdit.focus();
-						},200)
+						},200);
 					}
 				});
 				
@@ -365,9 +365,9 @@ StencilData: {
 						if(!self._onAnchor && this.parentNode){
 							self.disconnectMouse();
 							exec();
-							self.onUp = function(){}
+							self.onUp = function(){};
 						}
-					}
+					};
 				}), 500);
 			},
 			
@@ -464,9 +464,9 @@ StencilData: {
 						"&amp;":"&"
 					};
 					for(var nm in chars){
-						str = str.replace(new RegExp(nm, "gi"), chars[nm])
+						str = str.replace(new RegExp(nm, "gi"), chars[nm]);
 					}
-					return str
+					return str;
 				};
 
 				if(removeBreaks){
@@ -534,7 +534,7 @@ StencilData: {
 							strAr[line] = [];
 							el.innerHTML = word+" ";
 						}
-						strAr[line].push(word)
+						strAr[line].push(word);
 					}
 					
 					dojo.forEach(strAr, function(ar, i){
@@ -592,7 +592,7 @@ StencilData: {
 				};
 				if(dojo.isIE){
 					s.paddingLeft = w + "px";
-					s.fontSize = w + "px"
+					s.fontSize = w + "px";
 				}
 				var ss = [
 					{top: p, left:p},
@@ -641,7 +641,7 @@ StencilData: {
 					this._anchors[id] = {
 						a:a,
 						cons:[md]
-					}
+					};
 				}
 			},
 			
@@ -662,7 +662,7 @@ StencilData: {
 			},
 			
 			getSavedCaret: function(){
-				return {start: this._caretStart, end: this._caretEnd}
+				return {start: this._caretStart, end: this._caretEnd};
 			},
 			
 			insertText: function(node,val){
@@ -759,7 +759,7 @@ StencilData: {
 						}
 						return children;
 					};
-					console.log("ff node:", node)
+					console.log("ff node:", node);
 					node.focus();
 					var selection = dojo.global.getSelection();
 					selection.removeAllRanges();

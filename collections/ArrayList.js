@@ -121,7 +121,7 @@ var dxc = dojox.collections;
 			//	summary
 			//	Return a new array with all of the items of the internal array concatenated.
 			return [].concat(items);
-		}
+		};
 		this.toString=function(/* string */ delim){
 			//	summary
 			//	implementation of toString, follows [].toString();
