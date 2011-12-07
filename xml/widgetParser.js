@@ -74,7 +74,7 @@ xXml.widgetParser = new function(){
 		//small as possible
 		var ret = d.query('[dojoType]', htmlNode);
 		//remove the script tag and replace with new HTML block
-		query(">", htmlNode).place(script, "before")
+		query(">", htmlNode).place(script, "before");
 		script.parentNode.removeChild(script);
 		return ret;
 	};
