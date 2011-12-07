@@ -587,7 +587,7 @@ var PlotEvents = dojox.charting.plot2d._PlotEvents;
 			return {
 				x: circle.cx + radius * Math.cos(angle),
 				y: circle.cy + radius * Math.sin(angle)
-			}
+			};
 		},
 		
 		_getObjectLength: function(obj){

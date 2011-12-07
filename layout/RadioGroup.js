@@ -209,7 +209,7 @@ declare("dojox.layout.RadioGroupSlide", RadioGroup, {
 
 		html.style(page.domNode,{
 			zIndex: this.zTop, display:""
-		})
+		});
 
 		if(this._anim && this._anim.status()=="playing"){
 			this._anim.gotoPercent(100,true);
@@ -292,5 +292,5 @@ lang.extend(Widget,{
 	//		to "random", or specify one of "top", "left", "right", "bottom"
 	//		to slideFrom top, left, right, or bottom.
 	slideFrom: "random"
-})
+});
 });

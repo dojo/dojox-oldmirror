@@ -57,7 +57,7 @@ define(["dojo/_base/kernel","dojo/_base/declare","dojo/_base/connect","dojo/_bas
 				dojo.subscribe("/dnd/drop/before", this, "onDrop"),
 				dojo.subscribe("/dnd/cancel",this,"onDropCancel"),
 				dojo.subscribe("/dnd/source/over",this,"onDndSource")
-			]
+			];
 		},
 	
 		unsubscribeDnd: function(){

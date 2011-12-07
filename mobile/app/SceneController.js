@@ -118,7 +118,7 @@ dojo.require("dojox.mobile._base");
 			//    Queries for DOM nodes within either the node passed in as an argument
 			//    or within this view.
 
-			return dojo.query(selector, node || this.domNode)
+			return dojo.query(selector, node || this.domNode);
 		},
 
 		parse: function(node){
@@ -139,7 +139,7 @@ dojo.require("dojox.mobile._base");
 			return {
 				w: dojo.global.innerWidth,
 				h: dojo.global.innerHeight
-			}
+			};
 		},
 
 		showAlertDialog: function(props){

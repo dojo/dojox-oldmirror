@@ -131,7 +131,7 @@ define([
 					this._getBumpValue(signedChange[0].change, signedChange[0].useMaxValue),
 					this._getBumpValue(signedChange[1].change, signedChange[1].useMaxValue)
 				]
-				: this._getBumpValue(signedChange, useMaxValue)
+				: this._getBumpValue(signedChange, useMaxValue);
 
 			this._setValueAttr(value, true, useMaxValue);
 		},

@@ -129,7 +129,7 @@ dojox.io.OAuth = new (function(){
 			oauth_signature_method: oaa.sig_method || "HMAC-SHA1",
 			oauth_timestamp: timestamp(),
 			oauth_version: "1.0"
-		}
+		};
 		if(oaa.token){
 			o.oauth_token = oaa.token.key;
 		}

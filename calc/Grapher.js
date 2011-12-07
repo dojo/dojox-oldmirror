@@ -497,7 +497,7 @@ define([
 
 						points2[s].push(p);
 						// setup the next series
-						points2[++s] = []
+						points2[++s] = [];
 					}
 					var startK = k;
 					while(k < points.length && (points[k][y] > maxY || points[k][y] < minY)){

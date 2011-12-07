@@ -78,7 +78,7 @@ dojo.declare("dojox.data.StoreExplorer", dijit.layout.BorderContainer, {
 		grid.canEdit = function(inCell, inRowIndex){
 			var value = this._copyAttr(inRowIndex, inCell.field);
 			return !(value && typeof value == 'object') || value instanceof Date;
-		}
+		};
 
 		var trailingCP = new dijit.layout.ContentPane({
 			region: 'trailing',
@@ -172,7 +172,7 @@ dojo.declare("dojox.data.StoreExplorer", dijit.layout.BorderContainer, {
 			grid.attr("structure",layout);
 			var retValue = defaultOnComplete.apply(this, arguments);
 
-		}
+		};
  		grid.setStore(store);
  		this.queryOptions = {cache:true};
 		this.tree.setStore(store);

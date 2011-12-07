@@ -275,7 +275,7 @@ var HtmlTableStore = declare("dojox.data.HtmlTableStore", null, {
 							}
 						}
 						return null; //null
-					}
+					};
 
 					var d = document.createElement("div");
 					d.innerHTML = data;
@@ -381,7 +381,7 @@ var HtmlTableStore = declare("dojox.data.HtmlTableStore", null, {
 		if(!has("opera")){
 			return item.sectionRowIndex; // int
 		}else{
-			return (array.indexOf(this._rootNode.rows, item) - 1) // int
+			return (array.indexOf(this._rootNode.rows, item) - 1); // int
 		}
 	},
 
@@ -433,7 +433,7 @@ var HtmlTableStore = declare("dojox.data.HtmlTableStore", null, {
 							}
 						}
 						return null; //null
-					}
+					};
 					var d = document.createElement("div");
 					d.innerHTML = data;
 					self._rootNode = findNode(d, self.tableId);

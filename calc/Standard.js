@@ -354,7 +354,7 @@ define([
 			//onClick="this.insertText(document.getElementById('textbox'), '\u221A')"
 			//this.sqrt.set("onClick", lang.hitch(this, "insertText", this.textboxWidget, '\u221A'));
 			//this.pi.set("onClick", lang.hitch(this, "insertText", this.textboxWidget, '\u03C0'));
-			this.startup()
+			this.startup();
 		}
 	});
 

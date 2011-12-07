@@ -19,7 +19,7 @@ return declare( "dojox.form.TimeSpinner", Spinner,
 	required: false,
 
 	adjust: function(/* Object */ val, /*Number*/ delta){
-		return dateUtil.add(val, "minute", delta)
+		return dateUtil.add(val, "minute", delta);
 	},
 
 	//FIXME should we allow for constraints in this widget?

@@ -266,7 +266,7 @@ dojo.declare("dojox.layout.dnd.PlottedDnd", [dojo.dnd.Source], {
 			}
 			before = this.horizontal ?
 				(e.pageX - this.current.coords.xy.x) < this.current.coords.w :
-				(e.pageY - this.current.coords.xy.y) < this.current.coords.h
+				(e.pageY - this.current.coords.xy.y) < this.current.coords.h;
 			this.insertDashedZone(before);
 		}else{
 			if(!this.dropObject /*|| dojo.isIE*/){ this.insertDashedZone(false); }
@@ -463,7 +463,7 @@ dojo.declare("dojox.layout.dnd.DropIndicator", null, {
 				border:"1px dashed #F60",
 				margin:"2px",
 				height: h
-			})
+			});
 		}
 		this.node = el;
 		return el;

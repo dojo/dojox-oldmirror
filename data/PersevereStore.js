@@ -32,7 +32,7 @@ dojox.data.PersevereStore.getStores = function(/*String?*/path,/*Boolean?*/sync)
 	dojo.xhr = function(method,args){
 		(args.headers = args.headers || {})['Server-Methods'] = "false";
 		return plainXhr.apply(dojo,arguments);
-	}
+	};
 	var rootService= dojox.rpc.Rest(path,true);
 	dojox.rpc._sync = sync;
 	var dfd = rootService("Class/");//dojo.xhrGet({url: target, sync:!callback, handleAs:'json'});
@@ -80,7 +80,7 @@ dojox.data.PersevereStore.getStores = function(/*String?*/path,/*Boolean?*/sync)
 										response.result;
 								});
 								return deferred;
-							}
+							};
 						})(j);
 					}
 				}
