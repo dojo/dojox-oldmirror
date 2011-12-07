@@ -181,7 +181,7 @@ dojox.uuid.getTimestamp = function(/*String*/ uuidString, /*String?*/ returnType
 	dojox.uuid.assert(dojox.uuid.getVersion(uuidString) == dojox.uuid.version.TIME_BASED, errorMessage);
 	
 	uuidString = uuidString.toString();
-	if(!returnType){returnType = null};
+	if(!returnType){returnType = null;};
 	switch(returnType){
 		case "string":
 		case String:

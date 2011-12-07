@@ -83,7 +83,7 @@ dojo.mixin(dojox.sql._crypto, {
 			
 					// return results
 					callback(msg);
-				}
+				};
 			
 				var workerInit = "function _workerInit(){"
 									+ "gearsWorkerPool.onmessage = "
@@ -239,7 +239,7 @@ dojo.mixin(dojox.sql._crypto, {
 
 		function KeyExpansion(key) {  // generate Key Schedule (byte-array Nr+1 x Nb) from Key [§5.2]
 		  var Nb = 4;			 // block size (in words): no of columns in state (fixed at 4 for AES)
-		  var Nk = key.length/4	 // key length (in words): 4/6/8 for 128/192/256-bit keys
+		  var Nk = key.length/4; // key length (in words): 4/6/8 for 128/192/256-bit keys
 		  var Nr = Nk + 6;		 // no of rounds: 10/12/14 for 128/192/256-bit keys
 
 		  var w = new Array(Nb*(Nr+1));
@@ -318,7 +318,7 @@ dojo.mixin(dojox.sql._crypto, {
 			// set counter (block #) in last 8 bytes of counter block (leaving nonce in 1st 8 bytes)
 			// again done in two stages for 32-bit ops
 			for (var c=0; c<4; c++) counterBlock[15-c] = (b >>> c*8) & 0xff;
-			for (var c=0; c<4; c++) counterBlock[15-c-4] = (b/0x100000000 >>> c*8)
+			for (var c=0; c<4; c++) counterBlock[15-c-4] = (b/0x100000000 >>> c*8);
 
 			var cipherCntr = Cipher(counterBlock, keySchedule);	 // -- encrypt counter block --
 

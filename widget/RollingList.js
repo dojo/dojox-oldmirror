@@ -360,7 +360,7 @@ dojo.declare("dojox.widget._RollingListGroupPane",
 	_checkScrollConnection: function(doLoad){
 		// summary: checks whether or not we need to connect to our onscroll
 		//		function
-		var store = this.store
+		var store = this.store;
 		if(this._scrollConn){
 			this.disconnect(this._scrollConn);
 		}
@@ -474,7 +474,7 @@ dojo.declare("dojox.widget._RollingListGroupPane",
 	
 	_loadVisibleItems: function(){
 		// summary: loads the items that are currently visible in the pane
-		delete this._visibleLoadPending
+		delete this._visibleLoadPending;
 		var menu = this._menu;
 		if(!menu){ return; }
 		var children = menu.getChildren();
@@ -498,7 +498,7 @@ dojo.declare("dojox.widget._RollingListGroupPane",
 			var s = c.store;
 			var i = c.item;
 			return (cnt >= minOffset && cnt <= maxOffset && !s.isItemLoaded(i));
-		})
+		});
 		var itemsToLoad = dojo.map(menuItemsToLoad, function(c){
 			return c.item;
 		});

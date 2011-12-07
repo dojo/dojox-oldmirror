@@ -47,7 +47,7 @@ dojo.declare("dojox.widget.FeedPortlet", dojox.widget.Portlet, {
 	onFeedError: function(){
 		// summary:
 		//		Called when a feed fails to load successfully.
-		this.containerNode.innerHTML = "Error accessing the feed."
+		this.containerNode.innerHTML = "Error accessing the feed.";
 	},
 
 	addChild: function(child){
@@ -184,7 +184,7 @@ dojo.declare("dojox.widget.FeedPortlet", dojox.widget.Portlet, {
 					var summary = this._getContent(item);
 					if(!summary){return;}
 					var content = '<div class="dojoxFeedPortletPreview">'
-						+ summary + '</div>'
+						+ summary + '</div>';
 
 					dojo.query("li", ul).forEach(function(item){
 						if(item != evt.target){
@@ -321,7 +321,7 @@ dojo.declare("dojox.widget.PortletFeedSettings",
 		// and insert the required OPTION elements.
 		var s;
 		if(this.urls && this.urls.length > 0){
-			console.log(this.id + " -> creating select with urls ", this.urls)
+			console.log(this.id + " -> creating select with urls ", this.urls);
 			s = dojo.create("select");
 			if(this.srcNodeRef){
 				dojo.place(s, this.srcNodeRef, "before");

@@ -115,7 +115,7 @@ define([
 			}else if(cur.pauseBefore){
 				var x = dojo.hitch(this,function(){
 					if(resolveAndCallFunc(cur.func) !== false){
-						this._go()
+						this._go();
 					}
 				});
 				setTimeout(x, cur.pauseBefore);

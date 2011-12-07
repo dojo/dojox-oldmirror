@@ -65,7 +65,7 @@ define(["./Annotation", "./Anchor"], function(){
 				text:this.property('label'),
 				decoration:"underline",
 				align:"start"
-			})
+			});
 			//.setFont(font)
 			//.setFill(this.property('fill'));
 		this.labelShape.getEventSource().setAttribute('id',this.id+"-labelShape");
@@ -75,7 +75,7 @@ define(["./Annotation", "./Anchor"], function(){
 				x2:this.labelShape.getTextWidth(),
 				y1:2,
 				y2:2
-			})
+			});
 			//.setStroke({ color:this.property('fill'), width:1 });
 		this.lineShape.getEventSource().setAttribute("shape-rendering","crispEdges");
 		this.draw();

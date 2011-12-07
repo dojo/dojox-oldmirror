@@ -156,7 +156,7 @@ dojo.requireIf(dojox.data && !!dojox.data.JsonRestStore,"dojox.data.restListener
 	  					if(typeof responseText=='string'){
 	  						onprogress(responseText);
 	  					}
-	  				}
+	  				};
 			  	}
 
 

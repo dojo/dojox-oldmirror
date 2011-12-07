@@ -253,5 +253,5 @@ dojox.storage.manager = new function(){
 		});
 
 		return results;
-	}
+	};
 };

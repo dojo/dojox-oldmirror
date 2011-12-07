@@ -25,7 +25,7 @@ define(["dojo/_base/kernel", "dojo/_base/lang", "./Annotation", "./Anchor"], fun
 	var p=ta.LeadAnnotation.prototype;
 	p.constructor=ta.LeadAnnotation;
 
-	p.type=function(){ return 'Lead'; }
+	p.type=function(){ return 'Lead'; };
 	p.getType=function(){ return ta.LeadAnnotation; };
 
 	p._pos=function(){

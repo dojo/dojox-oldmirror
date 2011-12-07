@@ -71,7 +71,7 @@ dojo.declare(
 			namespace = namespace||this.DEFAULT_NAMESPACE;
 			this._assertIsValidNamespace(namespace);
 
-			namespace = '__'+namespace+'_'
+			namespace = '__'+namespace+'_';
 
 			var keys = [];
 			for(var i = 0; i < this.store.length; i++){

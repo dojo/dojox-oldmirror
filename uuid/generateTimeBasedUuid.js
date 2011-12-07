@@ -281,7 +281,7 @@ dojox.uuid.generateTimeBasedUuid._generator = new function(){
 					_uuidClockSeqString + hyphen + node;
 		resultUuid = resultUuid.toLowerCase();
 		return resultUuid; // String (a 36 character string, which will look something like "b4308fb0-86cd-11da-a72b-0800200c9a66")
-	}
+	};
 
 }();
 

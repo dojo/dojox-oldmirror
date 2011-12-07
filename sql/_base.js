@@ -513,7 +513,7 @@ dojo.declare("dojox.sql._SQLCrypto", null, {
 					results[column] = true;
 				});
 				
-				matches = tester.exec(sql)
+				matches = tester.exec(sql);
 			}
 		}
 

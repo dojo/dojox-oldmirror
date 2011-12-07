@@ -35,7 +35,7 @@ define([
 
 		//	what is selected.
 		this.selected=[];
-		this.hasSelections=function(){ return this.selected.length>0 };
+		this.hasSelections=function(){ return this.selected.length>0; };
 		this.isSelected=function(obj){
 			for(var i=0; i<self.selected.length; i++){
 				if(self.selected[i]==obj){ return true; }
@@ -198,7 +198,7 @@ define([
 					y:Math.min(self._start.y,self._absEnd.y),
 					width:Math.abs(self._start.x-self._absEnd.x),
 					height:Math.abs(self._start.y-self._absEnd.y)
-				}
+				};
 				if(rect.width && rect.height){
 					self._ctool.onMouseMove(e,rect);
 				}

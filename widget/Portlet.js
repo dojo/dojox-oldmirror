@@ -145,7 +145,7 @@ dojo.declare("dojox.widget.Portlet", [dijit.TitlePane, dijit._Container],{
 		dojo.forEach(children, function(child){
 			try{
 				if(!child.started && !child._started){
-					child.startup()
+					child.startup();
 				}
 			}
 			catch(e){
@@ -240,7 +240,7 @@ dojo.declare("dojox.widget.Portlet", [dijit.TitlePane, dijit._Container],{
 			// make child widgets miscalculate.
 			for(var i = 0; i < this._parents.length; i++){
 				var p = this._parents[i];
-				var sel = p.parent.selectedChildWidget
+				var sel = p.parent.selectedChildWidget;
 				if(sel && sel != p.child){
 					return;
 				}

@@ -63,7 +63,7 @@ dojo.declare("dojox.widget.Iterator",
 			this.attrs = [];
 			this.children = [];
 			this.widgetClass = "dojox.widget.Iterator._classes._"+(ctr++);
-		}
+		};
 	})(),
 
 	start: 0,

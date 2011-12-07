@@ -234,7 +234,7 @@ dojo.require("dojo._base.url");
 				throw new Error("Access denied to cross-site requests");
 			}
 			return xhrGet({url:(new dojo._Url(wrap.rootUrl,url))+'',secure:true});
-		}
+		};
 		wrap.evaluate = function(script){
 			//if(!alreadyValidated) {
 			dojox.secure.capability.validate(script,safeCalls, // the safe dojo library and standard operators

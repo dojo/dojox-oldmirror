@@ -235,7 +235,7 @@ dojo.require("dojo.data.ItemFileWriteStore");
 							var substitutions = [o.element, o.run.name, range[o.index], ((charttype === "ClusteredBars") || (charttype === "StackedBars")) ? o.x : o.y];
 							return dojo.replace(tooltip, substitutions);  // from Dojo 1.4 onward
 							//return tooltip.replace(/\{([^\}]+)\}/g, function(_, token){ return dojo.getObject(token, false, substitutions); });  // prior to Dojo 1.4
-						}
+						};
 					}else if(typeof tooltip == 'function'){
 						tooltipArgs.text = tooltip;
 					}
