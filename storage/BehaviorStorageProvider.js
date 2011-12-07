@@ -1,12 +1,7 @@
-dojo.provide("dojox.storage.BehaviorStorageProvider");
-
-dojo.require("dojox.storage.Provider");
-dojo.require("dojox.storage.manager");
-
-dojo.declare(
-	"dojox.storage.BehaviorStorageProvider",
-	[dojox.storage.Provider],
-	{
+define(["dojo/_base/declare",
+        "dojox/storage/Provider"
+], function(declare, Provider) {
+	return declare("dojox.storage.BehaviorStorageProvider", [Provider], {
 		store: null,
 
 		storeName: '__dojox_BehaviorStorage',
@@ -25,8 +20,9 @@ dojo.declare(
 			this.keys = keys || [];
 
 			this.initialized = true;
-			dojox.storage.manager.loaded();
-
+			require(["dojox/storage/manager"], function(manager) {
+				manager.loaded();
+			});
 		},
 
 		isAvailable: function(){ /*Boolean*/
@@ -231,7 +227,11 @@ dojo.declare(
 		_removeKey: function(key){
 			this.keys = dojo.filter(this.keys,function(item){ return item !== key;},this);
 		}
-	}
-);
+	});
+});
 
-dojox.storage.manager.register("dojox.storage.BehaviorStorageProvider", new dojox.storage.BehaviorStorageProvider());
+require(["dojox/storage/manager",
+         "dojox/storage/BehaviorStorageProvider"
+], function(manager, BehaviorStorageProvider){
+	manager.register("dojox.storage.BehaviorStorageProvider", new BehaviorStorageProvider());
+});

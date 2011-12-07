@@ -1,7 +1,9 @@
-dojo.provide("dojox.sql._base");
-dojo.require("dojox.sql._crypto");
+define(["dojo/_base/lang",
+        "dojo/_base/declare",
+        "dojox/sql/_crypto"
+], function(lang, declare, _crypto){
 
-dojo.mixin(dojox.sql, {
+lang.mixin(dojox.sql, {
 	// summary:
 	//	Executes a SQL expression.
 	// description:
@@ -239,7 +241,7 @@ dojo.mixin(dojox.sql, {
 	}
 });
 
-dojo.declare("dojox.sql._SQLCrypto", null, {
+declare("dojox.sql._SQLCrypto", null, {
 	// summary:
 	//	A private class encapsulating any cryptography that must be done
 	// 	on a SQL statement. We instantiate this class and have it hold
@@ -542,6 +544,7 @@ dojo.declare("dojox.sql._SQLCrypto", null, {
 
 	var orig_sql = dojox.sql;
 	dojox.sql = new Function("return dojox.sql._exec(arguments);");
-	dojo.mixin(dojox.sql, orig_sql);
+	lang.mixin(dojox.sql, orig_sql);
 	
 })();
+});

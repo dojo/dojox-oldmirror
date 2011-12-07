@@ -1,8 +1,8 @@
-dojo.provide("dojox.storage.WhatWGStorageProvider");
-dojo.require("dojox.storage.Provider");
-dojo.require("dojox.storage.manager");
+define(["dojo/_base/declare",
+        "dojox/storage/Provider"
+], function(declare, Provider) {
+return dojo.declare("dojox.storage.WhatWGStorageProvider", [Provider], {
 
-dojo.declare("dojox.storage.WhatWGStorageProvider", [ dojox.storage.Provider ], {
 	// summary:
 	//		Storage provider that uses WHAT Working Group features in Firefox 2
 	//		to achieve permanent storage.
@@ -37,7 +37,10 @@ dojo.declare("dojox.storage.WhatWGStorageProvider", [ dojox.storage.Provider ], 
 		
 		// indicate that this storage provider is now loaded
 		this.initialized = true;
-		dojox.storage.manager.loaded();
+
+		require(["dojox/storage/manager"], function(manager) {
+			manager.loaded();
+		});
 	},
 	
 	isAvailable: function(){
@@ -267,6 +270,10 @@ dojo.declare("dojox.storage.WhatWGStorageProvider", [ dojox.storage.Provider ], 
 		}
 	}
 });
+});
 
-dojox.storage.manager.register("dojox.storage.WhatWGStorageProvider",
-								new dojox.storage.WhatWGStorageProvider());
+require(["dojox/storage/manager",
+         "dojox/storage/WhatWGStorageProvider"
+], function(manager, WhatWGStorageProvider) {
+		manager.register("dojox.storage.WhatWGStorageProvider", new WhatWGStorageProvider());
+});

@@ -1,6 +1,6 @@
-dojo.provide("dojox.storage.Provider");
+define(["dojo/_base/declare"], function(declare){
+return declare("dojo.storage.Provider",null,{
 
-dojo.declare("dojox.storage.Provider", null, {
 	// summary: A singleton for working with dojox.storage.
 	// description:
 	//		dojox.storage exposes the current available storage provider on this
@@ -337,4 +337,5 @@ dojo.declare("dojox.storage.Provider", null, {
 		
 		return [];
 	}
+});
 });

@@ -1,16 +1,16 @@
-dojo.provide("dojox.storage.GearsStorageProvider");
-dojo.require("dojo.gears");
-dojo.require("dojox.storage.Provider");
-dojo.require("dojox.storage.manager");
-dojo.require("dojox.sql");
-
-if(dojo.gears.available){
+define(["dojo/_base/declare",
+        "dojo/gears",
+        "dojox/storage/Provider",
+        "dojox/storage/manager",
+        "dojox/sql"
+], function(declare, gears, Provider, manager){
+if(gears.available){
 	
 	(function(){
 		// make sure we don't define the gears provider if we're not gears
 		// enabled
 		
-		dojo.declare("dojox.storage.GearsStorageProvider", dojox.storage.Provider, {
+		declare("dojox.storage.GearsStorageProvider", Provider, {
 			// summary:
 			//		Storage provider that uses the features of Google Gears
 			//		to store data (it is saved into the local SQL database
@@ -47,12 +47,12 @@ if(dojo.gears.available){
 				
 				// indicate that this storage provider is now loaded
 				this.initialized = true;
-				dojox.storage.manager.loaded();
+				manager.loaded();
 			},
 			
 			isAvailable: function(){
 				// is Google Gears available and defined?
-				return this._available = dojo.gears.available;
+				return this._available = gears.available;
 			},
 
 			put: function(key, value, resultsHandler, namespace){
@@ -377,7 +377,7 @@ if(dojo.gears.available){
 		});
 
 		// register the existence of our storage providers
-		dojox.storage.manager.register("dojox.storage.GearsStorageProvider",
-										new dojox.storage.GearsStorageProvider());
+		manager.register("dojox.storage.GearsStorageProvider",	new dojox.storage.GearsStorageProvider());
 	})();
 }
+});

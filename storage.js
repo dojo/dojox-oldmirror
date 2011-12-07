@@ -1,2 +1,2 @@
-dojo.provide("dojox.storage");
-dojo.require("dojox.storage._common");
+define(["dojox/storage/_common"],function(){
+});

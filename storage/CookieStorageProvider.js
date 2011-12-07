@@ -1,29 +1,30 @@
-dojo.provide("dojox.storage.CookieStorageProvider");
-
-dojo.require("dojox.storage.Provider");
-dojo.require("dojox.storage.manager");
-dojo.require("dojo.cookie");
-
-dojo.declare(
-	"dojox.storage.CookieStorageProvider",
-	[dojox.storage.Provider],
-	{
+define(["dojo/_base/declare",
+        "dojox/storage/Provider"
+], function(declare, Provider) {
+	return declare("dojox.storage.CookieStorageProvider", [Provider], {
 		store: null,
 
 		cookieName: 'dojoxStorageCookie',
 
 		storageLife: 730, // in days
 
-		initialize: function(){
+		_start: function(cookie,manager){
 
-			this.store = dojo.fromJson(dojo.cookie(this.cookieName)) || {};
+			this.store = dojo.fromJson(cookie(this.cookieName)) || {};
 
 			this.initialized = true;
-			dojox.storage.manager.loaded();
+
+			manager.loaded();
+		},
+
+		initialize: function(){
+			require(["dojo/cookie","dojox/storage/manager"], dojo.hitch(this,this._start));
 		},
 
 		isAvailable: function(){ /*Boolean*/
-			return dojo.cookie.isSupported();
+			require(["dojo/cookie"], function(cookie){
+				return cookie.isSupported();
+			});
 		},
 
 		put: function(	/*string*/ key,
@@ -196,7 +197,11 @@ dojo.declare(
 				throw new Error("Invalid key given: " + key);
 			}
 		}
-	}
-);
+	});
+});
 
-dojox.storage.manager.register("dojox.storage.CookieStorageProvider", new dojox.storage.CookieStorageProvider());
+require(["dojox/storage/manager",
+         "dojox/storage/CookieStorageProvider"
+], function(manager, CookieStorageProvider){
+		manager.register("dojox.storage.CookieStorageProvider", new CookieStorageProvider());
+});

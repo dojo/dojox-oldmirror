@@ -1,16 +1,16 @@
-dojo.provide("dojox.storage.FlashStorageProvider");
-
-dojo.require("dojox.flash");
-dojo.require("dojox.storage.manager");
-dojo.require("dojox.storage.Provider");
-
 // summary:
 //		Storage provider that uses features in Flash to achieve permanent
 //		storage
 // description:
 //		Authors of this storage provider-
 //			Brad Neuberg, bkn3@columbia.edu
-dojo.declare("dojox.storage.FlashStorageProvider", dojox.storage.Provider, {
+
+define(["dojo/_base/declare",
+        "dojox/flash",
+        "dojox/storage/manager",
+        "dojox/storage/Provider"
+], function(declare, flash, manager, Provider){
+	return declare("dojox.storage.FlashStorageProvider", [Provider], {
 		initialized: false,
 		
 		_available: null,
@@ -335,8 +335,12 @@ dojo.declare("dojox.storage.FlashStorageProvider", dojox.storage.Provider, {
 				ds._statusHandler.call(null, statusResult, key, null, namespace);
 			}
 		}
-	}
-);
 
-dojox.storage.manager.register("dojox.storage.FlashStorageProvider",
-								new dojox.storage.FlashStorageProvider());
+	});
+});
+
+require(["dojox/storage/manager",
+         "dojox/storage/FlashStorageProvider"
+], function(manager, FlashStorageProvider){
+	manager.register("dojox.storage.FlashStorageProvider", new FlashStorageProvider());
+});

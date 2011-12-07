@@ -1,5 +1,8 @@
-dojo.provide("dojox.sql._crypto");
-dojo.mixin(dojox.sql._crypto, {
+define(["dojo/_base/lang",
+        "dojox/sql"
+], function(lang,sql){
+
+return lang.mixin(sql._crypto, {
 	// summary: dojox.sql cryptography code
 	// description:
 	//	Taken from http://www.movable-type.co.uk/scripts/aes.html by
@@ -437,4 +440,6 @@ dojo.mixin(dojox.sql._crypto, {
 			gearsWorkerPool.sendMessage(String(results), sender);
 		}
 	}
+});
+
 });

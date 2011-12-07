@@ -1,8 +1,5 @@
-dojo.provide("dojox.storage.manager");
-//dojo.require("dojo.AdapterRegistry");
-// FIXME: refactor this to use an AdapterRegistry
-
-dojox.storage.manager = new function(){
+define([], function(){
+return new function(){
 	// summary: A singleton class in charge of the dojox.storage system
 	// description:
 	//		Initializes the storage systems and figures out the best available
@@ -17,10 +14,10 @@ dojox.storage.manager = new function(){
 	//	Whether storage of some kind is available.
 	this.available = false;
 
-  // providers: Array
-  //  Array of all the static provider instances, useful if you want to
-  //  loop through and see what providers have been registered.
-  this.providers = [];
+	// providers: Array
+	//  Array of all the static provider instances, useful if you want to
+	//  loop through and see what providers have been registered.
+	this.providers = [];
 
 	this._initialized = false;
 
@@ -253,5 +250,6 @@ dojox.storage.manager = new function(){
 		});
 
 		return results;
-	}
+	};
 };
+});

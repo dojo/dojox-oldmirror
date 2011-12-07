@@ -1,2 +1,2 @@
-dojo.provide("dojox.sql");
-dojo.require("dojox.sql._base");
+define(["dojox/sql/_base"],function(){
+});

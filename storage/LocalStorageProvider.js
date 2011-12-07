@@ -1,12 +1,7 @@
-dojo.provide("dojox.storage.LocalStorageProvider");
-
-dojo.require("dojox.storage.Provider");
-dojo.require("dojox.storage.manager");
-
-dojo.declare(
-	"dojox.storage.LocalStorageProvider",
-	[dojox.storage.Provider],
-	{
+define(["dojo/_base/declare",
+        "dojox/storage/Provider"
+], function(declare, Provider) {
+return declare("dojox.storage.LocalStorageProvider", [Provider], {
 		store: null,
 
 		initialize: function(){
@@ -14,7 +9,9 @@ dojo.declare(
 			this.store = localStorage;
 
 			this.initialized = true;
-			dojox.storage.manager.loaded();
+			require(["dojox/storage/manager"], function(manager) {
+				manager.loaded();
+			});
 		},
 
 		isAvailable: function(){ /*Boolean*/
@@ -199,7 +196,11 @@ dojo.declare(
 				throw new Error("Invalid key given: " + key);
 			}
 		}
-	}
-);
+	});
+});
 
-dojox.storage.manager.register("dojox.storage.LocalStorageProvider", new dojox.storage.LocalStorageProvider());
+require(["dojox/storage/manager",
+         "dojox/storage/LocalStorageProvider"
+], function(manager, LocalStorageProvider){
+	manager.register("dojox.storage.LocalStorageProvider", new LocalStorageProvider());
+});
