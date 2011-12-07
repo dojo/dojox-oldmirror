@@ -37,7 +37,7 @@ dojo.provide("dojox.drawing.manager.Canvas");
 					if(dojo.isIE){
 						//this.gfxSurface.rawNode.parentNode.id = this.id;
 					}else if(dojox.gfx.renderer == "silverlight"){
-						this.id = this.domNode.firstChild.id
+						this.id = this.domNode.firstChild.id;
 					}else{
 						//this.gfxSurface.rawNode.id = this.id;
 					}
@@ -120,7 +120,7 @@ dojo.provide("dojox.drawing.manager.Canvas");
 				//		Internal. Zooms canvas in and out.
 				this.zoom = zoom;
 				this.surface.setTransform({xx:zoom, yy:zoom});
-				this.setDimensions(this.width*zoom, this.height*zoom)
+				this.setDimensions(this.width*zoom, this.height*zoom);
 			},
 			
 			onScroll: function(){
