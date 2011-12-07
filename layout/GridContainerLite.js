@@ -133,7 +133,7 @@ define([
 				this._border = {
 					h: has("ie") ? geom.getBorderExtents(this.gridContainerTable).h : 0,
 					w: (has("ie") == 6) ? 1 : 0
-				}
+				};
 			}
 			else{
 				domStyle.set(this.domNode, "overflowY", "hidden");
@@ -617,7 +617,7 @@ define([
 									break;
 								}
 							}
-							if(found){ break };
+							if(found){ break ;};
 						}
 					break;
 					case k.UP_ARROW:
@@ -635,7 +635,7 @@ define([
 									break;
 								}
 							}
-							if(found){ break };
+							if(found){ break;}
 						}
 					break;
 				}
@@ -654,7 +654,7 @@ define([
 								children = focusTemp.parentNode.childNodes;
 								var num = 0;
 								for(i = 0; i < children.length; i++){
-									if(children[i].style.display != "none"){ num++ };
+									if(children[i].style.display != "none"){ num++;}
 									if(num > 1){ break; }
 								}
 								if(num == 1){ return; }

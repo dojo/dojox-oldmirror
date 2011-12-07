@@ -449,7 +449,7 @@ dojo.declare("dojox.image.SlideShow",
 			if(items && items.length > diff){
 				loadIt(items[diff]);
 			}else{ /* Squelch - console.log("Got an empty set of items"); */ }
-		}
+		};
 
 		var _this = this;
 		var store = this.imageStore;
@@ -498,7 +498,7 @@ dojo.declare("dojox.image.SlideShow",
 			
 			var title = _this.imageStore.getValue(item, _this.titleAttr);
 			if(title){ dojo.attr(img, "title", title); }
-		}
+		};
 		this.imageStore.fetch(this._request);
 	},
 

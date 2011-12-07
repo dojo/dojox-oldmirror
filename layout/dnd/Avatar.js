@@ -28,8 +28,8 @@ dojo.declare("dojox.layout.dnd.Avatar", dojo.dnd.Avatar, {
 		node.id = dojo.dnd.getUniqueId();
 		node.style.position = "absolute";
 		node.style.zIndex = 1999;
-		node.style.margin = "0px"
-		node.style.width = dojo.marginBox(source.node).w + "px"
+		node.style.margin = "0px";
+		node.style.width = dojo.marginBox(source.node).w + "px";
 		
 		// add contructor object params to define it
 		dojo.style(node, "opacity", this.opacity);

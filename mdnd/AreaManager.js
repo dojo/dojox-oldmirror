@@ -130,7 +130,7 @@ define(["dojo/_base/kernel","dojo/_base/declare","dojo/_base/connect","dojo/_bas
 				'item': moveable,
 				'type': type ? type.split(/\s*,\s*/) : ["text"],
 				'handlers': [dojo.connect(moveable, "onDragStart", this, "onDragStart")]
-			}
+			};
 			// connect to the uninitialize method of dijit._Widget to delete a moveable before a destruct
 			if(dijit && dijit.byNode){
 				var widget = dijit.byNode(node);

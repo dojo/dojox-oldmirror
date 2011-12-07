@@ -281,7 +281,7 @@ define([
 					}
 				});
 				return width;
-			}
+			};
 			var currentColumnMinWidth = calculateChildMinWidth(this._currentColumn.childNodes, this.minChildWidth);
 
 			var nextColumnMinWidth = calculateChildMinWidth(this._nextColumn.childNodes, this.minChildWidth);
@@ -436,7 +436,7 @@ define([
 					// Columns are not taken in account and can't be deleted
 					if(this.mode == "right"){
 						end = (this.isLeftFixed && length > 0) ? 1 : 0;
-						start = (this.isRightFixed) ? length - 2 : length - 1
+						start = (this.isRightFixed) ? length - 2 : length - 1;
 						for(z = start; z >= end; z--){
 							nbChildren = 0;
 							zone = this._grid[z].node;

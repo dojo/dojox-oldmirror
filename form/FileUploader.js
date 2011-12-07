@@ -437,7 +437,7 @@ declare("dojox.form.FileUploader", [Widget, TemplatedMixin, Contained], {
 			this.fhtml = {
 				cn:this.getText(refNode),
 				nr:this.norm
-			}
+			};
 			if(this.norm.va == "middle"){
 				this.norm.lh = this.norm.h;
 			}
@@ -445,10 +445,10 @@ declare("dojox.form.FileUploader", [Widget, TemplatedMixin, Contained], {
 
 		if(this.devMode){
 			this.log("classes - base:", this.baseClass, " hover:", this.hoverClass, "active:", this.activeClass);
-			this.log("fhtml:", this.fhtml)
-			this.log("norm:", this.norm)
-			this.log("over:", this.over)
-			this.log("down:", this.down)
+			this.log("fhtml:", this.fhtml);
+			this.log("norm:", this.norm);
+			this.log("over:", this.over);
+			this.log("down:", this.down);
 
 		}
 	},
@@ -781,7 +781,7 @@ declare("dojox.form.FileUploader", [Widget, TemplatedMixin, Contained], {
 			var str = '';
 			array.forEach(this.fileList, function(d){
 				// have to use tables because of IE. Grumble.
-				str += '<table id="file_'+d.name+'" class="fileToUpload"><tr><td class="fileToUploadClose"></td><td class="fileToUploadName">'+d.name+'</td><td class="fileToUploadSize">'+(d.size ? Math.ceil(d.size*.001) +"kb" : "")+'</td></tr></table>'
+				str += '<table id="file_'+d.name+'" class="fileToUpload"><tr><td class="fileToUploadClose"></td><td class="fileToUploadName">'+d.name+'</td><td class="fileToUploadSize">'+(d.size ? Math.ceil(d.size*.001) +"kb" : "")+'</td></tr></table>';
 			}, this);
 			dom.byId(this.fileListId).innerHTML = str;
 		}
@@ -874,7 +874,7 @@ declare("dojox.form.FileUploader", [Widget, TemplatedMixin, Contained], {
 				f.bytesLoaded = dataObject.bytesLoaded;
 				f.bytesTotal = dataObject.bytesTotal;
 				f.percent = Math.ceil(f.bytesLoaded / f.bytesTotal * 100);
-				this.log(f.name, "percent:", f.percent)
+				this.log(f.name, "percent:", f.percent);
 			}
 			loaded += Math.ceil(.001 * f.bytesLoaded);
 			total += Math.ceil(.001 * f.bytesTotal);
@@ -1224,7 +1224,7 @@ declare("dojox.form.FileUploader", [Widget, TemplatedMixin, Contained], {
 				this.uploadUrl = loc+this.uploadUrl;
 				this.log("SWF Fixed - Relative loc:", loc, " abs loc:", this.uploadUrl);
 			}else{
-				this.log("SWF URL unmodified:", this.uploadUrl)
+				this.log("SWF URL unmodified:", this.uploadUrl);
 			}
 		}else{
 			console.warn("Warning: no uploadUrl provided.");

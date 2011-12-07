@@ -462,7 +462,7 @@ define(["dojo/_base/kernel", "dojo/_base/lang", "dojo/_base/declare", "dojo/_bas
 			this.store.fetch({query:this.query, queryOptions:this.queryOptions, start:this.start, count:this.count, sort:this.sort,
 				onComplete:lang.hitch(this, function(data){
 					setTimeout(lang.hitch(this, function(){
-						this.onData(data)
+						this.onData(data);
 					}),0);
 				}),
 				onError:lang.hitch(this, "onError")

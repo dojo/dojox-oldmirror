@@ -45,7 +45,7 @@ return declare("dojox.form.uploader.Base", [Widget, TemplatedMixin, WidgetsInTem
 				n = n.parentNode;
 			}
 		}
-		return this.form // Node;
+		return this.form;// Node;
 	},
 
 	getUrl: function(){
