@@ -73,8 +73,8 @@ define([
 		},
 
 		postCreate: function(){
-			this.connect(this.domNode, "onclick", "onClick");
-			this.connect(this.domNode, has('touch') ? "touchstart" : "onmousedown", "onTouchStart");
+			this.connect(this.domNode, "onclick", "_onClick");
+			this.connect(this.domNode, has('touch') ? "ontouchstart" : "onmousedown", "onTouchStart");
 			this._initialValue = this.value; // for reset()
 		},
 
@@ -123,11 +123,23 @@ define([
 			ctx.fill();
 		},
 	
-		onClick: function(e){
+		_onClick: function(e){
+			// summary:
+			//		Internal handler for click events.
+			// tags:
+			//		private
+			if(this.onClick(e) === false){ return; } // user's click action
 			if(this._moved){ return; }
 			this.value = this.input.value = (this.value == "on") ? "off" : "on";
 			this._changeState(this.value, true);
 			this.onStateChanged(this.value);
+		},
+
+		onClick: function(/*Event*/ /*===== e =====*/){
+			// summary:
+			//		User defined function to handle clicks
+			// tags:
+			//		callback
 		},
 	
 		onTouchStart: function(e){
@@ -137,8 +149,8 @@ define([
 			this.innerStartX = this.inner.offsetLeft;
 			if(!this._conn){
 				this._conn = [];
-				this._conn.push(connect.connect(this.inner, has('touch') ? "touchmove" : "onmousemove", this, "onTouchMove"));
-				this._conn.push(connect.connect(this.inner, has('touch') ? "touchend" : "onmouseup", this, "onTouchEnd"));
+				this._conn.push(connect.connect(this.inner, has('touch') ? "ontouchmove" : "onmousemove", this, "onTouchMove"));
+				this._conn.push(connect.connect(this.inner, has('touch') ? "ontouchend" : "onmouseup", this, "onTouchEnd"));
 			}
 			this.touchStartX = e.touches ? e.touches[0].pageX : e.clientX;
 			this.left.style.display = "";
