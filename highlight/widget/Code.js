@@ -1,6 +1,6 @@
 define(["dojo", "dijit", "dijit/_Widget", "dijit/_Templated", "dojox/highlight"], function(dojo, dijit){
 
-	dojo.declare("dojox.highlight.widget.Code",[dijit._Widget, dijit._Templated],{
+	return dojo.declare("dojox.highlight.widget.Code",[dijit._Widget, dijit._Templated],{
 		// summary:
 		//		A simple source code formatting widget that adds line numbering, alternating line colors
 		//		and line range support on top of dojox.highlight module.
