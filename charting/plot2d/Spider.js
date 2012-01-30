@@ -308,6 +308,21 @@ var PlotEvents = dojox.charting.plot2d._PlotEvents;
 					}
 				}
 			}
+			//fix for plot with one series
+			if(this.series.length == 1){
+				var run = this.series[0].data;
+				if(run !== null){
+					var max = 0, min;
+					for(var key in run){
+						max = max ? Math.max(run[key], max) : run[key];
+						min = min ? Math.min(run[key], min) : run[key];
+					}
+					for(var key in run){
+						this.datas[key] = {min : min, max: max};
+					}
+				}
+			}
+			//eof for plot with one series
 			//text
 			var textGroup = s.createGroup(), len = this._getObjectLength(this.datas), k = 0;
 			for(var key in this.datas){

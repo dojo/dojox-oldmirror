@@ -284,11 +284,11 @@ var _Paginator = declare("dojox.grid.enhanced.plugins._Paginator", [_Widget, _Te
 		g.resize = function(changeSize, resultSize){
 			_this._changeSize = changeSize;
 			_this._resultSize = resultSize;
-			_this._originalResize();
+			g.sizeChange();
 		};
 		this.focus = _Focus(this);
 		this._placeSelf();
-	},
+	}, 
 	destroy: function(){
 		this.inherited(arguments);
 		this.grid.focus.removeArea("pagination" + this.position);

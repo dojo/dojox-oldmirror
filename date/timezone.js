@@ -17,15 +17,15 @@ define(["dojo", "dojo/date", "dojo/date/locale", "dojo/_base/array", "dojo/_base
 	dojo.getObject("date.timezone", true, dojox);
 
 	var cfg = dojo.config;
-	var _zoneFiles = [ "africa", "antarctica", "asia", "australasia", "backward",
-					"etcetera", "europe", "northamerica", "pacificnew",
-					"southamerica" ];
+	var _zoneFiles = [ "africa.txt", "antarctica.txt", "asia.txt", "australasia.txt", "backward.txt",
+					"etcetera.txt", "europe.txt", "northamerica.txt", "pacificnew.txt",
+					"southamerica.txt" ];
 					
 	// Our mins an maxes for years that we care about
 	var _minYear = 1835,
 		_maxYear = 2038;
 	
-	var _loadedZones = {},
+	var _loadedZones = {}, 
 		_zones = {},
 		_loadedRanges = {},
 		_rules = {};

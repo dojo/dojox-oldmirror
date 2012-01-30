@@ -213,7 +213,7 @@ define([
 					}
 				}
 			}
-			if(binding){
+			if(binding && binding instanceof dojo.Stateful){
 				if(lang.isFunction(binding.toPlainObject)){
 					this.binding = binding;
 					this._updateBinding("binding", null, binding);
