@@ -1,4 +1,4 @@
-define(["dojo", "dojox/gfx", "dojox/gfx3d", "dojox/charting/Series"], function(dojo) {
+define(["dojo", "dojox/gfx", "dojox/gfx3d", "dojox/charting/Series"], function(dojo, g) {
 
 	//	summary:
 	//		Extension of the Viewport to allow it to create Pie sectors.
@@ -203,10 +203,9 @@ define(["dojo", "dojox/gfx", "dojox/gfx3d", "dojox/charting/Series"], function(d
 			var lcolor = "lcolor" in opt ? opt.lcolor : "black";
 			var label = "label" in opt ? opt.label : null;
 			var width = "width" in opt ? opt.width : 200;
-			var pwidth = "pwidth" in opt ? opt.pwidth : width;
 			var height = "height" in opt ? opt.height : 250;
+			var pwidth = "pwidth" in opt ? opt.pwidth : Math.min(width, height);
 			var depth = "depth" in opt ? opt.depth : 15;
-			var title = "title" in opt ? opt.title : "";
 			var shade = "shade" in opt ? opt.shade : false;
 			var beginAngle = "beginAngle" in opt ? opt.beginAngle : 0;
 			
@@ -217,6 +216,9 @@ define(["dojo", "dojox/gfx", "dojox/gfx3d", "dojox/charting/Series"], function(d
 			//display tootlip
 			this.tooltip = "tooltip" in opt ? opt.tooltip : true;
 			
+			this.title = "title" in opt ? opt.title : "";
+			this.titlePos = "titlePos" in opt ? opt.titlePos : "top"; 
+			this.titleFont = "titleFont" in opt ? opt.titleFont : "normal normal normal 15pt Arial";
 			
 			this.label = label;
 			
@@ -243,7 +245,6 @@ define(["dojo", "dojox/gfx", "dojox/gfx3d", "dojox/charting/Series"], function(d
 
 			this.surface = dojox.gfx.createSurface(inid, width, height);
 			this.view = this.surface.createViewport();
-			this.title = title;
 			this.series = [];
 			this.dimensions = {
 				width: width,
@@ -263,6 +264,8 @@ define(["dojo", "dojox/gfx", "dojox/gfx3d", "dojox/charting/Series"], function(d
 			});
 			this.spec.rx = pwidth / (Math.PI / 1.5);
 			this.spec.ry = pwidth / (Math.PI * 1);
+			console.log('spec', this.spec);
+			
 		},
 		// events
 		plotEvent: function(o) {
@@ -364,22 +367,28 @@ define(["dojo", "dojox/gfx", "dojox/gfx3d", "dojox/charting/Series"], function(d
 			}, this);
 
 			this.view.render();
-				
 			
 			var self = this;
 			var topmargin = 20;
+			var leftmargin = 10;
+			var boxwidth = 10;
+			
+			
+			
+			
 
-			var hh = this.spec.ry * Math.cos(Math.PI / 8) + this.spec.depth + topmargin;
+			var hh = this.spec.ry * Math.cos(Math.PI / 8) + this.spec.depth + topmargin; // + title position and size
 			//actual bottom of Pie from center
 			var tx = this.dimensions.width / 2;
 			var ty = hh;
 			//this.dimensions.width/2;
-
+			console.log('tx ',tx, 'ty ', ty);
+			
 			if(this.labels == true){
 				dojo.forEach(this.series, function(item) {
 					var x = self.spec.rx * Math.cos(item.cangle) + tx - 10;
 					//the -10 is a nice shift for label placement
-					var y = self.spec.ry * Math.sin(-item.cangle) + ty - 10;
+					var y = self.spec.ry * Math.sin(-item.cangle) + ty;
 					self.surface.createText({
 						x: x,
 						y: y,
@@ -426,15 +435,13 @@ define(["dojo", "dojox/gfx", "dojox/gfx3d", "dojox/charting/Series"], function(d
 				fontH = 20;
 			}
 			var y = hh * 2 - topmargin + fontH;
-			var leftmargin = 10;
-			var boxwidth = 10;
 			var x = leftmargin + boxwidth;
 			var i = 0;
 
 			//the legend is two times the fontH
 			//from the bottom of the Pie chart
 			
-			if(this.label !== null) {
+			if(this.label !== null){
 				this.surface.createText({
 					x: tx,
 					y: y,
@@ -446,6 +453,25 @@ define(["dojo", "dojox/gfx", "dojox/gfx3d", "dojox/charting/Series"], function(d
 					size: "8pt"
 				}).setFill(this.lcolor);
 			}
+			
+			if(self.title != ""){
+				var fontDetails = g.splitFontString(self.titleFont);
+				
+				var	tsize = g.normalizedLength(fontDetails.size);
+				var tY =  tsize;;
+				
+				if(self.titlePos == "bottom"){
+					tY =  hh * 2 + tsize;
+				}
+		
+				self.surface.createText({
+					x: this.dimensions.width / 2,
+					y: tY,
+					align: "middle",
+					text: self.title
+				}).setFont(fontDetails).setFill("black");
+			}
+			
 			
 			if(this.legend == true){
 				dojo.forEach(this.series, function(item) {
