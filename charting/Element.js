@@ -1,5 +1,5 @@
-define(["dojo/_base/lang", "dojo/_base/array", "dojo/dom-construct","dojo/_base/declare", "dojox/gfx"], 
-	function(lang, arr, domConstruct, declare, gfx){ 
+define(["dojo/_base/lang", "dojo/_base/array", "dojo/dom-construct","dojo/_base/declare", "dojox/gfx", "dojox/gfx/utils", "dojox/gfx/shape"],
+	function(lang, arr, domConstruct, declare, gfx, utils, shape){
 	
 	return declare("dojox.charting.Element", null, {
 		//	summary:
@@ -51,6 +51,10 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/dom-construct","dojo/_base/
 			//		A reference to this object for functional chaining.
 			this.destroyHtmlElements();
 			if(this.group){
+				// since 1.7.x we need dispose shape otherwise there is a memoryleak
+				utils.forEach(this.group, function(child){
+					shape.dispose(child);
+				});
 				this.group.clear();
 				this.group.removeShape();
 				this.group = null;
@@ -114,7 +118,7 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/dom-construct","dojo/_base/
 			//			text: processed text, maybe truncated or not
 			//			truncated: whether text has been truncated
 			//		}
-			if (!s || s.length <= 0) {
+			if(!s || s.length <= 0){
 				return {
 					text: "",
 					truncated: truncated || false
@@ -131,7 +135,7 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/dom-construct","dojo/_base/
 				trucPercentage = 0.618,
 				minStr = s.substring(0,1) + this.trailingSymbol,
 				minWidth = this.getTextWidth(minStr, font);
-			if (limitWidth <= minWidth) {
+			if(limitWidth <= minWidth){
 				return {
 					text: minStr,
 					truncated: true
@@ -154,7 +158,7 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/dom-construct","dojo/_base/
 						return {
 							text: (s.substring(0,begin) + this.trailingSymbol),
 							truncated: true
-						};
+							};
 					}
 					var index = begin + Math.round((end - begin) * trucPercentage),
 						widthIntercepted = this.getTextWidth(s.substring(0, index), font);

@@ -221,11 +221,13 @@ define([
 				);
 				this.endHandler = this.connect(win.doc.documentElement, has('touch') ? "ontouchend" : "onmouseup",
 					function(){
-						skipReposition = true;
-						active = false;
-						if(!isGesture){ // if click without move, then close dropdown
-							this.closeDropDown();
-						}
+						setTimeout(dojo.hitch(this, function(){ // allow onclick to go first
+							skipReposition = true;
+							if(!isGesture && active){ // if click without move, then close dropdown
+								this.closeDropDown();
+							}
+							active = false;
+						}), 0);
 					}
 				);
 				this.repositionTimer = setInterval(lang.hitch(this, function(){
@@ -238,7 +240,7 @@ define([
 						currentDeltaX = currentPopupPos.x - currentAroundNodePos.x,
 						currentDeltaY = currentPopupPos.y - currentAroundNodePos.y;
 					// if the popup is no longer placed correctly, relocate it
-					if(currentDeltaX != deltaX || currentDeltaY != deltaY){
+					if(Math.abs(currentDeltaX - deltaX) >= 1 || Math.abs(currentDeltaY - deltaY) >= 1){ // Firefox plays with partial pixels
 						domStyle.set(wrapper, { left: parseInt(domStyle.get(wrapper, "left")) + deltaX - currentDeltaX + 'px', top: parseInt(domStyle.get(wrapper, "top")) + deltaY - currentDeltaY + 'px' });
 					}
 				}), 50); // yield a short time to allow for consolidation for better CPU throughput
