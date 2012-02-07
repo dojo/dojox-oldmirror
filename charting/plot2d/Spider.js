@@ -353,7 +353,7 @@ var PlotEvents = dojox.charting.plot2d._PlotEvents;
 					for(var key in run){
 						var data = this.datas[key], min = data.min, max = data.max, distance = max - min,
 							entry = run[key], end = start + 2 * Math.PI * k / len,
-							point = this._getCoordinate(circle, r*(ro + (1-ro)*(entry-min)/distance), end);
+							point = this._getCoordinate(circle, r*(ro + (1-ro)*(entry-min)/(distance === 0 ? min : distance)), end);
 						seriePoints.push(point);
 						tipData.push({sname: serieEntry.name, key: key, data: entry});
 						k++;
