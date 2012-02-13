@@ -55,6 +55,7 @@ define([
 		//		A name of html tag to create as domNode.
 		tag: "div",
 
+		/* internal properties */	
 		baseClass: "mblView",
 
 		constructor: function(params, node){
@@ -75,6 +76,10 @@ define([
 			this._animStartHandle = this.connect(this.domNode, "webkitAnimationStart", "onAnimationStart");
 			if(!config['mblCSS3Transition']){
 			    this._transEndHandle = this.connect(this.domNode, "webkitTransitionEnd", "onAnimationEnd");
+			}
+			if(config["mblAndroidWorkaround"] !== false && has('android')){
+				// workaround for the screen flicker issue on Android 2.2 (partially works for 3.x/4.0)
+				domStyle.set(this.domNode, "webkitTransformStyle", "preserve-3d");
 			}
 
 			viewRegistry.add(this);
@@ -328,6 +333,8 @@ define([
 					toWidget.containerNode.style.paddingTop = fromTop + "px";
 				}
 
+				toWidget.load && toWidget.load(); // for ContentView
+
 				toWidget.movedFrom = fromNode.id;
 			}
 
@@ -447,6 +454,11 @@ define([
 				var li = e.target;
 				li.style.display = "none";
 				domClass.remove(li, "mblCloseContent");
+				
+				// If target is placed inside scrollable, need to call onTouchEnd
+				// to adjust scroll position
+				var p = viewRegistry.getEnclosingScrollable(this.domNode);
+				p && p.onTouchEnd();
 			}
 			if(isOut){
 				this.invokeCallback();
@@ -549,6 +561,7 @@ define([
 					v.domNode.style.display = (v === this) ? "" : "none";
 				}, this);
 			}
+			this.load && this.load(); // for ContentView
 
 			if(!noEvent){
 				if(out){

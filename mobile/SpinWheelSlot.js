@@ -1,12 +1,13 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/window",
+	"dojo/_base/kernel",
 	"dojo/dom-class",
 	"dojo/dom-construct",
 	"dijit/_Contained",
 	"dijit/_WidgetBase",
 	"./_ScrollableMixin"
-], function(declare, win, domClass, domConstruct, Contained, WidgetBase, ScrollableMixin){
+], function(declare, win, kernel, domClass, domConstruct, Contained, WidgetBase, ScrollableMixin){
 
 /*=====
 	var Contained = dijit._Contained;
@@ -76,17 +77,17 @@ define([
 				}
 			}
 
-			this.containerNode = domConstruct.create("DIV", {className:"mblSpinWheelSlotContainer"});
+			this.containerNode = domConstruct.create("div", {className:"mblSpinWheelSlotContainer"});
 			this.containerNode.style.height
 				= (win.global.innerHeight||win.doc.documentElement.clientHeight) * 2 + "px"; // must bigger than the screen
 			this.panelNodes = [];
 			for(var k = 0; k < 3; k++){
-				this.panelNodes[k] = domConstruct.create("DIV", {className:"mblSpinWheelSlotPanel"});
+				this.panelNodes[k] = domConstruct.create("div", {className:"mblSpinWheelSlotPanel"});
 				var len = this.items.length;
 				var n = Math.ceil(this.minItems / len);
 				for(j = 0; j < n; j++){
 					for(i = 0; i < len; i++){
-						domConstruct.create("DIV", {
+						domConstruct.create("div", {
 							className: "mblSpinWheelSlotLabel",
 							name: this.items[i][0],
 							innerHTML: this._cv ? this._cv(this.items[i][1]) : this.items[i][1]
@@ -96,10 +97,10 @@ define([
 				this.containerNode.appendChild(this.panelNodes[k]);
 			}
 			this.domNode.appendChild(this.containerNode);
-			this.touchNode = domConstruct.create("DIV", {className:"mblSpinWheelSlotTouch"}, this.domNode);
+			this.touchNode = domConstruct.create("div", {className:"mblSpinWheelSlotTouch"}, this.domNode);
 			this.setSelectable(this.domNode, false);
 		},
-	
+
 		startup: function(){
 			this.inherited(arguments);
 			this.centerPos = this.getParent().centerPos;
@@ -107,7 +108,7 @@ define([
 			this._itemHeight = items[0].offsetHeight;
 			this.adjust();
 		},
-	
+
 		adjust: function(){
 			// summary:
 			//		Adjusts the position of slot panels.
@@ -125,17 +126,17 @@ define([
 			this.panelNodes[1].style.top = adjustY + "px";
 			this.panelNodes[2].style.top = h + adjustY + "px";
 		},
-	
+
 		setInitialValue: function(){
 			// summary:
 			//		Sets the initial value using this.value or the first item.
 			if(this.items.length > 0){
 				var val = (this.value !== "") ? this.value : this.items[0][1];
-				this.setValue(val);
+				this.set("value", val);
 			}
 		},
-	
-		getCenterPanel: function(){
+
+		_getCenterPanel: function(){
 			// summary:
 			//		Gets a panel that contains the currently selected item.
 			var pos = this.getPos();
@@ -147,7 +148,7 @@ define([
 			}
 			return null;
 		},
-	
+
 		setColor: function(/*String*/value){
 			// summary:
 			//		Sets the color of the specified item as blue.
@@ -162,7 +163,7 @@ define([
 				}
 			}
 		},
-	
+
 		disableValues: function(/*Array*/values){
 			// summary:
 			//		Makes the specified items grayed out.
@@ -179,12 +180,12 @@ define([
 				}
 			}
 		},
-	
+
 		getCenterItem: function(){
 			// summary:
 			//		Gets the currently selected item.
 			var pos = this.getPos();
-			var centerPanel = this.getCenterPanel();
+			var centerPanel = this._getCenterPanel();
 			if(centerPanel){
 				var top = pos.y + centerPanel.offsetTop;
 				var items = centerPanel.childNodes;
@@ -195,27 +196,35 @@ define([
 				}
 			}
 			return null;
-	
+
 		},
-	
+
 		getValue: function(){
+			kernel.deprecated(this.declaredClass+"::getValue() is deprecated. Use get('value') instead.", "", "2.0");
+			return this.get("value");
+		},
+		_getValueAttr: function(){
 			// summary:
 			//		Gets the currently selected value.
-			var item = this.getCenterItem();
-			return (item && item.innerHTML);
+			return this.items[this.getKey()][1];
 		},
-	
+
 		getKey: function(){
 			// summary:
 			//		Gets the key for the currently selected value.
-			return this.getCenterItem().getAttribute("name");
+			var item = this.getCenterItem();
+			return (item && item.getAttribute("name"));
 		},
-	
+
 		setValue: function(newValue){
+			kernel.deprecated(this.declaredClass+"::setValue() is deprecated. Use set('value', val) instead.", "", "2.0");
+			return this.set("value", newValue);
+		},
+		_setValueAttr: function(newValue){
 			// summary:
 			//		Sets the newValue to this slot.
 			var idx0, idx1;
-			var curValue = this.getValue();
+			var curValue = this.get("value");
 			if(!curValue){
 				this._penddingValue = newValue;
 				return;
@@ -244,7 +253,7 @@ define([
 			to.y += m * this._itemHeight;
 			this.slideTo(to, 1);
 		},
-	
+
 		getSpeed: function(){
 			// summary:
 			//		Overrides dojox.mobile.scrollable.getSpeed().
@@ -270,8 +279,8 @@ define([
 			}
 			return ret;
 		},
-	
-		adjustDestination: function(to, pos){
+
+		adjustDestination: function(to, pos, dim){
 			// summary:
 			//		Overrides dojox.mobile.scrollable.adjustDestination().
 			var h = this._itemHeight;
@@ -279,11 +288,12 @@ define([
 			var a = Math.abs(j);
 			var r = j >= 0 ? j % h : j % h + h;
 			to.y = j - r;
+			return true;
 		},
-	
+
 		resize: function(e){
 			if(this._penddingValue){
-				this.setValue(this._penddingValue);
+				this.set("value", this._penddingValue);
 			}
 		},
 
