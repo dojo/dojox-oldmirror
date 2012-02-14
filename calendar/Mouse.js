@@ -14,6 +14,7 @@ define(["dojo/_base/array", "dojo/_base/lang", "dojo/_base/declare", "dojo/_base
 		triggerExtent: 3,
 					
 		postMixInProperties: function(){
+			this.inherited(arguments);
 			
 			this.on("rendererCreated", lang.hitch(this, function(ir){
 				

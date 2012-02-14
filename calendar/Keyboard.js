@@ -186,7 +186,9 @@ define(["dojo/_base/array", "dojo/_base/lang", "dojo/_base/declare", "dojo/on", 
 				this.set("selectedItem", focusedItem);
 			}
 
-			this.ensureVisibility(focusedItem.startTime, focusedItem.endTime, "start", undefined, this.maxScrollAnimationDuration);								
+			if(focusedItem){
+				this.ensureVisibility(focusedItem.startTime, focusedItem.endTime, "both", undefined, this.maxScrollAnimationDuration);
+			}
 		},
 
 		_keyboardItemEditing: function(e, dir){
@@ -331,5 +333,4 @@ define(["dojo/_base/array", "dojo/_base/lang", "dojo/_base/declare", "dojo/on", 
 			
 		}
 	});
-
 });

@@ -39,6 +39,11 @@ template){
 			endTimeLabel: 30
 		},
 		
+		_displayValueMap: {
+			"beforeIcon": "inline",
+			"afterIcon": "inline"
+		},
+		
 		_displayValue: "inline",
 		
 		//	arrowPadding: Integer
@@ -77,6 +82,14 @@ template){
 					break;
 			}
 			return this.inherited(arguments);
+		},
+		
+		getDisplayValue: function(part){
+			var res = this._displayValueMap[part];
+			if(res){
+				return res;
+			}
+			return this._displayValue;
 		},
 		
 		postCreate: function() {

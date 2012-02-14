@@ -1,64 +1,4 @@
-@outer-border: 1px solid #CCCCCC;
-@inner-border: 1px solid #CCCCCC;
-@transparent-border: 1px solid transparent;
-
-@row-color: #EFEFEF;
-@today-color: #FFF0B4;
-@today-label-color: #295BB3;
-@week-end-color: #EFEFEF;
-@expand-up-color: #73ABFA;
-@expand-down-color: #A5D1FB;
-@header-label-color: #CCCCCC;
-
-@hour-stroke: 1px solid #CCCCCC;
-@half-hour-stroke: dotted 1px #CCCCCC;
-@quarter-hour-stroke: dotted 1px #CCCCCC;
-
-@column-header-height: 30px;
-@row-header-width: 70px;
-@secondary-sheet-height: 39px;
-@sheet-top: @secondary-sheet-height + @column-header-height + 3px;
-
-.border-box(){
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-.opacity(@op){
-	filter:formatstring("alpha(opacity={0})", @op);
-	opacity:@op/100;
-}
-
-.transition-duration(@dur: 0s){
-	-webkit-transition-duration: @dur;
-	-moz-transition-duration: @dur;
-	transition-duration: @dur;
-}
-
-.select-none() {
-	-moz-user-select: none;
-	-webkit-user-select: none;
-	khtml-user-select: none;
-	user-select: none;
-}
-
-.glass-view(){
-	z-index: 2;
-	background:#00FF00; 
-	.opacity(0);
-	.select-none
-}
-
-.header-background(){
-	color: #CCCCCC;
-}
-
-.rounded-corners (@radius: 5px) {
-  border-radius: @radius;
-  -webkit-border-radius: @radius;
-  -moz-border-radius: @radius;
-}
+@import "ColumnViewCommon.less";
 
 .dojoxCalendarColumnView {	
   cursor: default;
@@ -383,7 +323,7 @@
 	margin-top: 7px
 }
 
-.dojoxCalendarColumnView .dojoxVScrollBar {
+.dojoxCalendarColumnView .dojoxCalendarVScrollBar {
 	position: absolute;
 	top: @sheet-top;
 	bottom: 0;
@@ -535,6 +475,10 @@
 	.opacity(30);
 }
 
+.dojoxCalendarColumnView .dojoxCalendarMatrixView .dojoxCalendarEvent .afterIcon {
+	width:auto;
+}
+
 .dojoxCalendarColumnView .dojoxCalendarMatrixView .dojoxCalendarEvent .endTime {
 	position: relative;				
 	bottom:auto;
@@ -573,5 +517,3 @@
 .dojoxCalendarColumnView .dojoxCalendarMatrixView .dojoxCalendarEvent div {
 	white-space:nowrap;
 }
-
-

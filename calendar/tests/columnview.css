@@ -1,9 +1,9 @@
- .claro .dojoxCalendarCalendarColumnView {	
+ .claro .dojoxCalendarColumnView {	
   cursor: default;
 	-webkit-user-select: none;
 }
  
-.claro .dojoxCalendarCalendarColumnView .dojoxCalendarCalendarEventContainer {
+.claro .dojoxCalendarColumnView .dojoxCalendarCalendarEventContainer {
 	position: absolute;
 	overflow: hidden;
  	-moz-user-select: none;
@@ -14,20 +14,20 @@
 	border-radius: 5px;
 }
 
-.claro .dojoxCalendarCalendarColumnView .dojoxCalendarCalendarEvent {
+.claro .dojoxCalendarColumnView .dojoxCalendarEvent {
 	font-size: 90%;
 	font-family: Tahoma, serifSansSerifMonospace;
 }
 
-.claro .dojoxCalendarCalendarColumnView .dojoxCalendarCalendarEvent.Calendar2 .bg {
+.claro .dojoxCalendarColumnView .dojoxCalendarEvent.Calendar2 .bg {
 	background: #2095B4;
 }
 
-.claro .dojoxCalendarCalendarColumnView .dojoxCalendarCalendarEvent.Calendar2.Hovered .bg {
+.claro .dojoxCalendarColumnView .dojoxCalendarEvent.Calendar2.Hovered .bg {
 	background: #24A5C8;
 }
 
-.claro .dojoxCalendarCalendarColumnView .dojoxCalendarCalendarEvent.Calendar2.Selected .bg {
+.claro .dojoxCalendarColumnView .dojoxCalendarEvent.Calendar2.Selected .bg {
 	background: #166B81;
 }
 

@@ -86,7 +86,7 @@
   border-top: 1px solid #cccccc;
   border-right: 1px solid #cccccc;
   background: #cccccc;
-  background: white url("images/titleBar.png") repeat-x top left;
+  background: #ffffff url("images/titleBar.png") repeat-x top left;
   padding: 3px 4px;
   font-size: 0.9em;
   font-weight: bold;
@@ -114,7 +114,7 @@
   vertical-align: middle;
   text-align: center;
   background: #cccccc;
-  background: white url("images/titleBar.png") repeat-x top left;
+  background: #ffffff url("images/titleBar.png") repeat-x top left;
   padding: 3px 4px;
   font-size: 0.9em;
   font-weight: bold;
@@ -172,7 +172,7 @@
   border-left: 1px solid #cccccc;
   border-right: 1px solid #cccccc;
   border-bottom: 1px solid #e5e5e5;
-  background-color: white;
+  background-color: #ffffff;
   -webkit-transition-duration: 0.2s;
   -moz-transition-duration: 0.2s;
   transition-duration: 0.2s;
@@ -185,10 +185,10 @@
   border-bottom: 1px solid #cccccc;
 }
 .nihilo .dojoxCalendarMatrixView .dojoxCalendarRowHeaderTable td.Hover {
-  background-color: white;
+  background-color: #ffffff;
 }
 .nihilo .dojoxCalendarMatrixView .dojoxCalendarRowHeaderTable td.Active {
-  background-color: white;
+  background-color: #ffffff;
 }
 .nihilo .dojoxCalendarMatrixView .dojoxCalendarContainer {
   position: absolute;
@@ -270,7 +270,7 @@
 }
 .nihilo .dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxCalendarHorizontal.Edited .bg {
   border: dashed 1px #FFF;
-  filter: alpha(opacity=30);
+  filter: formatstring("alpha(opacity={0})", 30);
   opacity: 0.3;
 }
 .nihilo .dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxCalendarHorizontal.Focused .bg {
@@ -285,7 +285,7 @@
 .nihilo .dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxCalendarLabel.Edited {
   border: dashed 1px #FFF;
   background: #600;
-  filter: alpha(opacity=30);
+  filter: formatstring("alpha(opacity={0})", 30);
   opacity: 0.3;
   color: #FFF;
 }
@@ -309,7 +309,7 @@
 .nihilo .dojoxCalendarMatrixView .dojoxCalendarEvent .handle {
   z-index: 2;
   background: #00FF00;
-  filter: alpha(opacity=0);
+  filter: formatstring("alpha(opacity={0})", 0);
   opacity: 0;
   -moz-user-select: none;
   -webkit-user-select: none;
