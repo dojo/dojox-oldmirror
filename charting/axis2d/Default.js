@@ -1,7 +1,7 @@
-define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/sniff", "dojo/_base/declare", 
-	"dojo/_base/connect", "dojo/_base/html", "dojo/dom-geometry", "./Invisible", 
+define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/sniff", "dojo/_base/declare",
+	"dojo/_base/connect", "dojo/dom-geometry", "./Invisible",
 	"../scaler/common", "../scaler/linear", "./common", "dojox/gfx", "dojox/lang/utils", "dojox/lang/functional"],
-	function(lang, arr, has, declare, connect, html, domGeom, Invisible, scommon, 
+	function(lang, arr, has, declare, connect, domGeom, Invisible, scommon,
 			lin, acommon, g, du, df){
 
 	/*=====
@@ -11,8 +11,8 @@ define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/sniff", "dojo/_base/de
 			min, max, from, to, majorTickStep, minorTickStep, microTickStep,
 			labels, labelFunc, maxLabelSize,
 			stroke, majorTick, minorTick, microTick, tick,
-			font, fontColor
-		){
+			font, fontColor){
+	
 		//	summary:
 		//		Optional arguments used in the definition of an axis.
 		//
@@ -153,7 +153,7 @@ define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/sniff", "dojo/_base/de
 
 		 //	opt: Object
 		 //		The actual options used to define this axis, created at initialization.
-		 //	scalar: Object
+		 //	scaler: Object
 		 //		The calculated helper object to tell charts how to draw an axis and any data.
 		 //	ticks: Object
 		 //		The calculated tick object that helps a chart draw the scaling on an axis.
@@ -165,7 +165,7 @@ define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/sniff", "dojo/_base/de
 		 //		The current offset of the axis.
 
 		 opt: null,
-		 scalar: null,
+		 scaler: null,
 		 ticks: null,
 		 dirty: true,
 		 scale: 1,
@@ -272,18 +272,11 @@ define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/sniff", "dojo/_base/de
 			return g._base._getTextBox(s, {font: font}).w || 0;
 		},
 
-		clear: function(){
-			// if the scale has not changed there is no reason for minMinorStep to change
-			// so keep it and re-set it later
-			this._prevMinMinorStep = this.scaler?this.scaler.minMinorStep:0;
-			this.inherited(arguments);
-		},
-
 		_getMaxLabelSize: function(min, max, span, rotation, font, size){
 			if(this._maxLabelSize == null && arguments.length == 6){
 				var o = this.opt;
 				// everything might have changed, reset the minMinorStep value
-				this.scaler.minMinorStep = 0;
+				this.scaler.minMinorStep = this._prevMinMinorStep = 0;
 				var ob = lang.clone(o);
 				delete o.to;
 				delete o.from;
@@ -332,10 +325,11 @@ define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/sniff", "dojo/_base/de
 
 		calculate: function(min, max, span){
 			this.inherited(arguments);
+			// when the scale has not changed there is no reason for minMinorStep to change
 			this.scaler.minMinorStep = this._prevMinMinorStep;
 			// we want to recompute the dropping mechanism only when the scale or the size of the axis is changing
 			// not when for example when we scroll (otherwise effect would be weird)
-			if(this._invalidMaxLabelSize || span != this._oldSpan){
+			if((this._invalidMaxLabelSize || span != this._oldSpan) && (min != Infinity && max != -Infinity)){
 				this._invalidMaxLabelSize = false;
 				this._oldSpan = span;
 				var o = this.opt;
@@ -384,7 +378,7 @@ define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/sniff", "dojo/_base/de
 						break;
 					}
 					// we need to check both minor and major labels fit a minor step
-					this.scaler.minMinorStep = Math.max(majLabelW, minLabelW) + labelGap;
+					this.scaler.minMinorStep = this._prevMinMinorStep =  Math.max(majLabelW, minLabelW) + labelGap;
 					var canMinorLabel = this.scaler.minMinorStep <= this.scaler.minor.tick * this.scaler.bounds.scale;
 					if(!canMinorLabel){
 						// we can't place minor labels, let's see if we can place major ones
@@ -918,7 +912,7 @@ define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/sniff", "dojo/_base/de
 				fontWidth = g._base._getTextBox(truncatedLabel, {font: font}).w || 0,
 				fontHeight = font ? g.normalizedLength(g.splitFontString(font).size) : 0;
 			if(elemType == "html"){
-				lang.mixin(aroundRect, html.coords(elem.firstChild, true));
+				lang.mixin(aroundRect, domGeom.position(elem.firstChild, true));
 				aroundRect.width = Math.ceil(fontWidth);
 				aroundRect.height = Math.ceil(fontHeight);
 				this._events.push({
@@ -939,7 +933,7 @@ define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/sniff", "dojo/_base/de
 				});
 			}else{
 				var shp = elem.getShape(),
-					lt = html.coords(chart.node, true);
+					lt = chart.getCoords();
 				aroundRect = lang.mixin(aroundRect, {
 					x: shp.x - fontWidth / 2,
 					y: shp.y

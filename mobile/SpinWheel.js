@@ -1,6 +1,7 @@
 define([
 	"dojo/_base/array",
 	"dojo/_base/declare",
+	"dojo/_base/kernel",
 	"dojo/_base/lang",
 	"dojo/dom-class",
 	"dojo/dom-construct",
@@ -8,7 +9,7 @@ define([
 	"dijit/_Container",
 	"dijit/_WidgetBase",
 	"./SpinWheelSlot"
-], function(array, declare, lang, domClass, domConstruct, Contained, Container, WidgetBase, SpinWheelSlot){
+], function(array, declare, kernel, lang, domClass, domConstruct, Contained, Container, WidgetBase, SpinWheelSlot){
 
 /*=====
 	var Contained = dijit._Contained;
@@ -44,40 +45,48 @@ define([
 		buildRendering: function(){
 			this.inherited(arguments);
 			domClass.add(this.domNode, "mblSpinWheel");
-			this.centerPos = Math.round(this.domNode.offsetHeight / 2);
 
 			this.slots = [];
 			for(var i = 0; i < this.slotClasses.length; i++){
 				this.slots.push(((typeof this.slotClasses[i] =='string') ? lang.getObject(this.slotClasses[i]) : this.slotClasses[i])(this.slotProps[i]));
 				this.addChild(this.slots[i]);
 			}
-			domConstruct.create("DIV", {className: "mblSpinWheelBar"}, this.domNode);
+			domConstruct.create("div", {className: "mblSpinWheelBar"}, this.domNode);
 		},
 
 		startup: function(){
+			this.centerPos = Math.round(this.domNode.offsetHeight / 2);
 			this.inherited(arguments);
 			this.reset();
 		},
 
 		getValue: function(){
+			kernel.deprecated(this.declaredClass+"::getValue() is deprecated. Use get('value') instead.", "", "2.0");
+			return this.get("value");
+		},
+		_getValueAttr: function(){
 			// summary:
 			//		Returns an array of slot values.
 			var a = [];
 			array.forEach(this.getChildren(), function(w){
 				if(w instanceof SpinWheelSlot){
-					a.push(w.getValue());
+					a.push(w.get("value"));
 				}
 			}, this);
 			return a;
 		},
 
 		setValue: function(/*Array*/a){
+			kernel.deprecated(this.declaredClass+"::setValue() is deprecated. Use set('value', a) instead.", "", "2.0");
+			return this.set("value", a);
+		},
+		_setValueAttr: function(/*Array*/a){
 			// summary:
 			//		Sets the slot values.
 			var i = 0;
 			array.forEach(this.getChildren(), function(w){
 				if(w instanceof SpinWheelSlot){
-					w.setValue(a[i]);
+					w.set("value", a[i]);
 					w.setColor(a[i]);
 					i++;
 				}

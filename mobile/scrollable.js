@@ -26,6 +26,7 @@ if(typeof define === "undefined"){ // assumes dojo.js is not loaded
 			return (typeof dojo.doc.documentElement.ontouchstart != "undefined" &&
 				navigator.appVersion.indexOf("Mobile") != -1) || !!dojo.has("android");
 		}
+		return null;
 	};
 
 	dojo.stopEvent = function(evt){
@@ -253,10 +254,9 @@ var scrollable = function(/*Object?*/dojo, /*Object?*/dojox){
 			for(var i = 0; i < 3; i++){
 				this.setKeyframes(null, null, i);
 			}
-		}
-		// Workaround for iPhone flicker issue
-		if(has('iphone')){
-			domStyle.set(this.containerNode, "webkitTransform", "translate3d(0,0,0)");
+			if(dm.hasTranslate3d){ // workaround for flicker issue on iPhone and Android 3.x/4.0
+				domStyle.set(this.containerNode, "webkitTransform", "translate3d(0,0,0)");
+			}
 		}
 
 		this._speed = {x:0, y:0};
@@ -583,7 +583,7 @@ var scrollable = function(/*Object?*/dojo, /*Object?*/dojox){
 			to.x = pos.x + speed.x;
 		}
 
-		this.adjustDestination(to, pos, dim);
+		if(this.adjustDestination(to, pos, dim) === false){ return; }
 
 		if(this.scrollDir == "v" && dim.c.h < dim.d.h){ // content is shorter than display
 			this.slideTo({y:0}, 0.3, "ease-out"); // go back to the top
@@ -662,6 +662,7 @@ var scrollable = function(/*Object?*/dojo, /*Object?*/dojox){
 
 	this.adjustDestination = function(to, pos, dim){
 		// subclass may want to implement
+		return true;
 	};
 
 	this.abort = function(){
@@ -679,6 +680,26 @@ var scrollable = function(/*Object?*/dojo, /*Object?*/dojox){
 		if(this._scrollBarH){
 			this._scrollBarH.className = "";
 		}
+	};
+
+	this.scrollIntoView = function(/*DOMNode*/node, /*Boolean?*/alignWithTop, /*number?*/duration){
+		if(!this._v){ return; } // cannot scroll vertically
+		
+		var c = this.containerNode,
+			h = this.getDim().d.h, // the height of ScrollableView's content display area
+			top = 0;
+		
+		// Get the top position of node relative to containerNode
+		for(var n = node; n !== c; n = n.offsetParent){
+			if(!n || n.tagName === "BODY"){ return; } // exit if node is not a child of scrollableView
+			top += n.offsetTop;
+		}
+		// Calculate scroll destination position
+		var y = alignWithTop ? Math.max(h - c.offsetHeight, -top) : Math.min(0, h - top - node.offsetHeight);
+		
+		// Scroll to destination position
+		(duration && typeof duration === "number") ? 
+			this.slideTo({y: y}, duration, "ease-out") : this.scrollTo({y: y});
 	};
 
 	this.getSpeed = function(){

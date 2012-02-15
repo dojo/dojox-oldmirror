@@ -3,6 +3,7 @@ define([
 	"dojo/_base/event",
 	"dojo/_base/lang",
 	"dojo/_base/sniff",
+	"dojo/_base/window",
 	"dojo/dom-class",
 	"dojo/dom-construct",
 	"dojo/dom-geometry",
@@ -11,8 +12,9 @@ define([
 	"./Badge",
 	"./TransitionEvent",
 	"./iconUtils",
-	"./lazyLoadUtils"
-], function(declare, event, lang, has, domClass, domConstruct, domGeometry, domStyle, ItemBase, Badge, TransitionEvent, iconUtils, lazyLoadUtils){
+	"./lazyLoadUtils",
+	"./viewRegistry"
+], function(declare, event, lang, has, win, domClass, domConstruct, domGeometry, domStyle, ItemBase, Badge, TransitionEvent, iconUtils, lazyLoadUtils, viewRegistry){
 
 /*=====
 	var ItemBase = dojox.mobile._ItemBase;
@@ -34,19 +36,18 @@ define([
 		//		href or url parameters.
 
 		// lazy: String
-		//		If true, the content of the item, which includes dojo markup, is
-		//		instantiated lazily. That is, only when the icon is opened by
-		//		the user, the required modules are loaded and dojo widgets are
-		//		instantiated.
+		//		If true, the content of the widget, which includes dojo markup,
+		//		is instantiated lazily. That is, only when the widget is opened
+		//		by the user, the required modules are loaded and the content
+		//		widgets are instantiated.
 		lazy: false,
 
 		// requires: String
-		//		Comma-separated required module names to be loaded. All the
-		//		modules specified with dojoType and their depending modules are
-		//		automatically loaded by the IconItem. If you need other extra
-		//		modules to be loaded, use this parameter. If lazy is true, the
-		//		specified required modules are loaded when the user opens the
-		//		icon for the first time.
+		//		Comma-separated required module names to be lazily loaded. This
+		//		is effective only when lazy=true. All the modules specified with
+		//		dojoType and their depending modules are automatically loaded
+		//		when the widget is opened. However, if you need other extra
+		//		modules to be loaded, use this parameter.
 		requires: "",
 
 		// timeout: String
@@ -229,8 +230,8 @@ define([
 					}
 					parent.appView._heading.set("label", this.label);
 				}
-				var transOpts = this.transitionOptions || {transition: this.transition, transitionDir: this.transitionDir, moveTo: parent.id + "_mblApplView"};		
-				new TransitionEvent(this.domNode, transOpts, e).dispatch();
+				this.moveTo = parent.id + "_mblApplView";
+				new TransitionEvent(this.domNode, this.getTransOpts(), e).dispatch();
 			}
 		},
 
@@ -241,8 +242,17 @@ define([
 				lazyLoadUtils.instantiateLazyWidgets(this.containerNode, this.requires);
 				this.lazy = false;
 			}
-			this.paneWidget.scrollIntoView();
+			this.scrollIntoView(this.paneWidget.domNode);
 			this.onOpen();
+		},
+
+		scrollIntoView: function(/*DomNode*/node){
+			var s = viewRegistry.getEnclosingScrollable(node);
+			if(s){ // this node is placed inside scrollable
+				s.scrollIntoView(node, true);
+			}else{
+				win.global.scrollBy(0, domGeometry.position(node, false).y);
+			}
 		},
 
 		close: function(/*Boolean?*/noAnimation){
