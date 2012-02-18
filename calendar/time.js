@@ -55,6 +55,31 @@ time.floorToDay = function(d, reuse, dateClassObj){
 	return d;
 };
 
+time.floorToMonth = function(d, reuse, dateClassObj){
+	//	summary:
+	//		Floors the specified date to the start of the date's month.
+	//	date: Date
+	//		The date to floor.
+	//	reuse: Boolean
+	//		Whether use the specified instance or create a new one. Default is false.
+	//	dateClassObj: Object?
+	//		The Date class used, by default the native Date.	
+	//	returns: Date
+	dateClassObj = dateClassObj || Date;  
+	
+	if(!reuse){
+		d = time.newDate(d, dateClassObj);
+	}
+	
+	d.setDate(1);
+	d.setHours(0);
+	d.setMinutes(0);
+	d.setSeconds(0);
+	d.setMilliseconds(0);
+	
+	return d;
+};
+
 
 time.floorToWeek = function(d, dateClassObj, dateFuncObj, firstDayOfWeek, locale){
 	//	summary:

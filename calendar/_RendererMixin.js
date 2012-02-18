@@ -48,7 +48,9 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/dom-style", "dojo/dom-cla
 		resizeEnabled: true,
 		
 		_orientation: "vertical",
-		_displayValue: "block",
+		_displayValue: "block",		
+		
+		_displayValueMap: {},
 		
 		visibilityLimits: {
 			resizeStartHandle: 50,
@@ -170,6 +172,10 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/dom-style", "dojo/dom-cla
 			return rd.dateLocaleModule.format(d, {selector: 'time'});
 		},
 		
+		getDisplayValue: function(part){
+			return this._displayValue;
+		},
+		
 		updateRendering: function (w, h) {
 			
 			//	summary:
@@ -200,33 +206,33 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/dom-style", "dojo/dom-cla
 			
 			if(this.beforeIcon != null) {
 				visible = this._orientation != "horizontal" || this.isLeftToRight() ? startHidden : endHidden;
-				domStyle.set(this.beforeIcon, "display", visible ? this._displayValue : "none");
+				domStyle.set(this.beforeIcon, "display", visible ? this.getDisplayValue("beforeIcon") : "none");
 			}
 
 			if(this.afterIcon != null) {
 				visible = this._orientation != "horizontal" || this.isLeftToRight() ? endHidden : startHidden;
-				domStyle.set(this.afterIcon, "display", visible ? this._displayValue : "none");
+				domStyle.set(this.afterIcon, "display", visible ? this.getDisplayValue("afterIcon") : "none");
 			}
 			
 			if(this.moveHandle){
 				visible = this._isElementVisible("moveHandle", startHidden, endHidden, size);
-				domStyle.set(this.moveHandle, "display", visible?this._displayValue:"none");				
+				domStyle.set(this.moveHandle, "display", visible?this.getDisplayValue("moveHandle"):"none");				
 			}
 			
 			if(this.resizeStartHandle){
 				visible = this._isElementVisible("resizeStartHandle", startHidden, endHidden, size);
-				domStyle.set(this.resizeStartHandle, "display", visible?this._displayValue:"none");				
+				domStyle.set(this.resizeStartHandle, "display", visible?this.getDisplayValue("resizeStartHandle"):"none");				
 			}
 			
 			if(this.resizeEndHandle){
 				visible = this._isElementVisible("resizeEndHandle", startHidden, endHidden, size);
-				domStyle.set(this.resizeEndHandle, "display", visible?this._displayValue:"none");				
+				domStyle.set(this.resizeEndHandle, "display", visible?this.getDisplayValue("resizeEndHandle"):"none");				
 			}
 			
 			if(this.startTimeLabel) {
 				visible = this._isElementVisible("startTimeLabel", startHidden, endHidden, size);
 				
-				domStyle.set(this.startTimeLabel, "display", visible?this._displayValue:"none");
+				domStyle.set(this.startTimeLabel, "display", visible?this.getDisplayValue("startTimeLabel"):"none");
 				if(visible) {
 					this._setText(this.startTimeLabel, this._formatTime(rd, this.item.startTime));
 				}
@@ -234,7 +240,7 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/dom-style", "dojo/dom-cla
 			
 			if(this.endTimeLabel) {
 				visible = this._isElementVisible("endTimeLabel", startHidden, endHidden, size);
-				domStyle.set(this.endTimeLabel, "display", visible?this._displayValue:"none");
+				domStyle.set(this.endTimeLabel, "display", visible?this.getDisplayValue("endTimeLabel"):"none");
 				if(visible) {
 					this._setText(this.endTimeLabel, this._formatTime(rd, this.item.endTime));
 				}
@@ -242,7 +248,7 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/dom-style", "dojo/dom-cla
 			
 			if(this.summaryLabel) {
 				visible = this._isElementVisible("summaryLabel", startHidden, endHidden, size);
-				domStyle.set(this.summaryLabel, "display", visible?this._displayValue:"none");
+				domStyle.set(this.summaryLabel, "display", visible?this.getDisplayValue("summaryLabel"):"none");
 				if(visible){
 					this._setText(this.summaryLabel, this.item.summary, true);
 				}

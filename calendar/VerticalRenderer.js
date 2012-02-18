@@ -21,6 +21,27 @@ define(["dojo/_base/declare", "dijit/_WidgetBase", "dijit/_TemplatedMixin",
 		postCreate: function() {
 			this.inherited(arguments);
 			this._applyAttributes();
+		},
+	
+		_isElementVisible: function(elt, startHidden, endHidden, size){
+			var d;
+			
+			switch(elt){
+				case "startTimeLabel":
+					d = this.item.startTime;
+					if(this.item.allDay || this.owner.isStartOfDay(d)){
+						return false;
+					}
+					break;
+				case "endTimeLabel":
+					d = this.item.endTime;
+					if(this.item.allDay || this.owner.isStartOfDay(d)){
+						return false;
+					}
+					break;
+			}
+			return this.inherited(arguments);
 		}
+		
 	});
 });

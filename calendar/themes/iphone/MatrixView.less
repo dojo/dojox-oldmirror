@@ -1,3 +1,5 @@
+@import "MatrixViewCommon.less";
+
 @outer-border: 1px solid #CCCCCC;
 @inner-border: 1px solid #CCCCCC;
 
@@ -264,7 +266,7 @@
 	.border-box;
 }
 
-.dojoxCalendarMatrixView .dojoxCalendarContainerTable td div.dojoxContainerRow{
+.dojoxCalendarMatrixView .dojoxCalendarContainerTable td div.dojoxCalendarContainerRow{
 	position:relative;
 	height:100%;
 	width:100%;
@@ -287,12 +289,12 @@
 	white-space: nowrap;
 }
 
-.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxHorizontal {
+.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxCalendarHorizontal {
 	color: #FFF;
 	position: absolute;
 }
 
-.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxHorizontal .bg {
+.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxCalendarHorizontal .bg {
 	border: @horizontal-border;	
 	position: absolute;
 	left: 0;
@@ -305,11 +307,11 @@
 	background-color: @horizontal-color;
 }
 
-.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxHorizontal.Hovered  .bg {
+.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxCalendarHorizontal.Hovered  .bg {
 	background-color: @horizontal-hover-color;	
 }
 
-.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxHorizontal.Selected .bg {
+.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxCalendarHorizontal.Selected .bg {
 	background-color: @horizontal-selected-bg-color;
 }
 
@@ -318,16 +320,16 @@
 	font-weight: bold;
 }
 
-.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxHorizontal.Edited .bg {
+.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxCalendarHorizontal.Edited .bg {
 	border: dashed 1px #FFF;
 	.opacity(50);
 }
 
-.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxHorizontal.Focused .bg {
+.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxCalendarHorizontal.Focused .bg {
 	border: dashed 1px #FFF;
 }
 
-.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxHorizontal .labels {
+.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxCalendarHorizontal .labels {
 	position: absolute;
 	left: 3px;
 	right: 1px;
@@ -335,12 +337,12 @@
 	overflow: hidden;
 }
 
-.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxHorizontal.Edited .labels {
+.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxCalendarHorizontal.Edited .labels {
 	left: 33px;
 	right: 31px;
 }
 
-.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxLabel .labels {
+.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxCalendarLabel .labels {
 	position: absolute;
 	left: 2px;
 	right: 2px;
@@ -348,18 +350,18 @@
 	overflow: hidden;
 }
 
-.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxLabel.Selected {
+.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxCalendarLabel.Selected {
 	color: #F00;
 }
 
-.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxLabel.Edited {
+.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxCalendarLabel.Edited {
 	color: #FFF;
 	border: dashed 1px #FFF;
 	background: #600;
 	.opacity(30);
 }
 
-.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxLabel.Focused {
+.dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxCalendarLabel.Focused {
 	border: dashed 1px #000000;
 }
 

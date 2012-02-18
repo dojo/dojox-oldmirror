@@ -339,7 +339,7 @@ function(
 		},
 		
 		_getStartTimeOfDayAttr: function(){
-			return _getStartTimeOfDay();
+			return this._getStartTimeOfDay();
 		},
 		
 		_setStartTimeOfDay: function(hour, minutes, maxDuration, easing){
@@ -1190,6 +1190,14 @@ function(
 				domConstruct.place(ir.container, cell);
 				domStyle.set(ir.container, "display", "block");
 			}
+		},
+		
+		_sortItemsFunction: function(a, b){
+			var res = this.dateFuncObj.compare(a.startTime, b.startTime);
+			if(res == 0){
+				res = -1 * this.dateFuncObj.compare(a.endTime, b.endTime);
+			}
+			return this.isLeftToRight() ? res : -res;
 		},
 		
 		///////////////////////////////////////////////////////////////

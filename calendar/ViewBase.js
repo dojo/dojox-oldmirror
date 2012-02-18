@@ -64,10 +64,16 @@ function(
 		viewKind: null,
 		
 		//	_layoutStep: Integer
-		//		The number of days displayed by a visual layout unit (i.e. a column or a row) 
+		//		The number of units displayed by a visual layout unit (i.e. a column or a row) 
 		//	tags
 		//		protected
 		_layoutStep: 1,
+		
+		//	_layoutStep: Integer
+		//		The unit displayed by a visual layout unit (i.e. a column or a row) 
+		//	tags
+		//		protected
+		_layoutUnit: "day",
 		
 		//	resizeCursor:String
 		//		CSS value to apply to the cursor while resizing an item renderer. 
@@ -225,10 +231,19 @@ function(
 			//		The date to floor.
 			//	reuse: Boolean
 			//		Whether use the specified instance or create a new one. Default is false.
-			//	renderData: Object
-			//		The current renderData
 			//	returns: Date
 			return timeUtil.floorToDay(date, reuse, this.dateClassObj);
+		},
+		
+		floorToMonth: function(date, reuse){
+			//	summary:
+			//		Floors the specified date to the start of the date's month.
+			//	date: Date
+			//		The date to floor.
+			//	reuse: Boolean
+			//		Whether use the specified instance or create a new one. Default is false.
+			//	returns: Date
+			return timeUtil.floorToMonth(date, reuse, this.dateClassObj);
 		},
 		
 				
@@ -784,7 +799,7 @@ function(
 			
 			while(cal.compare(startDate, renderData.endTime) == -1 && items.length > 0){
 			
-				endDate = cal.add(startDate, "day", this._layoutStep);
+				endDate = cal.add(startDate, this._layoutUnit, this._layoutStep);
 				endDate = this.floorToDay(endDate, true, renderData);
 				
 				var endTime = lang.clone(endDate);
@@ -1236,7 +1251,7 @@ function(
 			if(this.owner){
 				this.owner.set("selectionMode", value);
 			}else{
-				this.selectionMode;
+				this.inherited(arguments);
 			}			
 		},					
 		
@@ -1260,7 +1275,7 @@ function(
 			if(this.owner){
 				return this.owner.get("selectedItem");
 			}else{
-				return this.selectedItem;
+				return this.inherited(arguments);
 			}
 		},
 		

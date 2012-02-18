@@ -7,5 +7,7 @@ define({ root: {
 	fourDaysButton: "4 Days",
 	monthButton: "Month"
 },
-"en": true
+"en": true,
+"ko": true,
+"sk": true
 });

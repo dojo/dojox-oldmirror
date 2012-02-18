@@ -86,7 +86,7 @@
   border-top: 1px solid #b1badf;
   border-right: 1px solid #b1badf;
   background: #cccccc;
-  background: white url("images/titleBar.png") repeat-x top left;
+  background: #ffffff url("images/titleBar.png") repeat-x top left;
   padding: 3px 4px;
   font-size: 0.9em;
   font-weight: bold;
@@ -114,7 +114,7 @@
   vertical-align: middle;
   text-align: center;
   background: #cccccc;
-  background: white url("images/titleBar.png") repeat-x top left;
+  background: #ffffff url("images/titleBar.png") repeat-x top left;
   padding: 3px 4px;
   font-size: 0.9em;
   font-weight: bold;
@@ -270,7 +270,7 @@
 }
 .soria .dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxCalendarHorizontal.Edited .bg {
   border: dashed 1px #FFF;
-  filter: alpha(opacity=30);
+  filter: formatstring("alpha(opacity={0})", 30);
   opacity: 0.3;
 }
 .soria .dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxCalendarHorizontal.Focused .bg {
@@ -285,7 +285,7 @@
 .soria .dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxCalendarLabel.Edited {
   border: dashed 1px #FFF;
   background: #600;
-  filter: alpha(opacity=30);
+  filter: formatstring("alpha(opacity={0})", 30);
   opacity: 0.3;
   color: #FFF;
 }
@@ -309,7 +309,7 @@
 .soria .dojoxCalendarMatrixView .dojoxCalendarEvent .handle {
   z-index: 2;
   background: #00FF00;
-  filter: alpha(opacity=0);
+  filter: formatstring("alpha(opacity={0})", 0);
   opacity: 0;
   -moz-user-select: none;
   -webkit-user-select: none;

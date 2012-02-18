@@ -52,7 +52,7 @@
 .claro .dojoxCalendarMatrixView .dojoxCalendarGridTable td.dojoxCalendarToday {
   background-color: #fff0b4;
   font-weight: bold;
-  color: red;
+  color: #ff0000;
 }
 .claro .dojoxCalendarMatrixView .dojoxCalendarGridTable .dojoxCalendarWeekend {
   background-color: #e5f2fe;
@@ -88,7 +88,7 @@
   background-color: #efefef;
   background-image: url("images/titlebar.png");
   background-repeat: repeat-x;
-  color: black;
+  color: #000000;
 }
 .claro .dojoxCalendarMatrixView .dojoxCalendarColumnHeader {
   position: absolute;
@@ -119,7 +119,7 @@
   -webkit-user-select: none;
   khtml-user-select: none;
   user-select: none;
-  color: black;
+  color: #000000;
 }
 .claro .dojoxCalendarMatrixView .dojoxCalendarColumnHeaderTable td.last-child {
   border-right: 1px solid #b5bcc7;
@@ -173,7 +173,7 @@
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  color: black;
+  color: #000000;
 }
 .claro .dojoxCalendarMatrixView .dojoxCalendarRowHeaderTable td.last-child {
   border-bottom: 1px solid #b5bcc7;
@@ -264,7 +264,7 @@
 }
 .claro .dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxCalendarHorizontal.Edited .bg {
   border: dashed 1px #FFF;
-  filter: alpha(opacity=30);
+  filter: formatstring("alpha(opacity={0})", 30);
   opacity: 0.3;
 }
 .claro .dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxCalendarHorizontal.Focused .bg {
@@ -279,7 +279,7 @@
 .claro .dojoxCalendarMatrixView .dojoxCalendarEvent.dojoxCalendarLabel.Edited {
   border: dashed 1px #FFF;
   background: #600;
-  filter: alpha(opacity=30);
+  filter: formatstring("alpha(opacity={0})", 30);
   opacity: 0.3;
   color: #FFF;
 }
@@ -303,7 +303,7 @@
 .claro .dojoxCalendarMatrixView .dojoxCalendarEvent .handle {
   z-index: 2;
   background: #00FF00;
-  filter: alpha(opacity=0);
+  filter: formatstring("alpha(opacity={0})", 0);
   opacity: 0;
   -moz-user-select: none;
   -webkit-user-select: none;

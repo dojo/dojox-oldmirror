@@ -799,14 +799,14 @@ _nls){
 			if(this.previousButton){
 				this.previousButton.set("label", _nls[rtl?"nextButton":"previousButton"]);
 				h.push(
-					on(this.previousButton, "click", lang.hitch(this, rtl?this.previousRange:this.nextRange))
+					on(this.previousButton, "click", lang.hitch(this, rtl?this.nextRange:this.previousRange))
 				);	
 			}
 			
 			if(this.nextButton){
 				this.nextButton.set("label", _nls[rtl?"previousButton":"nextButton"]);
 				h.push(
-					on(this.nextButton, "click", lang.hitch(this, rtl?this.nextRange:this.previousRange))
+					on(this.nextButton, "click", lang.hitch(this, rtl?this.previousRange:this.nextRange))
 				);	
 			}
 			
