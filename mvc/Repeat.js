@@ -56,6 +56,10 @@ define([
 		//		a Repeat inside of a dojox.mobile list.		
 		removeRepeatNode : false,
 
+		// children: dojox.mvc.StatefulArray
+		//		The array of data model that is used to render child nodes.
+		children: null,
+
 		// _relTargetProp: String
 		//		The name of the property that is used by child widgets for relative data binding.
 		_relTargetProp : "children",
@@ -122,11 +126,11 @@ define([
 			}
 		},
 
-		_buildContained: function(/*dojo.Stateful*/ children){
+		_buildContained: function(/*dojox.mvc.StatefulArray*/ children){
 			// summary:
 			//		Destroy any existing contained view, recreate the repeating UI
 			//		markup and parse the new contents.
-			// children: dojo.Stateful
+			// children: dojox.mvc.StatefulArray
 			//		The array of child widgets.
 			// tags:
 			//		private
@@ -141,26 +145,26 @@ define([
 			this._destroyBody();
 			this._updateAddRemoveWatch(children);
 
-			var insert = "", prop = this._attachTemplateNodes ? "inlineTemplateString" : "templateString";
+			var insert = [], prop = this._attachTemplateNodes ? "inlineTemplateString" : "templateString";
 			for(this.index = 0; lang.isFunction(children.get) ? children.get(this.index) : children[this.index]; this.index++){
-				insert += this._exprRepl(this[prop]);
+				insert.push(this._exprRepl(this[prop]));
 			}
 
 			var repeatNode = this.containerNode || this.srcNodeRef || this.domNode;
 			if(has("ie") && /^(table|tbody)$/i.test(repeatNode.tagName)){
 				var div = win.doc.createElement("div");
-				div.innerHTML = "<table><tbody>" + insert + "</tbody></table>";
+				div.innerHTML = "<table><tbody>" + insert.join("") + "</tbody></table>";
 				for(var tbody = div.getElementsByTagName("tbody")[0]; tbody.firstChild;){
 					repeatNode.appendChild(tbody.firstChild);
 				}
 			}else if(has("ie") && /^td$/i.test(repeatNode.tagName)){
 				var div = win.doc.createElement("div");
-				div.innerHTML = "<table><tbody><tr>" + insert + "</tr></tbody></table>";
+				div.innerHTML = "<table><tbody><tr>" + insert.join("") + "</tr></tbody></table>";
 				for(var tr = div.getElementsByTagName("tr")[0]; tr.firstChild;){
 					repeatNode.appendChild(tr.firstChild);
 				}
 			}else{
-				repeatNode.innerHTML = insert;
+				repeatNode.innerHTML = insert.join("");
 			}
 
 			// srcNodeRef is used in _createBody, so in the programmatic create case where repeatNode was set  
@@ -178,11 +182,11 @@ define([
 				if(repeatnode && repeatnode.children){
 					var t3 = registry.findWidgets(repeatnode);
 					var parentcnt = t3.length;
-					for(var j=parentcnt;j>0;j--){
-						if(t3[j-1].declaredClass=="dojox.mvc.Group"){
+					for(var j = parentcnt;j > 0;j--){
+						if(t3[j-1].declaredClass == "dojox.mvc.Group"){
 							var cnt = repeatnode.children[j-1].children.length;
 							var selForList = registry.byId(repeatParent.id).select;
-							for(var i=cnt;i>0;i--){
+							for(var i = cnt;i > 0;i--){
 								registry.byId(repeatnode.children[j-1].id).select = selForList;
 								domconstruct.place(repeatnode.children[j-1].removeChild(repeatnode.children[j-1].children[i-1]), repeatParent, "first");
 							}							

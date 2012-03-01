@@ -11,7 +11,7 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/sniff", "dojo/_base/d
 			min, max, from, to, majorTickStep, minorTickStep, microTickStep,
 			labels, labelFunc, maxLabelSize,
 			stroke, majorTick, minorTick, microTick, tick,
-			font, fontColor){
+			font, fontColor, titleGap, titleFont, titleFontColor, titleOrientation, enableCache, dropLabels, labelSizeChange){
 	
 		//	summary:
 		//		Optional arguments used in the definition of an axis.
@@ -98,6 +98,9 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/sniff", "dojo/_base/d
 		//		Whether the axis automatically drops labels at regular interval or not to avoid labels overlapping.
 		//		This gives better results but require more computations.  You can disable it to save computation
 		//		time when you know your labels won't overlap. Default is true.
+		//	labelSizeChange: Boolean?
+		//		Indicates to the axis whether the axis labels are changing their size on zoom. If false this allows to
+		//		optimize the axis by avoiding recomputing labels maximum size on zoom actions. Default is false.
 	
 		this.vertical = vertical;
 		this.fixUpper = fixUpper;
@@ -130,6 +133,7 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/sniff", "dojo/_base/d
 		this.fontColor = fontColor;
 		this.enableCache = enableCache;
 		this.dropLabels = dropLabels;
+		this.labelSizeChange = labelSizeChange;
 	}
 	var Invisible = dojox.charting.axis2d.Invisible
 	=====*/
@@ -186,7 +190,8 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/sniff", "dojo/_base/d
 			rotation:	0,			// label rotation angle in degrees
 			htmlLabels:  true,		// use HTML to draw labels
 			enableCache: false,		// whether we cache or not
-			dropLabels: true		// whether we automatically drop overlapping labels or not
+			dropLabels: true,		// whether we automatically drop overlapping labels or not
+			labelSizeChange: false // whether the labels size change on zoom
 		},
 		optionalParams: {
 			min:			0,	// minimal value on this axis
@@ -260,6 +265,10 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/sniff", "dojo/_base/d
 			if(!labels.length){
 				return 0;
 			}
+			if(labels.length > 50){
+				// let's avoid degenerated cases
+				labels.length = 50;
+			}
 			if(lang.isObject(labels[0])){
 				labels = df.map(labels, function(label){ return label.text; });
 			}
@@ -280,7 +289,9 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/sniff", "dojo/_base/d
 				var ob = lang.clone(o);
 				delete ob.to;
 				delete ob.from;
-				var sb = lin.buildScaler(min, max, span, ob);
+				// build all the ticks from min, to max not from to to _but_ using the step
+				// that would be used if we where just displaying from to to from.
+				var sb = lin.buildScaler(min, max, span, ob, o.to - o.from);
 				sb.minMinorStep = 0;
 				this._majorStart = sb.major.start;
 				// we build all the ticks not only the ones we need to draw in order to get
@@ -331,6 +342,9 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/sniff", "dojo/_base/d
 			// not when for example when we scroll (otherwise effect would be weird)
 			if((this._invalidMaxLabelSize || span != this._oldSpan) && (min != Infinity && max != -Infinity)){
 				this._invalidMaxLabelSize = false;
+				if(this.opt.labelSizeChange){
+					this._maxLabelSize = null;
+				}
 				this._oldSpan = span;
 				var o = this.opt;
 				var ta = this.chart.theme.axis, rotation = o.rotation % 360,
@@ -347,35 +361,35 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/sniff", "dojo/_base/d
 						rotation += 360;
 					}
 					switch(rotation){
-					case 0:
-					case 180:
-						// trivial cases: horizontal labels
-						if(this.vertical){
-							majLabelW = minLabelW = size;
-						}else{
-							majLabelW = labelW.majLabelW;
-							minLabelW = labelW.minLabelW;
-						}
-						break;
-					case 90:
-					case 270:
-						// trivial cases: vertical
-						if(this.vertical){
-							majLabelW = labelW.majLabelW;
-							minLabelW = labelW.minLabelW;
-						}else{
-							majLabelW = minLabelW = size;
-						}
-						break;
-					default:
-						// all major labels are parallel they can't collapse except if the two ticks are
-						// closer than the height of the text * cos(90-rotation)
-						majLabelW  = this.vertical?Math.min(labelW.majLabelW, size / cosr):Math.min(labelW.majLabelW, size / sinr);
-						// for minor labels we need to rotated them
-						var gap1 = Math.sqrt(labelW.minLabelW * labelW.minLabelW + size * size),
-							gap2 = this.vertical?size * cosr + labelW.minLabelW * sinr:labelW.minLabelW * cosr + size * sinr;
-						minLabelW = Math.min(gap1, gap2);
-						break;
+						case 0:
+						case 180:
+							// trivial cases: horizontal labels
+							if(this.vertical){
+								majLabelW = minLabelW = size;
+							}else{
+								majLabelW = labelW.majLabelW;
+								minLabelW = labelW.minLabelW;
+							}
+							break;
+						case 90:
+						case 270:
+							// trivial cases: vertical
+							if(this.vertical){
+								majLabelW = labelW.majLabelW;
+								minLabelW = labelW.minLabelW;
+							}else{
+								majLabelW = minLabelW = size;
+							}
+							break;
+						default:
+							// all major labels are parallel they can't collapse except if the two ticks are
+							// closer than the height of the text * cos(90-rotation)
+							majLabelW  = this.vertical ? Math.min(labelW.majLabelW, size / cosr) : Math.min(labelW.majLabelW, size / sinr);
+							// for minor labels we need to rotated them
+							var gap1 = Math.sqrt(labelW.minLabelW * labelW.minLabelW + size * size),
+								gap2 = this.vertical ? size * cosr + labelW.minLabelW * sinr : labelW.minLabelW * cosr + size * sinr;
+							minLabelW = Math.min(gap1, gap2);
+							break;
 					}
 					// we need to check both minor and major labels fit a minor step
 					this.scaler.minMinorStep = this._prevMinMinorStep =  Math.max(majLabelW, minLabelW) + labelGap;

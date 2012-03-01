@@ -27,12 +27,10 @@ var results, savedData;
 			"dijit/registry", 
 			"dojox/mvc/at",
 			"dojox/mvc/getStateful", 
-			"dojox/mvc/getStatefulOptions",
 			"dojo/data/ItemFileWriteStore",
 			"dojo/store/DataStore",
 			"dojo/_base/kernel",
 			"dojox/mvc/_atBindingExtension", 
-			"dojox/mvc/_Controller",
 			"dojox/mvc/ListController", 
 			"dojox/mvc/EditModelRefController", 
 			"dojox/mvc/StatefulArray",
@@ -43,13 +41,13 @@ var results, savedData;
 			"dijit/layout/ContentPane",
 			"dijit/form/TextBox"
 			],
-			function(parser, registry, at, getStateful, getStatefulOptions, ItemFileWriteStore, DataStore, kernel){
+			function(parser, registry, at, getStateful, ItemFileWriteStore, DataStore, kernel){
 				dojox.debugDataBinding=true;
 				var writeStore = new ItemFileWriteStore({url: kernel.moduleUrl("dojox.mvc.tests.regression._data", "mvcRepeatData.json")});
 				var modelPromise = new DataStore({store: writeStore}).query(); 
 				modelPromise.then(function(data){ 
 					savedData = data;
-					results = getStateful(data, getStatefulOptions);
+					results = getStateful(data);
 
 					parser.parse();
 				});
@@ -83,8 +81,7 @@ var results, savedData;
 </head>
 <body class="claro"
 	style="width: 100%; height: 100%; margin: 0; padding: 0;">
-	<span id="listCtl" data-dojo-type="dojox.mvc._Controller"
-		data-dojo-mixins="dojox.mvc.ListController"
+	<span id="listCtl" data-dojo-type="dojox.mvc.ListController"
 		data-dojo-props="model: results, cursorIndex: 0"></span>
 	<div id="header">
 		<div id="navigation"></div>
