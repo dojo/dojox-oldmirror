@@ -275,21 +275,6 @@ var PlotEvents = dojox.charting.plot2d._PlotEvents;
 					}
 				}
 			}
-			//fix for plot with one series
-			if(this.series.length == 1){
-				var run = this.series[0].data;
-				if(run !== null){
-					var max = 0, min;
-					for(var key in run){
-						max = max ? Math.max(run[key], max) : run[key];
-						min = min ? Math.min(run[key], min) : run[key];
-					}
-					for(var key in run){
-						this.datas[key] = {min : min, max: max};
-					}
-				}
-			}
-			//eof for plot with one series
 			//text
 			var textGroup = s.createGroup(), len = this._getObjectLength(this.datas), k = 0;
 			for(var key in this.datas){
@@ -320,7 +305,7 @@ var PlotEvents = dojox.charting.plot2d._PlotEvents;
 					for(var key in run){
 						var data = this.datas[key], min = data.min, max = data.max, distance = max - min,
 							entry = run[key], end = start + 2 * Math.PI * k / len,
-							point = this._getCoordinate(circle, r*(ro + (1-ro)*(entry-min)/(distance === 0 ? min : distance)), end);
+							point = this._getCoordinate(circle, r*(ro + (1-ro)*(entry-min)/distance), end);
 						seriePoints.push(point);
 						tipData.push({sname: serieEntry.name, key: key, data: entry});
 						k++;
@@ -569,7 +554,7 @@ var PlotEvents = dojox.charting.plot2d._PlotEvents;
 			return {
 				x: circle.cx + radius * Math.cos(angle),
 				y: circle.cy + radius * Math.sin(angle)
-			};
+			}
 		},
 		
 		_getObjectLength: function(obj){
