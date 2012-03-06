@@ -4,6 +4,9 @@
 /* dojox.mobile.ListItem */
 .mblListItem {
   position: relative;
+  overflow: hidden;
+  /* for focus frame */
+
   padding: 0 8px;
   height: 64px;
   list-style-type: none;
@@ -47,6 +50,7 @@
   float: left;
   line-height: normal;
   margin-top: 17.5px;
+  margin-bottom: -17.5px;
   margin-right: 11px;
 }
 .mblListItemIcon {
@@ -54,6 +58,7 @@
   float: left;
   line-height: normal;
   margin-top: 17.5px;
+  margin-bottom: -17.5px;
   margin-right: 11px;
 }
 .mblListItemRightIcon, .mblListItemRightIcon2, .mblListItemUncheckIcon {

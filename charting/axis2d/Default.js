@@ -11,7 +11,7 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/sniff", "dojo/_base/d
 			min, max, from, to, majorTickStep, minorTickStep, microTickStep,
 			labels, labelFunc, maxLabelSize,
 			stroke, majorTick, minorTick, microTick, tick,
-			font, fontColor){
+			font, fontColor, titleGap, titleFont, titleFontColor, titleOrientation, enableCache, dropLabels, labelSizeChange){
 	
 		//	summary:
 		//		Optional arguments used in the definition of an axis.
@@ -31,11 +31,11 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/sniff", "dojo/_base/d
 		//	fixed: Boolean?
 		//		Force all axis labels to be fixed numbers.  Default is true.
 		//	majorLabels: Boolean?
-		//		Flag to draw all labels at major ticks. Default is true.
+		//		Flag to draw labels at major ticks. Default is true.
 		//	minorTicks: Boolean?
 		//		Flag to draw minor ticks on an axis.  Default is true.
 		//	minorLabels: Boolean?
-		//		Flag to draw labels on minor ticks. Default is true.
+		//		Flag to labels on minor ticks when there is enough space. Default is true.
 		//	microTicks: Boolean?
 		//		Flag to draw micro ticks on an axis. Default is false.
 		//	htmlLabels: Boolean?
@@ -98,6 +98,9 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/sniff", "dojo/_base/d
 		//		Whether the axis automatically drops labels at regular interval or not to avoid labels overlapping.
 		//		This gives better results but require more computations.  You can disable it to save computation
 		//		time when you know your labels won't overlap. Default is true.
+		//	labelSizeChange: Boolean?
+		//		Indicates to the axis whether the axis labels are changing their size on zoom. If false this allows to
+		//		optimize the axis by avoiding recomputing labels maximum size on zoom actions. Default is false.
 	
 		this.vertical = vertical;
 		this.fixUpper = fixUpper;
@@ -130,6 +133,7 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/sniff", "dojo/_base/d
 		this.fontColor = fontColor;
 		this.enableCache = enableCache;
 		this.dropLabels = dropLabels;
+		this.labelSizeChange = labelSizeChange;
 	}
 	var Invisible = dojox.charting.axis2d.Invisible
 	=====*/
@@ -186,7 +190,8 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/sniff", "dojo/_base/d
 			rotation:	0,			// label rotation angle in degrees
 			htmlLabels:  true,		// use HTML to draw labels
 			enableCache: false,		// whether we cache or not
-			dropLabels: true		// whether we automatically drop overlapping labels or not
+			dropLabels: true,		// whether we automatically drop overlapping labels or not
+			labelSizeChange: false // whether the labels size change on zoom
 		},
 		optionalParams: {
 			min:			0,	// minimal value on this axis
@@ -260,6 +265,10 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/sniff", "dojo/_base/d
 			if(!labels.length){
 				return 0;
 			}
+			if(labels.length > 50){
+				// let's avoid degenerated cases
+				labels.length = 50;
+			}
 			if(lang.isObject(labels[0])){
 				labels = df.map(labels, function(label){ return label.text; });
 			}
@@ -278,9 +287,11 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/sniff", "dojo/_base/d
 				// everything might have changed, reset the minMinorStep value
 				this.scaler.minMinorStep = this._prevMinMinorStep = 0;
 				var ob = lang.clone(o);
-				delete o.to;
-				delete o.from;
-				var sb = lin.buildScaler(min, max, span, o);
+				delete ob.to;
+				delete ob.from;
+				// build all the ticks from min, to max not from to to _but_ using the step
+				// that would be used if we where just displaying from to to from.
+				var sb = lin.buildScaler(min, max, span, ob, o.to - o.from);
 				sb.minMinorStep = 0;
 				this._majorStart = sb.major.start;
 				// we build all the ticks not only the ones we need to draw in order to get
@@ -298,18 +309,18 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/sniff", "dojo/_base/d
 					var labels = [];
 					if(this.opt.majorLabels){
 						arr.forEach(tb.major, tickLabelFunc, labels);
-						majLabelW = this._groupLabelWidth(labels, font, o.maxLabelCharCount);
-						if(o.maxLabelSize){
-							majLabelW = Math.min(o.maxLabelSize, majLabelW);
+						majLabelW = this._groupLabelWidth(labels, font, ob.maxLabelCharCount);
+						if(ob.maxLabelSize){
+							majLabelW = Math.min(ob.maxLabelSize, majLabelW);
 						}
 					}
 					// do the minor labels computation only if dropLabels is set
 					labels = [];
 					if(this.opt.dropLabels && this.opt.minorLabels){
 						arr.forEach(tb.minor, tickLabelFunc, labels);
-						minLabelW = this._groupLabelWidth(labels, font, o.maxLabelCharCount);
-						if(o.maxLabelSize){
-							minLabelW = Math.min(o.maxLabelSize, minLabelW);
+						minLabelW = this._groupLabelWidth(labels, font, ob.maxLabelCharCount);
+						if(ob.maxLabelSize){
+							minLabelW = Math.min(ob.maxLabelSize, minLabelW);
 						}
 					}
 					this._maxLabelSize = {
@@ -331,6 +342,9 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/sniff", "dojo/_base/d
 			// not when for example when we scroll (otherwise effect would be weird)
 			if((this._invalidMaxLabelSize || span != this._oldSpan) && (min != Infinity && max != -Infinity)){
 				this._invalidMaxLabelSize = false;
+				if(this.opt.labelSizeChange){
+					this._maxLabelSize = null;
+				}
 				this._oldSpan = span;
 				var o = this.opt;
 				var ta = this.chart.theme.axis, rotation = o.rotation % 360,
@@ -347,35 +361,35 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/sniff", "dojo/_base/d
 						rotation += 360;
 					}
 					switch(rotation){
-					case 0:
-					case 180:
-						// trivial cases: horizontal labels
-						if(this.vertical){
-							majLabelW = minLabelW = size;
-						}else{
-							majLabelW = labelW.majLabelW;
-							minLabelW = labelW.minLabelW;
-						}
-						break;
-					case 90:
-					case 270:
-						// trivial cases: vertical
-						if(this.vertical){
-							majLabelW = labelW.majLabelW;
-							minLabelW = labelW.minLabelW;
-						}else{
-							majLabelW = minLabelW = size;
-						}
-						break;
-					default:
-						// all major labels are parallel they can't collapse except if the two ticks are
-						// closer than the height of the text * cos(90-rotation)
-						majLabelW  = this.vertical?Math.min(labelW.majLabelW, size / cosr):Math.min(labelW.majLabelW, size / sinr);
-						// for minor labels we need to rotated them
-						var gap1 = Math.sqrt(labelW.minLabelW * labelW.minLabelW + size * size),
-							gap2 = this.vertical?size * cosr + labelW.minLabelW * sinr:labelW.minLabelW * cosr + size * sinr;
-						minLabelW = Math.min(gap1, gap2);
-						break;
+						case 0:
+						case 180:
+							// trivial cases: horizontal labels
+							if(this.vertical){
+								majLabelW = minLabelW = size;
+							}else{
+								majLabelW = labelW.majLabelW;
+								minLabelW = labelW.minLabelW;
+							}
+							break;
+						case 90:
+						case 270:
+							// trivial cases: vertical
+							if(this.vertical){
+								majLabelW = labelW.majLabelW;
+								minLabelW = labelW.minLabelW;
+							}else{
+								majLabelW = minLabelW = size;
+							}
+							break;
+						default:
+							// all major labels are parallel they can't collapse except if the two ticks are
+							// closer than the height of the text * cos(90-rotation)
+							majLabelW  = this.vertical ? Math.min(labelW.majLabelW, size / cosr) : Math.min(labelW.majLabelW, size / sinr);
+							// for minor labels we need to rotated them
+							var gap1 = Math.sqrt(labelW.minLabelW * labelW.minLabelW + size * size),
+								gap2 = this.vertical ? size * cosr + labelW.minLabelW * sinr : labelW.minLabelW * cosr + size * sinr;
+							minLabelW = Math.min(gap1, gap2);
+							break;
 					}
 					// we need to check both minor and major labels fit a minor step
 					this.scaler.minMinorStep = this._prevMinMinorStep =  Math.max(majLabelW, minLabelW) + labelGap;
@@ -428,8 +442,8 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/sniff", "dojo/_base/d
 			var maxLabelSize = this._getMaxLabelSize(); // don't need parameters, calculate has been called before => we use cached value
 			if(maxLabelSize){
 				var side;
-				// TODO: here we take only major labels into account for offsets, might not be enough is some corner cases
-				var labelWidth = maxLabelSize.majLabelW, size = maxLabelSize.majLabelH;
+				var labelWidth = Math.ceil(Math.max(maxLabelSize.majLabelW, maxLabelSize.minLabelW)) + 1,
+					size = Math.ceil(Math.max(maxLabelSize.majLabelH, maxLabelSize.minLabelH)) + 1;
 				if(this.vertical){
 					side = leftBottom ? "l" : "r";
 					switch(rotation){
@@ -788,6 +802,7 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/sniff", "dojo/_base/d
 			}
 
 			var rel = (t.major.length > 0)?(t.major[0].value - this._majorStart) / c.major.tick:0;
+			var canLabel = this.opt.majorLabels;
 			arr.forEach(t.major, function(tick, i){
 				var offset = f(tick.value), elem,
 					x = start.x + axisVector.x * offset,
@@ -840,7 +855,7 @@ define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/sniff", "dojo/_base/d
 
 			dx = tickVector.x * taMinorTick.length;
 			dy = tickVector.y * taMinorTick.length;
-			var canLabel = c.minMinorStep <= c.minor.tick * c.bounds.scale;
+			canLabel = this.opt.minorLabels && c.minMinorStep <= c.minor.tick * c.bounds.scale;
 			arr.forEach(t.minor, function(tick){
 				var offset = f(tick.value), elem,
 					x = start.x + axisVector.x * offset,
