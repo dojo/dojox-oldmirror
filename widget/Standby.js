@@ -326,7 +326,7 @@ return declare("dojox.widget.Standby", [_Widget, _TemplatedMixin],{
 			}
 
 			//Figure out how to zIndex this thing over the target.
-			var zi = domStyle.get(target, "zIndex");
+			var zi = domStyle.get(target, "zIndex") || "0";
 			var ziUl = zi;
 			var ziIn = zi;
 
