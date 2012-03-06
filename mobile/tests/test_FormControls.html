@@ -18,8 +18,21 @@
 			dojo.require("dojox.mobile.RadioButton");
 			dojo.require("dojox.mobile.Slider");
 			dojo.require("dojox.mobile.TextBox");
+			dojo.require("dojox.mobile.SearchBox");
 			dojo.require("dojox.mobile.ExpandingTextArea");
 			dojo.require("dojox.mobile.ToggleButton");
+
+			myOnSearch = function(results, query, options){
+				if(results.length){
+					console.log('first paged result ' + (options.start+1) + ' of ' + results.total + ': label = ' + results[0].name + ', value = ' + results[0].value);
+					console.log('last paged result ' + (options.start+results.length) + ' of ' + results.total + ': label = ' + results[results.length-1].name + ', value = ' + results[results.length-1].value);
+				}else if(results.total == 0){
+					console.log('no matching results');
+				}
+				if((options.start+results.length) < results.total){
+					results.nextPage();
+				}
+			};
 		</script>
 		
 		<style>
@@ -165,6 +178,10 @@
 					<tr>
 						<td valign="top"><span class="bold">TextBox</span></td>
 						<td align="right"><input dojoType="dojox.mobile.TextBox" maxLength="9" selectOnClick="true" placeHolder="max 9 chars"></td>
+					</tr>
+					<tr>
+						<td valign="top"><span class="bold">SearchBox</span></td>
+						<td align="right"><input dojoType="dojox.mobile.SearchBox" type="search" selectOnClick="true" placeHolder="Search" data-dojo-props='list:"states", pageSize:5, onSearch:myOnSearch'></td>
 					</tr>
 				</table>
 			</div>

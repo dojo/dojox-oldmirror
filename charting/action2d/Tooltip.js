@@ -1,6 +1,6 @@
-define(["dojo/_base/kernel", "dijit/Tooltip","dojo/_base/lang", "dojo/_base/html", "dojo/_base/declare", "./PlotAction", 
+define(["dojo/_base/kernel", "dijit/Tooltip","dojo/_base/lang", "dojo/_base/declare", "dojo/dom-style", "./PlotAction",
 	"dojox/gfx/matrix", "dojox/lang/functional", "dojox/lang/functional/scan", "dojox/lang/functional/fold"], 
-	function(dojo, Tooltip, lang, html, declare, PlotAction, m, df, dfs, dff){
+	function(dojo, Tooltip, lang, declare, domStyle, PlotAction, m, df, dfs, dff){
 	
 	/*=====
 	dojo.declare("dojox.charting.action2d.__TooltipCtorArgs", dojox.charting.action2d.__PlotActionCtorArgs, {
@@ -75,7 +75,7 @@ define(["dojo/_base/kernel", "dijit/Tooltip","dojo/_base/lang", "dojo/_base/html
 			if(!o.shape || o.type !== "onmouseover"){ return; }
 			
 			// calculate relative coordinates and the position
-			var aroundRect = {type: "rect"}, position = ["after", "before"];
+			var aroundRect = {type: "rect"}, position = ["after-centered", "before-centered"];
 			switch(o.element){
 				case "marker":
 					aroundRect.x = o.cx;
@@ -92,6 +92,8 @@ define(["dojo/_base/kernel", "dijit/Tooltip","dojo/_base/lang", "dojo/_base/html
 					// intentional fall down
 				case "bar":
 					aroundRect = lang.clone(o.shape.getShape());
+					aroundRect.w = aroundRect.width;
+					aroundRect.h = aroundRect.height;
 					break;
 				case "candlestick":
 					aroundRect.x = o.x;
@@ -146,7 +148,7 @@ define(["dojo/_base/kernel", "dijit/Tooltip","dojo/_base/lang", "dojo/_base/html
 
 			var tooltip = this.text(o);
 			if(this.chart.getTextDir){
-				var isChartDirectionRtl = (html.style(this.chart.node,"direction") == "rtl");
+				var isChartDirectionRtl = (domStyle.get(this.chart.node, "direction") == "rtl");
 				var isBaseTextDirRtl = (this.chart.getTextDir(tooltip) == "rtl");
 			}
 			if(tooltip){

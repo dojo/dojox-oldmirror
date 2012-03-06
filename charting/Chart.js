@@ -1,10 +1,10 @@
-define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/declare", "dojo/_base/html", 
+define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/declare", "dojo/dom-style",
 	"dojo/dom", "dojo/dom-geometry", "dojo/dom-construct","dojo/_base/Color", "dojo/_base/sniff",
-	"./Element", "./Theme", "./Series", "./axis2d/common",
+	"./Element", "./SimpleTheme", "./Series", "./axis2d/common",
 	"dojox/gfx", "dojox/lang/functional", "dojox/lang/functional/fold", "dojox/lang/functional/reversed"], 
-	function(lang, arr, declare, html, 
+	function(lang, arr, declare, domStyle,
 	 		 dom, domGeom, domConstruct, Color, has,
-	 		 Element, Theme, Series, common, 
+	 		 Element, SimpleTheme, Series, common,
 	 		 g, func, funcFold, funcReversed){
 	/*=====
 	dojox.charting.__ChartCtorArgs = function(margins, stroke, fill, delayInMs){
@@ -100,7 +100,7 @@ define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/declare", "dojo/_base/
 		//	|		)
 		//	|		.render();
 		
-		//	theme: dojox.charting.Theme?
+		//	theme: dojox.charting.SimpleTheme?
 		//		An optional theme to use for styling the chart.
 		//	axes: dojox.charting.Axis{}?
 		//		A map of axes for use in plotting a chart.
@@ -124,8 +124,6 @@ define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/declare", "dojo/_base/
 		//		The main graphics surface upon which a chart is drawn.
 		//	dirty: Boolean
 		//		A boolean flag indicating whether or not the chart needs to be updated/re-rendered.
-		//	coords: Object
-		//		The coordinates on a page of the containing node, as returned from dojo.coords.
 
 		constructor: function(/* DOMNode */node, /* dojox.charting.__ChartCtorArgs? */kwArgs){
 			//	summary:
@@ -154,7 +152,6 @@ define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/declare", "dojo/_base/
 			this.series = [];	// stack of data runs
 			this.runs = {};		// map of data run indices
 			this.dirty = true;
-			this.coords = null;
 
 			// create a surface
 			this.node = dom.byId(node);
@@ -180,15 +177,17 @@ define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/declare", "dojo/_base/
 			//		returned by dojo.coords.
 			//	returns: Object
 			//		The resulting coordinates of the chart.  See dojo.coords for details.
-			if(!this.coords){
-				this.coords = html.coords(this.node, true);
-			}
-			return this.coords;	//	Object
+			var node = this.node;
+			var s = domStyle.getComputedStyle(node), coords = domGeom.getMarginBox(node, s);
+			var abs = domGeom.position(node, true);
+			coords.x = abs.x;
+			coords.y = abs.y;
+			return coords;	//	Object
 		},
 		setTheme: function(theme){
 			//	summary:
 			//		Set a theme of the chart.
-			//	theme: dojox.charting.Theme
+			//	theme: dojox.charting.SimpleTheme
 			//		The theme to be used for visual rendering.
 			//	returns: dojox.charting.Chart
 			//		A reference to the current chart for functional chaining.
@@ -473,23 +472,31 @@ define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/declare", "dojo/_base/
 			}
 			return this;	//	dojox.charting.Chart
 		},
-		updateSeries: function(name, data){
+		updateSeries: function(name, data, offsets){
 			//	summary:
 			//		Update the given series with a new set of data points.
 			//	name: String
 			//		The name of the series as defined in addSeries.
-			//	data: Array|Object:
+			//	data: Array|Object
 			//		The array of data points (either numbers or objects) that
 			//		represents the data to be drawn. Or it can be an object. In
 			//		the latter case, it should have a property "data" (an array),
 			//		destroy(), and setSeriesObject().
+			//	offsets: Boolean?
+			//		If true recomputes the offsets of the chart based on the new
+			//		data. This is useful if the range of data is drastically changing
+			//		and offsets need to be recomputed.
 			//	returns: dojox.charting.Chart
 			//		A reference to the current chart for functional chaining.
 			if(name in this.runs){
 				var run = this.series[this.runs[name]];
 				run.update(data);
-				this._invalidateDependentPlots(run.plot, false);
-				this._invalidateDependentPlots(run.plot, true);
+				if(offsets){
+					this.dirty = true;
+				}else{
+					this._invalidateDependentPlots(run.plot, false);
+					this._invalidateDependentPlots(run.plot, true);
+				}
 			}
 			return this;	//	dojox.charting.Chart
 		},
@@ -616,8 +623,7 @@ define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/declare", "dojo/_base/
 				// and set it on the surface
 				this.surface.setDimensions(box.w, box.h);
 				this.dirty = true;
-				this.coords = null;
-				return this.render();	//	dojox.charting.Chart				
+				return this.render();	//	dojox.charting.Chart
 			}else{
 				return this;
 			}
@@ -757,7 +763,7 @@ define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/declare", "dojo/_base/
 
 			// set up a theme
 			if(!this.theme){
-				this.setTheme(new Theme(dojox.charting._def));
+				this.setTheme(new SimpleTheme());
 			}
 
 			// assign series
@@ -775,11 +781,8 @@ define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/declare", "dojo/_base/
 			}, this);
 			// assign axes
 			arr.forEach(this.stack, function(plot){
-				if(plot.hAxis){
-					plot.setAxis(this.axes[plot.hAxis]);
-				}
-				if(plot.vAxis){
-					plot.setAxis(this.axes[plot.vAxis]);
+				if(plot.assignAxes){
+					plot.assignAxes(this.axes);
 				}
 			}, this);
 
@@ -795,7 +798,7 @@ define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/declare", "dojo/_base/
 			// assumption: we don't have stacked axes yet
 			var offsets = this.offsets = { l: 0, r: 0, t: 0, b: 0 };
 			func.forIn(this.axes, function(axis){
-				func.forIn(axis.getOffsets(), function(o, i){ offsets[i] += o; });
+				func.forIn(axis.getOffsets(), function(o, i){ offsets[i] = Math.max(o, offsets[i]); });
 			});
 			// add title area
 			if(this.title){
@@ -872,7 +875,7 @@ define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/declare", "dojo/_base/
 			if(this.chartTitle && this.chartTitle.tagName){
 				// destroy title if it is a DOM node
 			    domConstruct.destroy(this.chartTitle);
-            }
+			}
 			this.surface.clear();
 			this.chartTitle = null;
 
@@ -914,9 +917,9 @@ define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/declare", "dojo/_base/
 			//	TRT: support for "inherit" as a named value in a theme.
 			if(fill == "inherit"){
 				//	find the background color of the nearest ancestor node, and use that explicitly.
-				var node = this.node, fill = new Color(html.style(node, "backgroundColor"));
+				var node = this.node, fill = new Color(domStyle.get(node, "backgroundColor"));
 				while(fill.a==0 && node!=document.documentElement){
-					fill = new Color(html.style(node, "backgroundColor"));
+					fill = new Color(domStyle.get(node, "backgroundColor"));
 					node = node.parentNode;
 				}
 			}

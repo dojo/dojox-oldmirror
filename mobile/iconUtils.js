@@ -1,5 +1,6 @@
 define([
 	"dojo/_base/array",
+	"dojo/_base/config",
 	"dojo/_base/connect",
 	"dojo/_base/event",
 	"dojo/_base/lang",
@@ -7,7 +8,7 @@ define([
 	"dojo/dom-construct",
 	"dojo/dom-style",
 	"./sniff"
-], function(array, connect, event, lang, domClass, domConstruct, domStyle, has){
+], function(array, config, connect, event, lang, domClass, domConstruct, domStyle, has){
 
 	var dm = lang.getObject("dojox.mobile", true);
 
@@ -66,12 +67,12 @@ define([
 						//		elements they need.
 						var i, j;
 						if(!sheet){
-							var dic = {};
+							var _dic = {};
 							var ss = dojo.doc.styleSheets;
 							for (i = 0; i < ss.length; i++){
-								ss[i] && findDomButtons(ss[i], dic);
+								ss[i] && findDomButtons(ss[i], _dic);
 							}
-							return dic;
+							return _dic;
 						}
 						var rules = sheet.cssRules || [];
 						for (i = 0; i < rules.length; i++){
@@ -92,6 +93,7 @@ define([
 								}
 							}
 						}
+						return dic;
 					}
 					this._domButtons = findDomButtons();
 				}else{
@@ -140,6 +142,7 @@ define([
 			//		If node exists, updates the existing node. Otherwise, creates a new one.
 			// icon:
 			//		Path for an image, or DOM button class name.
+			title = title || "";
 			if(icon && icon.indexOf("mblDomButton") === 0){
 				// DOM button
 				if(!node){
@@ -195,12 +198,20 @@ define([
 			//		A node reference to place the icon.
 			// pos:
 			//		The position of the icon relative to refNode.
-			if(!parent || !icon && !iconNode){ return; }
+			if(!parent || !icon && !iconNode){ return null; }
 			if(icon && icon !== "none"){ // create or update an icon
 				if(!this.iconWrapper && icon.indexOf("mblDomButton") !== 0 && !iconPos){ // image
+					if(iconNode && iconNode.tagName === "DIV"){
+						domConstruct.destroy(iconNode);
+						iconNode = null;
+					}
 					iconNode = this.createIcon(icon, null, iconNode, alt, parent, refNode, pos);
 					domClass.add(iconNode, "mblImageIcon");
 				}else{ // sprite or DOM button
+					if(iconNode && iconNode.tagName === "IMG"){
+						domConstruct.destroy(iconNode);
+						iconNode = null;
+					}
 					iconNode && domConstruct.empty(iconNode);
 					if(!iconNode){
 						iconNode = domConstruct.create("div", null, refNode || parent, pos);

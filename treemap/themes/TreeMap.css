@@ -18,11 +18,14 @@
 	border: 1px solid black;
 }
 
-.dojoxTreeMapLeaf:hover {
+/* on desktop recent browsers you may prefer to use :hover pseudo-class instead
+   of dojoxTreeMapHovered */
+
+.dojoxTreeMapLeaf.dojoxTreeMapHovered {
 	border-color: white;
 }
 
-.dojoxTreeMapGroup:hover {
+.dojoxTreeMapGroup.dojoxTreeMapHovered {
 }
 
 .dojoxTreeMapSelected {

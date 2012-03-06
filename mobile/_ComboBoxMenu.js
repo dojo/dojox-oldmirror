@@ -5,7 +5,7 @@ define([
 	"dojo/dom-construct",
 	"dijit/form/_ComboBoxMenuMixin",
 	"dijit/_WidgetBase",
-	"dojox/mobile/_ListTouchMixin",
+	"./_ListTouchMixin",
 	"./scrollable"
 ],
 	function(dojo, declare, domClass, domConstruct, ComboBoxMenuMixin, WidgetBase, ListTouchMixin, Scrollable){
@@ -75,7 +75,6 @@ define([
 			this.inherited(arguments);
 			this.scrollable = new Scrollable(dojo, dojox);
 			this.scrollable.resize = function(){}; // resize changes the height rudely
-			this.scrollable.androidWorkaroud = false; // disable Android workaround
 		}
 	});
 });

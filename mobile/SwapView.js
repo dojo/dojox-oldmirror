@@ -39,9 +39,14 @@ define([
 			domClass.add(this.domNode, "mblSwapView");
 			this.setSelectable(this.domNode, false);
 			this.containerNode = this.domNode;
-			connect.subscribe("/dojox/mobile/nextPage", this, "handleNextPage");
-			connect.subscribe("/dojox/mobile/prevPage", this, "handlePrevPage");
-			this.findAppBars();
+			this.subscribe("/dojox/mobile/nextPage", "handleNextPage");
+			this.subscribe("/dojox/mobile/prevPage", "handlePrevPage");
+			this.noResize = true; // not to call resize() from scrollable#init
+		},
+
+		startup: function(){
+			if(this._started){ return; }
+			this.inherited(arguments);
 		},
 
 		resize: function(){
@@ -184,12 +189,12 @@ define([
 						}
 					}
 				}
-	
+
 				if(newView){
 					newView._beingFlipped = true;
 					newView.slideTo({x:newX}, duration, easing);
 					newView._beingFlipped = false;
-	
+
 					if(newX === 0){ // moving to another view
 						dojox.mobile.currentView = newView;
 					}
@@ -199,7 +204,7 @@ define([
 			}
 			this.inherited(arguments);
 		},
-	
+
 		onFlickAnimationEnd: function(e){
 			// summary:
 			//		Overrides dojox.mobile.scrollable.onFlickAnimationEnd().

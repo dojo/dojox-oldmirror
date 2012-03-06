@@ -1,12 +1,13 @@
-define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "./Base", "./common", 
+define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "./CartesianBase", "./_PlotEvents", "./common",
 	"dojox/lang/functional", "dojox/lang/functional/reversed", "dojox/lang/utils", "dojox/gfx/fx", "dojox/gfx/gradutils"],
-	function(lang, arr, declare, Base, dc, df, dfr, du, fx, gradutils){
+	function(lang, arr, declare, CartesianBase, _PlotEvents, dc, df, dfr, du, fx, gradutils){
 /*=====
-var Base = dojox.charting.plot2d.Base;
+var CartesianBase = dojox.charting.plot2d.CartesianBase;
+var _PlotEvents = dojox.charting.plot2d._PlotEvents;
 =====*/
 	var purgeGroup = dfr.lambda("item.purgeGroup()");
 
-	return declare("dojox.charting.plot2d.Scatter", Base, {
+	return declare("dojox.charting.plot2d.Scatter", [CartesianBase, _PlotEvents], {
 		//	summary:
 		//		A plot object representing a typical scatter chart.
 		defaultParams: {
@@ -22,7 +23,8 @@ var Base = dojox.charting.plot2d.Base;
 			markerShadow:		{},
 			markerFill:			{},
 			markerFont:			"",
-			markerFontColor:	""
+			markerFontColor:	"",
+			styleFunc:			null
 		},
 
 		constructor: function(chart, kwArgs){
@@ -101,10 +103,17 @@ var Base = dojox.charting.plot2d.Base;
 					outlineMarkers = new Array(lpoly.length);
 
 				arr.forEach(lpoly, function(c, i){
-					var finalTheme = typeof run.data[i] == "number" ?
-							t.post(theme, "marker") :
-							t.addMixin(theme, "marker", run.data[i], true),
-						path = "M" + c.x + " " + c.y + " " + finalTheme.symbol;
+					var value = run.data[i], finalTheme;
+					if(this.opt.styleFunc || typeof value != "number"){
+						var tMixin = typeof value != "number" ? [value] : [];
+						if(this.opt.styleFunc){
+							tMixin.push(this.opt.styleFunc(value));
+						}
+						finalTheme = t.addMixin(theme, "marker", tMixin, true);
+					}else{
+						finalTheme = t.post(theme, "marker");
+					}
+					var path = "M" + c.x + " " + c.y + " " + finalTheme.symbol;
 					if(finalTheme.marker.shadow){
 						shadowMarkers[i] = s.createPath("M" + (c.x + finalTheme.marker.shadow.dx) + " " +
 							(c.y + finalTheme.marker.shadow.dy) + " " + finalTheme.symbol).

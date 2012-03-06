@@ -1,13 +1,14 @@
-define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "./Base", "./common", 
+define(["dojo/_base/lang", "dojo/_base/array", "dojo/_base/declare", "./CartesianBase", "./_PlotEvents", "./common",
 		"dojox/lang/functional", "dojox/lang/functional/reversed", "dojox/lang/utils", "dojox/gfx/fx"], 
-	function(lang, arr, declare, Base, dc, df, dfr, du, fx){
+	function(lang, arr, declare, CartesianBase, _PlotEvents, dc, df, dfr, du, fx){
 
 	var purgeGroup = dfr.lambda("item.purgeGroup()");
 /*=====
-var Base = dojox.charting.plot2d.Base;
+var CartesianBase = dojox.charting.plot2d.CartesianBase;
+var _PlotEvents = dojox.charting.plot2d._PlotEvents;
 =====*/
 
-	return declare("dojox.charting.plot2d.Columns", Base, {
+	return declare("dojox.charting.plot2d.Columns", [CartesianBase, _PlotEvents], {
 		//	summary:
 		//		The plot object representing a column chart (vertical bars).
 		defaultParams: {
@@ -25,6 +26,7 @@ var Base = dojox.charting.plot2d.Base;
 			outline:	{},
 			shadow:		{},
 			fill:		{},
+			styleFunc:  null,
 			font:		"",
 			fontColor:	""
 		},
@@ -128,10 +130,16 @@ var Base = dojox.charting.plot2d.Base;
 						var v = typeof value == "number" ? value : value.y,
 							vv = vt(v),
 							height = vv - baselineHeight,
-							h = Math.abs(height),
-							finalTheme = typeof value != "number" ?
-								t.addMixin(theme, "column", value, true) :
-								t.post(theme, "column");
+							h = Math.abs(height), finalTheme;
+						if(this.opt.styleFunc || typeof value != "number"){
+							var tMixin = typeof value != "number" ? [value] : [];
+							if(this.opt.styleFunc){
+								tMixin.push(this.opt.styleFunc(value));
+							}
+							finalTheme = t.addMixin(theme, "column", tMixin, true);
+						}else{
+							finalTheme = t.post(theme, "column");
+						}
 						if(width >= 1 && h >= 0){
 							var rect = {
 								x: offsets.l + ht(j + 0.5) + gap,

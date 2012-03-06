@@ -9,7 +9,7 @@ define([
 		_WidgetBase = dijit._WidgetBase;
 	=====*/
 
-	return declare("dojox.mvc._Container", [_WidgetBase], {
+	return declare("dojox.mvc._Container", _WidgetBase, {
 	
 		// stopParser: [private] Boolean
 		//		Flag to parser to not try and parse widgets declared inside the container.
@@ -26,6 +26,10 @@ define([
 		//		attributes are not supported in the template.
 		templateString : "",
 	
+		// inlineTemplateString: [private] String
+		//		Same as templateString. Used when this widget is mixed with a regular templated widget.
+		inlineTemplateString : "",
+
 		// _containedWidgets: [protected] dijit._Widget[]
 		//		The array of contained widgets at any given point in time within this container.
 		_containedWidgets : [],
