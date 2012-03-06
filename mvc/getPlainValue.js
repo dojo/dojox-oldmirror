@@ -1,7 +1,7 @@
 define([
 	"dojo/_base/array",
 	"dojo/_base/lang",
-	"dojo/Stateful",
+	"dojo/Stateful"
 ], function(array, lang, Stateful){
 	var getPlainValueOptions = /*===== dojox.mvc.getPlainValueOptions = =====*/ {
 		// summary:
