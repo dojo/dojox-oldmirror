@@ -623,6 +623,11 @@ define(["dojo/_base/lang", "dojo/_base/array","dojo/_base/declare", "dojo/dom-st
 			box = domGeom.getMarginBox(this.node);
 			var d = this.surface.getDimensions();
 			if(d.width != box.w || d.height != box.h){
+				//fix for displaying charts inside layout widgets
+				if(box.w == 0 || box.h == 0){
+					box.w = g.normalizedLength(this.node.style.width);
+					box.h = g.normalizedLength(this.node.style.height);
+				}
 				// and set it on the surface
 				this.surface.setDimensions(box.w, box.h);
 				this.dirty = true;
