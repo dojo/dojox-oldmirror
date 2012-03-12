@@ -24,7 +24,7 @@
 			showSelectedValue = function(){
 				var w = registry.byId("spin1");
 				document.getElementById("msg").innerHTML =
-					w.slots[0].getValue()+ ":" + w.slots[1].getValue() + ":" + w.slots[2].getValue();
+					w.slots[0].get("value")+ ":" + w.slots[1].get("value") + ":" + w.slots[2].get("value");
 			}
 		});
 	</script>
@@ -42,8 +42,8 @@
 <body style="visibility:hidden;">
 	<div data-dojo-type="dojox.mobile.ScrollableView">
 		<div data-dojo-type="dojox.mobile.Heading" data-dojo-props='fixed:"top"'>
-			<button data-dojo-type="dojox.mobile.ToolBarButton" onClick="showSelectedValue()" data-dojo-props='label:"OK"'></button>
-			<button data-dojo-type="dojox.mobile.ToolBarButton" onClick="gotoToday()" data-dojo-props='label:"Today"'></button>
+			<span data-dojo-type="dojox.mobile.ToolBarButton" onClick="showSelectedValue()" data-dojo-props='label:"OK"'></span>
+			<span data-dojo-type="dojox.mobile.ToolBarButton" onClick="gotoToday()" data-dojo-props='label:"Today"'></span>
 		</div>
 		<div id="spin1" data-dojo-type="dojox.mobile.SpinWheelDatePicker"></div>
 		<div id="msg">&nbsp;</div>
