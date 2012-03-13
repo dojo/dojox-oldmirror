@@ -90,7 +90,7 @@ var FilterAccordionContainer = declare("dojox.grid.enhanced.plugins.filter.Accor
 			return;
 		}
 		this.inherited(arguments);
-		if(parseInt(has('ie'), 10) == 7){
+		/*if(parseInt(has('ie'), 10) == 7){
 			//IE7 will fire a lot of "onresize" event during initialization.
 			array.some(this._connects, function(cnnt){
 				if(cnnt[0][1] == "onresize"){
@@ -98,7 +98,7 @@ var FilterAccordionContainer = declare("dojox.grid.enhanced.plugins.filter.Accor
 					return true;
 				}
 			}, this);
-		}
+		}*/
 		array.forEach(this.getChildren(), function(child){
 			this._modifyChild(child, true);
 		}, this);
