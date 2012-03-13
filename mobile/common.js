@@ -87,18 +87,16 @@ define([
 		//		Internal function to hide the address bar.
 		scrollTo(0, 1);
 		dm._hidingTimer = (dm._hidingTimer == 0) ? 200 : dm._hidingTimer * 2;
-		if(dm.isAddressBarHidden() || dm._hidingTimer > dm.hideAddressBarWait){
-			// Succeeded to hide address bar, or failed but timed out 
-			win.body().style.minHeight = dm.getScreenSize().h + "px";
-			dm.resizeAll();
-			dm._hiding = false;
-		}else{
-			// Failed to hide address bar, so retry after a while
-			setTimeout(dm.hide_1, dm._hidingTimer);
-			if(has('android')){
+		setTimeout(function(){ // wait for a while for "scrollTo" to finish
+			if(dm.isAddressBarHidden() || dm._hidingTimer > dm.hideAddressBarWait){
+				// Succeeded to hide address bar, or failed but timed out 
 				dm.resizeAll();
+				dm._hiding = false;
+			}else{
+				// Failed to hide address bar, so retry after a while
+				setTimeout(dm.hide_1, dm._hidingTimer);
 			}
-		}
+		}, 50); //50ms is an experiential value
 	};
 
 	dm.hideAddressBar = function(/*Event?*/evt){
@@ -111,8 +109,28 @@ define([
 		if(dm.disableHideAddressBar || dm._hiding){ return; }
 		dm._hiding = true;
 		dm._hidingTimer = has('iphone') ? 200 : 0; // Need to wait longer in case of iPhone
-		var minH = has('android') ? (outerHeight / devicePixelRatio) : screen.availHeight;
-		win.body().style.minHeight = minH + "px"; // to ensure enough height for scrollTo to work
+		var minH = screen.availHeight;
+		if(has('android')){
+			minH = outerHeight / devicePixelRatio;
+			// On some Android devices such as Galaxy SII, minH might be 0 at this time.
+			// In that case, retry again after a while. (200ms is an experiential value)
+			if(minH == 0){
+				dm._hiding = false;
+				setTimeout(function(){ dm.hideAddressBar(); }, 200);
+			}
+			// On some Android devices such as HTC EVO, "outerHeight/devicePixelRatio"
+			// is too short to hide address bar, so make it high enough
+			if(minH <= innerHeight){ minH = outerHeight; }
+			// On Android 2.2/2.3, hiding address bar fails when "overflow:hidden" style is
+			// applied to html/body element, so force "overflow:visible" style
+			if(has('android') < 3){
+				win.doc.documentElement.style.overflow = win.body().style.overflow = "visible";
+			}
+		}
+		if(win.body().offsetHeight < minH){ // to ensure enough height for scrollTo to work
+			win.body().style.minHeight = minH + "px";
+			dm._resetMinHeight = true;
+		}
 		setTimeout(dm.hide_1, dm._hidingTimer);
 	};
 
@@ -139,7 +157,7 @@ define([
 		if(dm.disableResizeAll){ return; }
 		connect.publish("/dojox/mobile/resizeAll", [evt, root]); // back compat
 		connect.publish("/dojox/mobile/beforeResizeAll", [evt, root]);
-		if(dm._hiding === false){
+		if(dm._resetMinHeight){
 			win.body().style.minHeight = dm.getScreenSize().h + "px";
 		} 
 		dm.updateOrient();
@@ -187,12 +205,22 @@ define([
 		dm.deviceTheme.setDm(dm);
 	}
 
+	// flag for Android transition animation flicker workaround
+	has.add('mblAndroidWorkaround', 
+			config["mblAndroidWorkaround"] !== false && has('android') < 3, undefined, true);
+	has.add('mblAndroid3Workaround', 
+			config["mblAndroid3Workaround"] !== false && has('android') >= 3, undefined, true);
+
 	ready(function(){
 		dm.detectScreenSize(true);
 
 		if(config["mblAndroidWorkaroundButtonStyle"] !== false && has('android')){
 			// workaround for the form button disappearing issue on Android 2.2-4.0
 			domConstruct.create("style", {innerHTML:"BUTTON,INPUT[type='button'],INPUT[type='submit'],INPUT[type='reset'],INPUT[type='file']::-webkit-file-upload-button{-webkit-appearance:none;}"}, win.doc.head, "first");
+		}
+		if(has('mblAndroidWorkaround')){
+			// add a css class to show view offscreen for android flicker workaround
+			domConstruct.create("style", {innerHTML:".mblView.mblAndroidWorkaround{position:absolute;top:-9999px !important;left:-9999px !important;}"}, win.doc.head, "last");
 		}
 
 		//	You can disable hiding the address bar with the following djConfig.

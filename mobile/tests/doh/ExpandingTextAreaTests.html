@@ -16,13 +16,15 @@
 	var WIDGET_CLASSNAME1 = "mblTextArea";
 	var WIDGET_CLASSNAME2 = "mblExpandingTextArea";
 	var WIDGET_HEIGHT1 = "16px";
+	var WIDGET_HEIGHT1_FF = "33px";
 //	var WIDGET_HEIGHT1_IE = "104px";
 //	var WIDGET_HEIGHT1_IE6 = "24px";
 	var WIDGET_HEIGHT1_IE = "24px";
 	var WIDGET_OFFSETHEIGHT1 = 26;
+	var WIDGET_OFFSETHEIGHT1_FF = 43;
 	var WIDGET_OFFSETHEIGHT1_IE = 34;
 	var WIDGET_OFFSETHEIGHT2 = 90;
-	var WIDGET_OFFSETHEIGHT2_IE = "34";
+	var WIDGET_OFFSETHEIGHT2_IE = "123";
 
 	require([
 		"dojo/_base/connect",
@@ -74,9 +76,9 @@
 			view1.performTransition("view2", 1, "none");
 		}
 		ready(function(){
-			var styleHeight =  has("ie") ? WIDGET_HEIGHT1_IE:WIDGET_HEIGHT1;
+			var styleHeight =  has("ie") ? WIDGET_HEIGHT1_IE:has("ff") ? WIDGET_HEIGHT1_FF:WIDGET_HEIGHT1;
 //			var styleHeight =  has("ie") === 6 ? WIDGET_HEIGHT1_IE6:(dojo.isIE ? WIDGET_HEIGHT1_IE:WIDGET_HEIGHT1);
-			var offsetHeight1 = has("ie") ? WIDGET_OFFSETHEIGHT1_IE:WIDGET_OFFSETHEIGHT1;
+			var offsetHeight1 = has("ie") ? WIDGET_OFFSETHEIGHT1_IE:has("ff") ? WIDGET_OFFSETHEIGHT1_FF:WIDGET_OFFSETHEIGHT1;
 			var offsetHeight2 = has("ie") ? WIDGET_OFFSETHEIGHT2_IE:WIDGET_OFFSETHEIGHT2;
 			runner.register("dojox.mobile.test.doh.ExpandingTextArea", [
 				{
@@ -88,15 +90,14 @@
 						var widget3 = _createExpandingTextAreaProgrammaticallyWithSourceNodeReference("view1-ExpandingTextArea3");
 
 						var d = new runner.Deferred();
-						var handle1 = connect.connect(widget3, "resize", this, d.getTestCallback(function(){
-							connect.disconnect(handle1);
+						setTimeout(d.getTestCallback(function(){
 							var widget1 = registry.byId("dojox_mobile_ExpandingTextArea_0");
 							var widget2 = registry.byId("view1-ExpandingTextArea2");
 							var widget3 = registry.byId("view1-ExpandingTextArea3");
 							_assertCorrectExpandingTextArea(widget1, styleHeight, offsetHeight1, offsetHeight2);
 							_assertCorrectExpandingTextArea(widget2, styleHeight, offsetHeight1, offsetHeight2);
 							_assertCorrectExpandingTextArea(widget3, styleHeight, offsetHeight1, offsetHeight2);
-						}));
+						}), 2000);
 						return d;
 					}
 				},
@@ -108,19 +109,16 @@
 						var widget2 = _createExpandingTextAreaProgrammatically("view2-ExpandingTextArea2place", "view2-ExpandingTextArea2", TEXTAREA_ROWS, TEXTAREA_COLS, TEXTAREA_INNERHTML);
 						var widget3 = _createExpandingTextAreaProgrammaticallyWithSourceNodeReference("view2-ExpandingTextArea3");
 
+						_showView2();
 						var d = new runner.Deferred();
-						var handle2 = connect.subscribe("/dojox/mobile/afterTransitionIn", d.getTestCallback(function(view){
-							if(view.id=="view2"){
-								connect.unsubscribe(handle2);
-							}
+						setTimeout(d.getTestCallback(function(){
 							var widget1 = registry.byId("dojox_mobile_ExpandingTextArea_1");
 							var widget2 = registry.byId("view2-ExpandingTextArea2");
 							var widget3 = registry.byId("view2-ExpandingTextArea3");
 							_assertCorrectExpandingTextArea(widget1, styleHeight, offsetHeight1, offsetHeight2);
 							_assertCorrectExpandingTextArea(widget2, styleHeight, offsetHeight1, offsetHeight2);
 							_assertCorrectExpandingTextArea(widget3, styleHeight, offsetHeight1, offsetHeight2);
-						}));
-						_showView2();
+						}), 2000);
 						return d;
 					}
 				}

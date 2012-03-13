@@ -4,13 +4,13 @@ define([
 	"dojo/_base/lang",
 	"dojo/_base/window",
 	"dojo/dom-class",
+	"dojo/touch",
 	"dijit/registry",
 	"dijit/_Contained",
 	"dijit/_WidgetBase",
 	"./TransitionEvent",
-	"./iconUtils",
-	"./sniff"
-], function(array, declare, lang, win, domClass, registry, Contained, WidgetBase, TransitionEvent, iconUtils, has){
+	"./iconUtils"
+], function(array, declare, lang, win, domClass, touch, registry, Contained, WidgetBase, TransitionEvent, iconUtils){
 
 /*=====
 	var Contained = dijit._Contained;
@@ -187,7 +187,7 @@ define([
 				this.inheritParams();
 			}
 			if(this._handleClick && this._selStartMethod === "touch"){
-				this._onTouchStartHandle = this.connect(this.domNode, has('touch') ? "ontouchstart" : "onmousedown", "_onTouchStart");
+				this._onTouchStartHandle = this.connect(this.domNode, touch.press, "_onTouchStart");
 			}
 			this.inherited(arguments);
 		},
@@ -204,9 +204,8 @@ define([
 						}
 						if(!this[p]){ this[p] = parent[base]; }
 						if(!this[pos]){ this[pos] = parent[pos]; }
-					}else{
-						if(!this[p]){ this[p] = parent[p]; }
 					}
+					if(!this[p]){ this[p] = parent[p]; }
 				}, this);
 			}
 			return !!parent;
@@ -288,13 +287,13 @@ define([
 		},
 
 		_onTouchStart: function(e){
-			if(this.onTouchStart(e) === false){ return; } // user's touchStart action
+			if(this.getParent().isEditing || this.onTouchStart(e) === false){ return; } // user's touchStart action
 			if(!this._onTouchEndHandle && this._selStartMethod === "touch"){
 				// Connect to the entire window. Otherwise, fail to receive
 				// events if operation is performed outside this widget.
 				// Expose both connect handlers in case the user has interest.
-				this._onTouchMoveHandle = this.connect(win.body(), has('touch') ? "ontouchmove" : "onmousemove", "_onTouchMove");
-				this._onTouchEndHandle = this.connect(win.body(), has('touch') ? "ontouchend" : "onmouseup", "_onTouchEnd");
+				this._onTouchMoveHandle = this.connect(win.body(), touch.move, "_onTouchMove"),
+				this._onTouchEndHandle = this.connect(win.body(), touch.release, "_onTouchEnd")
 			}
 			this.touchStartX = e.touches ? e.touches[0].pageX : e.clientX;
 			this.touchStartY = e.touches ? e.touches[0].pageY : e.clientY;
@@ -320,12 +319,7 @@ define([
 			var y = e.touches ? e.touches[0].pageY : e.clientY;
 			if(Math.abs(x - this.touchStartX) >= 4 ||
 			   Math.abs(y - this.touchStartY) >= 4){ // dojox.mobile.scrollable#threshold
-				if(this._selTimer){
-					clearTimeout(this._selTimer);
-					this._selTimer = null;
-				}
-				this._disconnect();
-
+				this.cancel();
 				var p = this.getParent();
 				if(p && p.selectOne){
 					this._prevSel && this._prevSel.set("selected", true);
@@ -341,14 +335,17 @@ define([
 			this._onTouchMoveHandle = this._onTouchEndHandle = null;
 		},
 
-		_onTouchEnd: function(e){
-			this._disconnect();
+		cancel: function(){
 			if(this._selTimer){
 				clearTimeout(this._selTimer);
 				this._selTimer = null;
-			}else if (this._delayedSelection){
-				return;
 			}
+			this._disconnect();
+		},
+
+		_onTouchEnd: function(e){
+			if(!this._selTimer && this._delayedSelection){ return; }
+			this.cancel();
 			this._onClick(e);
 		},
 
