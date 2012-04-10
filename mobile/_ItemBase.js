@@ -292,8 +292,8 @@ define([
 				// Connect to the entire window. Otherwise, fail to receive
 				// events if operation is performed outside this widget.
 				// Expose both connect handlers in case the user has interest.
-				this._onTouchMoveHandle = this.connect(win.body(), touch.move, "_onTouchMove"),
-				this._onTouchEndHandle = this.connect(win.body(), touch.release, "_onTouchEnd")
+				this._onTouchMoveHandle = this.connect(win.body(), touch.move, "_onTouchMove");
+				this._onTouchEndHandle = this.connect(win.body(), touch.release, "_onTouchEnd");
 			}
 			this.touchStartX = e.touches ? e.touches[0].pageX : e.clientX;
 			this.touchStartY = e.touches ? e.touches[0].pageY : e.clientY;

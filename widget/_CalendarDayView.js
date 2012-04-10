@@ -1,14 +1,22 @@
-define(["dojo/_base/declare", "dojox/widget/_CalendarView", "dijit/_Templated", "dojo/query", "dojo/dom-class", "dojo/_base/event", "dojo/text"
-], function(declare, _CalendarView, _Templated, query, domClass, event){
+define([
+	"dojo/_base/declare",
+	"dojox/widget/_CalendarView",
+	"dijit/_Templated",
+	"dojo/query",
+	"dojo/dom-class",
+	"dojo/_base/event",
+	"dojo/text!./Calendar/CalendarDay.html",
+	"dojo/cldr/supplemental"
+], function(declare, _CalendarView, _Templated, query, domClass, event, template, supplemental){
 	return declare("dojox.widget._CalendarDayView", [_CalendarView, dijit._Templated], {
-		// summary: View class for the dojox.widget.Calendar.
+		// summary: View class for the dojox/widget/Calendar.
 		//		Adds a view showing every day of a single month to the calendar.
-		//		This should not be mixed in directly with dojox.widget._CalendarBase.
-		//		Instead, use dojox.widget._CalendarDay
+		//		This should not be mixed in directly with dojox/widget._CalendarBase.
+		//		Instead, use dojox/widget._CalendarDay
 
 		// templateString: String
 		//		The template to be used to construct the widget.
-		templateString: dojo.cache("dojox.widget","Calendar/CalendarDay.html"),
+		templateString: template,
 
 		// datePart: String
 		//		Specifies how much to increment the displayed date when the user
@@ -30,7 +38,7 @@ define(["dojo/_base/declare", "dojox/widget/_CalendarView", "dijit/_Templated", 
 
 			// insert localized day names in the header
 			var dayNames = locale.getNames('days', this.dayWidth, 'standAlone', this.getLang());
-			var dayOffset = dojo.cldr.supplemental.getFirstDayOfWeek(this.getLang());
+			var dayOffset = supplemental.getFirstDayOfWeek(this.getLang());
 
 			// Set the text of the day labels.
 			query(".dijitCalendarDayLabel", this.domNode).forEach(function(label, i){
@@ -46,6 +54,7 @@ define(["dojo/_base/declare", "dojox/widget/_CalendarView", "dijit/_Templated", 
 			}
 		},
 
+		// TODO: This method needs serious work
 		_onDayClick: function(e){
 			// summary:
 			//		Executed when a day value is clicked.
@@ -88,7 +97,7 @@ define(["dojo/_base/declare", "dojox/widget/_CalendarView", "dijit/_Templated", 
 			var today = new Date();
 			var selected = this.get('value');
 
-			var dayOffset = dojo.cldr.supplemental.getFirstDayOfWeek(this.getLang());
+			var dayOffset = supplemental.getFirstDayOfWeek(this.getLang());
 			if(dayOffset > firstDay){ dayOffset -= 7; }
 
 			var compareDate = date.compare;

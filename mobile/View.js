@@ -339,7 +339,8 @@ define([
 
 				toWidget.movedFrom = fromNode.id;
 			}
-			if(has('mblAndroidWorkaround') && detail.transition && detail.transition != "none"){
+			if(has('mblAndroidWorkaround') && !config['mblCSS3Transition']
+					&& detail.transition && detail.transition != "none"){
 				// workaround for the screen flicker issue on Android 2.2/2.3
 				// apply "-webkit-transform-style:preserve-3d" to both toNode and fromNode
 				// to make them 3d-transition-ready state just before transition animation
@@ -538,9 +539,9 @@ define([
 			}
 			c = c || win.global;
 			if(typeof(m) == "string"){
-				c[m].apply(c, this._args);
+				c[m].apply(c, this._optArgs);
 			}else if(typeof(m) == "function"){
-				m.apply(c, this._args);
+				m.apply(c, this._optArgs);
 			}
 		},
 

@@ -140,6 +140,8 @@ define([
 			var parent = this.getParent();
 			if(parent && parent.closable){
 				this._clickCloseHandler = this.connect(this.iconDivNode, "onclick", "_onCloseButtonClick");
+				this._keydownCloseHandler = this.connect(this.iconDivNode, "onkeydown", "_onCloseButtonClick"); // for desktop browsers
+				this.iconDivNode.tabIndex = "0";
 			}
 
 			this.inherited(arguments);
@@ -156,6 +158,7 @@ define([
 		},
 
 		_onCloseButtonClick: function(e){
+			if(e && e.type === "keydown" && e.keyCode !== 13){ return; }
 			if(this.onCloseButtonClick(e) === false){ return; } // user's click action
 			if(this.onClose()){
 				this.destroy();
@@ -212,7 +215,8 @@ define([
 		},
 
 		_getBadgeAttr: function(){
-			return this.badgeObj ? this.badgeObj.getValue() : null;
+			return this.badgeObj && this.badgeObj.domNode.parentNode &&
+				this.badgeObj.domNode.parentNode.nodeType == 1 ? this.badgeObj.getValue() : null;
 		},
 
 		_setBadgeAttr: function(/*String*/value){
@@ -228,7 +232,9 @@ define([
 			if(value){
 				this.domNode.appendChild(this.badgeObj.domNode);
 			}else{
-				this.domNode.removeChild(this.badgeObj.domNode);
+				if(this.domNode === this.badgeObj.domNode.parentNode){
+					this.domNode.removeChild(this.badgeObj.domNode);
+				}
 			}
 		},
 

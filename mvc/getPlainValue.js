@@ -13,7 +13,7 @@ define([
 			// v: Anything
 			//		The value.
 
-			return lang.isArray(v) ? "array" : (v || {}).isInstanceOf && v.isInstanceOf(Stateful) || v !== null && v !== void 0 && {}.toString.call(v) == "[object Object]" ? "object" : "value";
+			return lang.isArray(v) ? "array" : v != null && {}.toString.call(v) == "[object Object]" ? "object" : "value";
 		},
 
 		getPlainArray: function(/*Anything[]*/ a){
@@ -63,5 +63,6 @@ define([
 		return (options || getPlainValue)["getPlain" + (options || getPlainValue).getType(value).replace(/^[a-z]/, function(c){ return c.toUpperCase(); })](value); // Anything
 	};
 
+	// lang.setObject() thing is for back-compat, remove it in 2.0
 	return lang.setObject("dojox.mvc.getPlainValue", lang.mixin(getPlainValue, getPlainValueOptions));
 });

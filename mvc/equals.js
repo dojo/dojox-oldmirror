@@ -14,7 +14,7 @@ define([
 			// v: Anything
 			//		The value.
 
-			return lang.isArray(v) ? "array" : lang.isFunction((v || {}).getTime) ? "date" : v !== null && v !== void 0 && {}.toString.call(v) == "[object Object]" ? "object" : "value";
+			return lang.isArray(v) ? "array" : lang.isFunction((v || {}).getTime) ? "date" : v != null && {}.toString.call(v) == "[object Object]" ? "object" : "value";
 		},
 
 		equalsArray: function(/*Anything[]*/ dst, /*Anything[]*/ src){
@@ -62,7 +62,7 @@ define([
 		// summary:
 		//		Compares two dojo.Stateful objects, by diving into the leaves.
 		// description:
-		//		Recursively iterates the raw value given, and convert them to stateful ones.
+		//		Recursively iterates and compares stateful values.
 		// dst: Anything
 		//		The stateful value to compare with.
 		// src: Anything
@@ -76,5 +76,6 @@ define([
 		return types[0] != types[1] ? false : options["equals" + types[0].replace(/^[a-z]/, function(c){ return c.toUpperCase(); })](dst, src); // Boolean
 	};
 
+	// lang.setObject() thing is for back-compat, remove it in 2.0
 	return lang.setObject("dojox.mvc.equals", lang.mixin(equals, equalsOptions));
 });

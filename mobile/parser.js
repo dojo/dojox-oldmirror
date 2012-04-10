@@ -70,7 +70,7 @@ define([
 							params[prop] = eval("(" + v + ")");
 						}else if(t === "function"){
 							params[prop] = lang.getObject(v, false) || new Function(v);
-//							n.removeAttribute(prop); TODO: uncomment this when dojo.parser is ready.
+							n.removeAttribute(prop);
 						}
 					}
 					params["class"] = n.className;
@@ -116,13 +116,13 @@ define([
 					type = (n._type = n.getAttribute("dojoType") || n.getAttribute("data-dojo-type"));
 				if(type){
 					if(n._skip){
-						n._skip = undefined;
+						n._skip = "";
 						continue;
 					}
 					if(getCtor(type).prototype.stopParser && !(options && options.template)){
 						var arr = n.getElementsByTagName("*");
 						for(j = 0; j < arr.length; j++){
-							arr[j]._skip = 1;
+							arr[j]._skip = "1";
 						}
 					}
 					list.push(n);

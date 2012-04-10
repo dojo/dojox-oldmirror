@@ -1,12 +1,27 @@
-define(["dijit/_Widget", "dijit/_Templated", "dijit/_Container", "dojo/date", "dojo/date/locale", "dojo/dom-style", "dojo/dom-class", "dojo/dom-construct", "dojo/_base/fx", "dojo/_base/connect", "dojo/_base/array", "dojo/_base/lang", "dijit/typematic"
-], function(_Widget, _Templated, _Container, dojoDate, dojoDateLocale, domStyle, domClass, domConstruct, fx, connect, array, lang){
-	return dojo.declare("dojox.widget._CalendarBase", [_Widget, _Templated, _Container], {
+define([
+	"dijit/_Widget",
+	"dijit/_Templated",
+	"dijit/_Container",
+	"dojo/_base/declare",
+	"dojo/date",
+	"dojo/date/locale",
+	"dojo/dom-style",
+	"dojo/dom-class",
+	"dojo/dom-construct",
+	"dojo/_base/fx",
+	"dojo/_base/connect",
+	"dojo/_base/array",
+	"dojo/_base/lang",
+	"dojo/text!./Calendar/Calendar.html",
+	"dijit/typematic"
+], function(_Widget, _Templated, _Container, declare, dojoDate, dojoDateLocale, domStyle, domClass, domConstruct, fx, connect, array, lang, template){
+	return declare("dojox.widget._CalendarBase", [_Widget, _Templated, _Container], {
 		// summary:
 		//		The Root class for all _Calendar extensions
 
 		// templateString: String
 		//		The template to be used to construct the widget.
-		templateString: dojo.cache("dojox.widget","Calendar/Calendar.html"),
+		templateString: template,
 
 		// _views: Array
 		//		The list of mixin views available on this calendar.
@@ -353,7 +368,7 @@ define(["dijit/_Widget", "dijit/_Templated", "dijit/_Container", "dojo/date", "d
 
 		_adjustDisplay: function(/*String*/part, /*int*/amount, noSlide){
 			// summary:
-			//		This function overrides the base function defined in dijit.Calendar.
+			//		This function overrides the base function defined in dijit/Calendar.
 			//		It changes the displayed years, months and days depending on the inputs.
 			var child = this._children[this._currentChild];
 

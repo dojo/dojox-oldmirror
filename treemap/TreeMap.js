@@ -1,8 +1,8 @@
 define(["dojo/_base/array", "dojo/_base/lang", "dojo/_base/declare", "dojo/_base/event", "dojo/_base/Color", "dojo/touch",
-		"dojo/_base/Deferred", "dojo/on", "dojo/query", "dojo/dom-construct", "dojo/dom-geometry", "dojo/dom-class", "dojo/dom-style",
+		"dojo/when", "dojo/on", "dojo/query", "dojo/dom-construct", "dojo/dom-geometry", "dojo/dom-class", "dojo/dom-style",
 		"./_utils", "dijit/_WidgetBase", "dojox/widget/_Invalidating", "dojox/widget/Selection",
 		"dojo/_base/sniff", "dojo/uacss"],
-	function(arr, lang, declare, event, Color, touch, Deferred, on, query, domConstruct, domGeom, domClass, domStyle,
+	function(arr, lang, declare, event, Color, touch, when, on, query, domConstruct, domGeom, domClass, domStyle,
 		utils, _WidgetBase, _Invalidating, Selection, has){
 
 	/*=====
@@ -111,6 +111,8 @@ define(["dojo/_base/array", "dojo/_base/lang", "dojo/_base/declare", "dojo/_base
 			this.connect(this.domNode, "mouseover", this._onMouseOver);
 			this.connect(this.domNode, "mouseout", this._onMouseOut);
 			this.connect(this.domNode, touch.release, this._onMouseUp);
+			this.domNode.setAttribute("role", "presentation");
+			this.domNode.setAttribute("aria-label", "treemap");
 		},
 		
 		buildRendering: function(){
@@ -193,7 +195,7 @@ define(["dojo/_base/array", "dojo/_base/lang", "dojo/_base/declare", "dojo/_base
 					// user asked us to observe the store
 					results.observe(lang.hitch(this, this._updateItem), true);
 				}				
-				r = Deferred.when(results, lang.hitch(this, this._initItems));
+				r = when(results, lang.hitch(this, this._initItems));
 			}else{
 				r = this._initItems([]);
 			}
@@ -215,7 +217,7 @@ define(["dojo/_base/array", "dojo/_base/lang", "dojo/_base/declare", "dojo/_base
 					this._data.splice(previousIndex, 1);
 				}else{
 					// this is a put, previous and new index identical
-					// we don't now what has change exactly with store API
+					// we don't know what has change exactly with store API
 					this._data[newIndex] = item;
 				}
 			}else if(newIndex!=-1){
@@ -765,12 +767,15 @@ define(["dojo/_base/array", "dojo/_base/lang", "dojo/_base/declare", "dojo/_base
 						}else{
 							bWidth += 1;
 						}
-						domStyle.set(div, {
-							left: (parseInt(rStyle["left"])+1)+"px",
-							top: (parseInt(rStyle["top"])+1)+"px",
-							width: (parseInt(rStyle["width"])-bWidth)+"px",
-							height: (parseInt(rStyle["height"])-bWidth)+"px"
-						});
+						// if we just drill down some renders might not be laid out?
+						if(rStyle["left"] != "auto"){
+							domStyle.set(div, {
+								left: (parseInt(rStyle["left"])+1)+"px",
+								top: (parseInt(rStyle["top"])+1)+"px",
+								width: (parseInt(rStyle["width"])-bWidth)+"px",
+								height: (parseInt(rStyle["height"])-bWidth)+"px"
+							});
+						}
 					}
 				}else{
 					if(ie && (has("quirks") || ie < 9)){

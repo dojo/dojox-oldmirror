@@ -69,7 +69,9 @@ define([
 			var id = this.viewMap[transOpts.url];
 			if(id){
 				transOpts.moveTo = id;
-				if(!transOpts.noTransition){
+				if(transOpts.noTransition){
+					registry.byId(id).hide();
+				}else{
 					new TransitionEvent(win.body(), transOpts).dispatch();
 				}
 				d.resolve(true);
@@ -85,8 +87,8 @@ define([
 						|| (registry.byNode(c) && registry.byNode(c).fixed);
 					if(fixed === "bottom"){
 						refNode = c;
+						break;
 					}
-					break;
 				}
 			}
 
@@ -99,7 +101,9 @@ define([
 				handler.processData(contentType, lang.hitch(this, function(id){
 					if(id){
 						this.viewMap[transOpts.url] = transOpts.moveTo = id;
-						if(!transOpts.noTransition){
+						if(transOpts.noTransition){
+							registry.byId(id).hide();
+						}else{
 							new TransitionEvent(win.body(), transOpts).dispatch();
 						}
 						d.resolve(true);
@@ -134,7 +138,7 @@ define([
 					win.global.open(detail.href, detail.hrefTarget);
 				}else{
 					var view; // find top level visible view
-					for(var v = viewRegistry.getEnclosingView(event.target); v; v = viewRegistry.getParentView(v)){
+					for(var v = viewRegistry.getEnclosingView(evt.target); v; v = viewRegistry.getParentView(v)){
 						view = v;
 					}
 					if(view){

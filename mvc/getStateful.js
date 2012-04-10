@@ -14,7 +14,7 @@ define([
 			// v: Anything
 			//		The value.
 
-			return lang.isArray(v) ? "array" : v !== null && v !== void 0 && {}.toString.call(v) == "[object Object]" ? "object" : "value";
+			return lang.isArray(v) ? "array" : v != null && {}.toString.call(v) == "[object Object]" ? "object" : "value";
 		},
 
 		getStatefulArray: function(/*Anything[]*/ a){
@@ -62,5 +62,6 @@ define([
 		return (options || getStateful)["getStateful" + (options || getStateful).getType(value).replace(/^[a-z]/, function(c){ return c.toUpperCase(); })](value); // Anything
 	};
 
+	// lang.setObject() thing is for back-compat, remove it in 2.0
 	return lang.setObject("dojox.mvc.getStateful", lang.mixin(getStateful, getStatefulOptions));
 });

@@ -1,13 +1,23 @@
-define(["dojo/_base/declare", "dojox/widget/_CalendarView", "dijit/_Templated", "dojo/query", "dojo/dom-class", "dojo/_base/connect", "dojo/_base/event", "dojo/_base/lang", "dojo/date/locale", "dojo/text"
-], function(declare, _CalendarView, _Templated, query, domClass, connect, event, lang, dojoDateLocale){
+define([
+	"dojo/_base/declare",
+	"dojox/widget/_CalendarView",
+	"dijit/_Templated",
+	"dojo/query",
+	"dojo/dom-class",
+	"dojo/_base/connect",
+	"dojo/_base/event",
+	"dojo/_base/lang",
+	"dojo/date/locale",
+	"dojo/text!./Calendar/CalendarMonthYear.html",
+], function(declare, _CalendarView, _Templated, query, domClass, connect, event, lang, dojoDateLocale, template){
 	return declare("dojox.widget._CalendarMonthYearView", [_CalendarView, _Templated], {
 
-		// summary:
+		// summary:fojo
 		//		A Calendar view listing the 12 months of the year
 
 		// templateString: String
 		//		The template to be used to construct the widget.
-		templateString: dojo.cache("dojox.widget","Calendar/CalendarMonthYear.html"),
+		templateString: template,
 
 		// datePart: String
 		//		Specifies how much to increment the displayed date when the user

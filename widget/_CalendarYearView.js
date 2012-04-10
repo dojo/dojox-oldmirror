@@ -1,11 +1,18 @@
-define(["dojo/_base/declare", "dojox/widget/_CalendarView", "dijit/_Templated", "dojo/date", "dojo/dom-class", "dojo/_base/event", "dojo/text"
-], function(declare, _CalendarView, _Templated, dojoDate, domClass, event){
+define([
+	"dojo/_base/declare",
+	"dojox/widget/_CalendarView",
+	"dijit/_Templated",
+	"dojo/date",
+	"dojo/dom-class",
+	"dojo/_base/event",
+	"dojo/text!./Calendar/CalendarYear.html"
+], function(declare, _CalendarView, _Templated, dojoDate, domClass, event, template){
 	return declare("dojox.widget._CalendarYearView", [_CalendarView, _Templated], {
 		// summary: A Calendar view listing 12 years
 
 		// templateString: String
 		//		The template to be used to construct the widget.
-		templateString: dojo.cache("dojox.widget","Calendar/CalendarYear.html"),
+		templateString: template,
 
 		displayedYears: 6,
 
@@ -21,6 +28,7 @@ define(["dojo/_base/declare", "dojox/widget/_CalendarView", "dijit/_Templated", 
 			this._populateYears(value.getFullYear());
 		},
 
+		// TODO: Fix for AMD
 		_populateYears: dojox.widget._CalendarMonthYearView.prototype._populateYears,
 
 		adjustDate: function(date, amount){
