@@ -1,5 +1,4 @@
-define(["dojo/_base/kernel",
-	"dojo/_base/lang",
+define(["dojo/_base/lang",
 	"dojo/_base/declare",
 	"dojo/_base/Deferred",
 	"dojo/_base/connect",
@@ -7,7 +6,7 @@ define(["dojo/_base/kernel",
 	"dojo/_base/window",
 	"dojo/dom-construct",
 	"./scene"],
-	function(dojo, lang, declare, deferred, connect, ready, baseWindow, dom, sceneCtor){
+	function(dlang, declare, deferred, connect, ready, baseWindow, dom, sceneCtor){
 
         dojo.experimental("dojox.app");
 	var Application = declare([sceneCtor], {
@@ -20,15 +19,15 @@ define(["dojo/_base/kernel",
 			            var type = params.stores[item].type? params.stores[item].type : "dojo.store.Memory";
 			            var config = {};
 			            if(params.stores[item].params){
-			                dojo.mixin(config, params.stores[item].params);
+			                dlang.mixin(config, params.stores[item].params);
 			            }
 			            var storeCtor = dojo.getObject(type);
-			            if(config.data && lang.isString(config.data)){
+			            if(config.data && dlang.isString(config.data)){
 			                //get the object specified by string value of data property
 			                //cannot assign object literal or reference to data property
 			                //because json.ref will generate __parent to point to its parent
 			                //and will cause infinitive loop when creating StatefulModel.
-			                config.data = dojo.getObject(config.data);
+			                config.data = dlang.getObject(config.data);
 			            }
 			            params.stores[item].store = new storeCtor(config);
 			        }
@@ -41,7 +40,7 @@ define(["dojo/_base/kernel",
         start: function(applicaton){
             var child = this.loadChild();
 
-            deferred.when(child, dojo.hitch(this, function(){
+            deferred.when(child, dlang.hitch(this, function(){
                 this.startup();
 
                 //set application status to STARTED

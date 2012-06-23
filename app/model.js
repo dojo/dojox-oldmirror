@@ -1,10 +1,10 @@
-define(["dojo/_base/kernel","dojo/_base/Deferred","dojox/mvc/StatefulModel"], function(dojo,deferred){
+define(["dojo/_base/lang","dojo/_base/Deferred","dojox/mvc/_base"], function(dlang,deferred, mvc){
 	return function(config, parent){
                 //load models here. create dojox.newStatefulModel 
                 //using the configuration data for models
 	        var loadedModels = {};
 	        if(parent){
-	            dojo.mixin(loadedModels, parent);
+	            dlang.mixin(loadedModels, parent);
 	        }
 	        if(config){
                     for(var item in config){
@@ -17,7 +17,7 @@ define(["dojo/_base/kernel","dojo/_base/Deferred","dojox/mvc/StatefulModel"], fu
                             
                             //TODO improve performance of loading at here
                             // do not wait for the models to be created.
-                            loadedModels[item] = deferred.when(dojox.mvc.newStatefulModel(options), function(model){return model});
+                            loadedModels[item] = deferred.when(mvc.newStatefulModel(options), function(model){return model});
                         }
                     }
 	        }

@@ -11,6 +11,10 @@ define(["dojo/_base/kernel","dojo/_base/lang", "dojo/_base/declare", "dojo/on"],
 		startup: function(){
 			this.inherited(arguments);
 		},
+		
+		proceeding: false,
+		
+		waitingQueue:[],
 
 		onStartTransition: function(evt){
 			console.log("onStartTransition", evt.detail.href, history.state);
@@ -18,12 +22,6 @@ define(["dojo/_base/kernel","dojo/_base/lang", "dojo/_base/declare", "dojo/on"],
 				evt.preventDefault();
 			}
 
-			var target = evt.detail.target;
-			var regex = /#(.+)/;
-			if(!target && regex.test(evt.detail.href)){
-				target = evt.detail.href.match(regex)[1];
-			}
-			
 			//prevent event from bubbling to window and being
 			//processed by dojox/mobile/ViewController
 			evt.cancelBubble = true;
@@ -31,10 +29,32 @@ define(["dojo/_base/kernel","dojo/_base/lang", "dojo/_base/declare", "dojo/on"],
 			    evt.stopPropagation();
 			}
 			
-			dojo.when(this.transition(target, dojo.mixin({reverse: false},evt.detail)), dojo.hitch(this, function(){
-				history.pushState(evt.detail,evt.detail.href, evt.detail.url);
-			}))
-	
+			var target = evt.detail.target;
+			var regex = /#(.+)/;
+			if(!target && regex.test(evt.detail.href)){
+				target = evt.detail.href.match(regex)[1];
+			}
+			history.pushState(evt.detail,evt.detail.href, evt.detail.url);
+			this.proceedTransition({target:target, opts: dojo.mixin({reverse: false},evt.detail)});
+		},
+		
+		proceedTransition: function(transitionEvt){
+			if(this.proceeding){
+				console.log("push event", transitionEvt);
+				this.waitingQueue.push(transitionEvt);
+				return;
+			}
+			this.proceeding = true;
+			
+			dojo.when(this.transition(transitionEvt.target, transitionEvt.opts), 
+				dojo.hitch(this, function(){
+					this.proceeding = false;
+					var nextEvt = this.waitingQueue.shift();
+					if (nextEvt){
+						this.proceedTransition(nextEvt);
+					}
+				})
+			);
 		},
 
 		/*
@@ -84,7 +104,7 @@ define(["dojo/_base/kernel","dojo/_base/lang", "dojo/_base/declare", "dojo/on"],
 			}))
 			*/
 			var currentState = history.state;
-			this.transition(target, dojo.mixin({reverse: true},state));	
+			this.proceedTransition({target:target, opts:dojo.mixin({reverse: true},state)});	
 		}
 	});	
 });

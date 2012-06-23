@@ -10,6 +10,6 @@ define(["dojo/_base/declare", "dijit/_WidgetBase", "dijit/_Container", "dijit/_C
 		activate:function(){},
 		deactivate: function(){},
 		//Temporary work around for getting a null when calling getParent
-		getParent: function(){return null;}
+//		getParent: function(){return null;}
 	});
 });

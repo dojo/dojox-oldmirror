@@ -1,4 +1,4 @@
-define(["dojo/_base/kernel", "dojo/query" , "dojo/_base/array", "dijit", "dojo/_base/json"], function(dojo, query, array, dijit, djson){
+define(["dojo/_base/lang", "dojo/query" , "dojo/_base/array", "dijit/registry", "dojo/_base/json"], function(dlang, query, array, registry, djson){
     return function(/*Array of widgets*/widgets, /*Object*/ models){
         array.forEach(widgets, function(item){
             //TODO need to find a better way to get all bindable widgets
@@ -27,9 +27,9 @@ define(["dojo/_base/kernel", "dojo/query" , "dojo/_base/array", "dijit", "dojo/_
                     if(ref[0] === "'"){
                         ref = ref.substring(1, ref.length-1);
                     }
-                    var model = dojo.getObject(ref, false, models);
+                    var model = dlang.getObject(ref, false, models);
                     if (model){
-                        dijit.byNode(widget).set("ref", model);
+                        registry.byNode(widget).set("ref", model);
                     }                    
                 }
             }, this);
