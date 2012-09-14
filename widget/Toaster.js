@@ -57,7 +57,7 @@ define([
 
 		// positionDirectionTypes: Array
 		//		Possible values for positionDirection parameter
-		positionDirectionTypes: ["br-up", "br-left", "bl-up", "bl-right", "tr-down", "tr-left", "tl-down", "tl-right"],
+		positionDirectionTypes: ["br-up", "br-left", "bl-up", "bl-right", "tr-down", "tr-left", "tl-down", "tl-right", "tm-down", "bm-up"],
 
 		// duration: Integer
 		//		Number of milliseconds to show message
@@ -244,6 +244,8 @@ define([
 				style.left = (view.w - nodeSize.w - 1 - view.l)+"px";
 			}else if(pd.match(/^[tb]l-/)){
 				style.left = 0 + "px";
+			}else if(pd.match(/^[tb]m-/)){
+        			style.left = ((view.w - nodeSize.w - 1 - view.l)/2)+"px";
 			}
 
 			style.clip = "rect(0px, " + nodeSize.w + "px, " + nodeSize.h + "px, 0px)";
