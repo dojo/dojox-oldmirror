@@ -455,18 +455,12 @@ define([
 			if(typeof(p) == undefined || p > length){
 				p = length;
 			}
-			if(this._disabled){
+			if(this._disabled || child.dragRestriction){
 				domConstruct.place(child.domNode, zone, p);
 				domAttr.set(child.domNode, "tabIndex", "0");
 			}
 			else{
-				if(!child.dragRestriction){
-					this._dragManager.addDragItem(zone, child.domNode, p, true);
-				}
-				else{
-					domConstruct.place(child.domNode, zone, p);
-					domAttr.set(child.domNode, "tabIndex", "0");
-				}
+				this._dragManager.addDragItem(zone, child.domNode, p, true);
 			}
 			child.set("column", column);
 			return child; // Widget
@@ -474,7 +468,7 @@ define([
 
 		removeChild: function(/*Widget*/ widget){
 			//console.log("dojox.layout.GridContainerLite ::: removeChild");
-			if(this._disabled){
+			if(this._disabled || widget.dragRestriction){
 				this.inherited(arguments);
 			}
 			else{
